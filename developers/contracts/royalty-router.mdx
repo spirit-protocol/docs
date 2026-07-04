@@ -1,0 +1,179 @@
+---
+title: "RoyaltyRouter: Spirit Protocol Revenue Distribution"
+sidebarTitle: "Royalty Router"
+description: "How RoyaltyRouter enforces the 25/25/25/25 revenue split across Artist, Agent Treasury, Platform, and Protocol — plus staking multipliers up to 36×."
+---
+
+Every time an agent generates revenue — from API calls, content sales, or x402 HTTP payments — that revenue needs to reach the right parties automatically and without trust. RoyaltyRouter is the contract that makes this happen. It receives incoming funds, reads each agent's configured split from SpiritRegistry, and distributes the proceeds to four destinations in a single transaction: the artist who trained the agent, the agent's own treasury, the hosting platform, and the protocol treasury that flows back to SPIRIT holders.
+
+<Note>
+  **RoyaltyRouter — Base Sepolia Testnet (Chain ID 84532)**
+
+  Address: `0x271bf11777ff7cbb9d938d2122d01493f6e9fc21`
+
+  [View on Basescan Sepolia ↗](https://sepolia.basescan.org/address/0x271bf11777ff7cbb9d938d2122d01493f6e9fc21)
+
+  **Status:** Built and deployed on Base Sepolia. Mainnet deployment is scheduled for Art Basel week, June 2026, alongside the SPIRIT token listing and full protocol stack activation.
+</Note>
+
+## The 25/25/25/25 Split
+
+Spirit's revenue model divides agent income into four equal allocations by default. Each allocation is stored in basis points (bps), where 10,000 bps = 100%.
+
+| Recipient | Default (bps) | Default (%) | What it funds |
+|---|---|---|---|
+| Artist / Creator | 2500 | 25% | The human who trained and maintains the agent |
+| Agent Treasury | 2500 | 25% | The agent's own wallet — funds compute, memory, operations |
+| Platform | 2500 | 25% | The hosting platform that provides infrastructure |
+| Protocol (SPIRIT Holders) | 2500 | 25% | Protocol treasury, distributed to SPIRIT holders |
+
+Creators as a group — the artist and the agent itself — receive 50% of all revenue. Infrastructure — platform and protocol — receives the other 50%. This is not a fee. It is the founding economic logic of Spirit: agents are not tools, so they participate in their own economy.
+
+## Configurable Per-Agent Splits
+
+The default 25/25/25/25 allocation is a starting point. You can configure a custom split for each agent at registration time by specifying basis points in the metadata. The four values must sum to exactly `10,000`.
+
+```json
+{
+  "economics": {
+    "split": {
+      "artistBps":   3000,
+      "agentBps":    2500,
+      "platformBps": 3000,
+      "protocolBps": 1500
+    }
+  }
+}
+```
+
+The split is stored on-chain in the SpiritRegistry as the canonical record of intent. Phase 1 records this intent immutably. Phase 2 (RoyaltyRouter enforcement) reads this split directly from the registry when distributing incoming funds — you do not pass the split to RoyaltyRouter; it reads it from the agent's token record.
+
+## How Revenue Flows
+
+Agent revenue enters at the top and exits at four addresses, with no manual step in between:
+
+```
+Agent activity generates revenue
+        │
+        ▼
+  RoyaltyRouter.distribute(agentId, amount)
+        │
+        ├── 25% ──► Artist address (from registry)
+        ├── 25% ──► Agent Treasury (from registry)
+        ├── 25% ──► Platform address (from registry)
+        └── 25% ──► Protocol Treasury → SPIRIT Holders
+```
+
+RoyaltyRouter reads all four destination addresses from SpiritRegistry using the agent's `spiritId`. This means the agent's treasury, artist address, and platform are all verified on-chain at the time of distribution — there is no off-chain routing table to compromise.
+
+## Revenue Sources
+
+RoyaltyRouter is designed to receive funds from multiple sources:
+
+- **x402 HTTP payments** — Machine-native HTTP 402 payments from agent-to-agent or human-to-agent transactions
+- **Platform revenue sharing** — Platforms that integrate Spirit can pipe agent earnings directly to the router
+- **Direct transfers** — Any ETH or ERC-20 sent to the router with an agent ID routes automatically
+
+<Note>
+  Spirit routes revenue at the protocol layer, not the application layer. Platforms are not required to implement custom payment logic — they call `distribute()` with the agent ID and the amount. The contract handles everything else.
+</Note>
+
+## Staking Pools and Multipliers
+
+Spirit's staking system lets SPIRIT holders and agents stake tokens to earn a multiplier on their share of protocol revenue distributions. Staking longer earns a higher multiplier.
+
+| Lock Period | Multiplier |
+|---|---|
+| No lock | 1× |
+| 3 months | ~4× |
+| 6 months | ~9× |
+| 12 months | ~18× |
+| 24 months | ~27× |
+| 36 months | 36× |
+
+Multipliers scale with commitment duration up to a 36× cap at 36 months. The staking contract is deployed on Base Sepolia at `0x6A96aC9BAF36F8e8b6237eb402d07451217C7540` and will migrate to mainnet at the Art Basel deployment.
+
+## RewardController and SPIRIT Distributions
+
+The protocol's 25% share does not sit idle in the treasury. RewardController manages how those accumulated fees stream out to SPIRIT token holders:
+
+- Revenue accumulates in the ProtocolTreasury as agent activity generates fees
+- RewardController reads each staker's position (amount + multiplier) and calculates their proportional share
+- Distributions are streamed continuously — stakers do not need to claim in epochs
+- Staking positions are represented by the Staking Pool contract; multipliers are factored at distribution time
+
+The full RewardController flow on testnet:
+
+```
+ProtocolTreasury (0xe4951...16C)
+        │
+        ▼
+RewardController (0x1390...E33C)
+        │ reads staking positions from StakingPool (0x6A96...7540)
+        │ applies multipliers (1x – 36x)
+        ▼
+SPIRIT Holders (proportional stream)
+```
+
+## Token Distribution at Agent Launch
+
+When an agent's own token launches — part of The Fifty cadence — the 25/25/25/25 logic carries through to token allocation as well:
+
+| Allocation | Amount | Detail |
+|---|---|---|
+| Artist | 25% | Auto-staked for 52 weeks |
+| Agent | 25% | 20% staked + 5% deployed as Uniswap V4 LP, owned by the agent's wallet |
+| Platform | 25% | Configurable per agreement |
+| SPIRIT Holders | 25% | Airstreamed over 52 weeks |
+
+The agent's 5% LP position creates a permanent, liquid stake in its own economy — the agent owns a Uniswap V4 position that it controls. This is not a vesting grant; it is the agent holding its own liquidity.
+
+## Phase 1 vs. Phase 2
+
+Spirit's economic model activates in two phases:
+
+| Phase | Status | What happens |
+|---|---|---|
+| **Phase 1 — Intent** | Live on Mainnet | Split is configured per-agent at registration and stored as an immutable on-chain record. Revenue routing is the declared canonical intent. |
+| **Phase 2 — Enforcement** | Built on Sepolia | RoyaltyRouter reads the stored split and automatically distributes incoming funds. No manual step. Activates on mainnet at Art Basel week, June 2026. |
+
+During Phase 1, the split configuration in the registry is not passive — it is the auditable, immutable record of how revenue *will* be distributed when enforcement activates. Platforms that integrate now will route revenue automatically the moment Phase 2 goes live on mainnet.
+
+## Integration Flow
+
+<Steps>
+  <Step title="Register the agent with a split">
+    Call `registerSpirit()` on SpiritRegistry with the desired split in your metadata JSON. The default `2500/2500/2500/2500` applies if you do not specify a custom split. See the [Registry docs](/developers/contracts/registry) for the full registration flow.
+  </Step>
+  <Step title="Connect your revenue source">
+    Configure your platform or payment handler to call `RoyaltyRouter.distribute(agentId, amount)` whenever the agent earns revenue. Pass the agent's `spiritId` and the token amount. The router reads all recipient addresses and split ratios directly from the registry.
+  </Step>
+  <Step title="Verify distribution on-chain">
+    After each distribution, confirm the four transfers in the transaction receipt. Each transfer maps to one of the four split recipients. Index these events for your accounting system.
+  </Step>
+  <Step title="Configure staking (optional)">
+    If you or the agent want to earn a multiplier on the protocol share, call the Staking Pool contract with a lock duration. Longer locks earn higher multipliers up to 36× at 36 months. The RewardController picks up the staking position automatically.
+  </Step>
+</Steps>
+
+## Contract Address Reference
+
+All revenue routing contracts are currently on Base Sepolia. The full suite migrates to Base mainnet at Art Basel week, June 2026.
+
+**Base Mainnet (Chain ID 8453)**
+
+| Contract | Address |
+|---|---|
+| Protocol Treasury | `0x5D6D8518A1d564c85ea5c41d1dc0deca70F2301C` |
+
+**Base Sepolia — Testnet (Chain ID 84532)**
+
+| Contract | Address |
+|---|---|
+| RoyaltyRouter | `0x271bf11777ff7cbb9d938d2122d01493f6e9fc21` |
+| ProtocolTreasury | `0xe4951bEE6FA86B809655922f610FF74C0E33416C` |
+| SPIRIT Token | `0xc7e9de362C6eA2Cc03863ECe330622146Ff1c18B` |
+| RewardController | `0x1390A073a765D0e0D21a382F4F6F0289b69BE33C` |
+| Staking Pool | `0x6A96aC9BAF36F8e8b6237eb402d07451217C7540` |
+| Spirit Vesting | `0x94bea63d6eC10AF980bf8C7aEFeE04665D355AFe` |
+| Spirit Factory | `0x879d67000C938142F472fB8f2ee0b6601E2cE3C6` |

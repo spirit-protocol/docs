@@ -1,72 +1,112 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "Spirit Protocol",
+  "theme": "luma",
+  "favicon": "https://media.brand.dev/e57a071a-49fd-498f-af3e-137beec0089a.png",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#43eb7b",
+    "light": "#288d4a"
   },
-  "favicon": "/favicon.svg",
-  "navigation": {
-    "pages": [
-      {
-        "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart"
-        ]
-      }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
+  "appearance": {
+    "default": "dark"
+  },
+  "font": {
+    "headings": {
+      "family": "Space Grotesk"
+    },
+    "body": {
+      "family": "Space Mono"
     }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
     "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
+      "type": "github",
+      "href": "https://github.com/spirit-protocol"
     }
   },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": [
+              "introduction",
+              "how-it-works",
+              "the-fifty"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/sovereignty",
+              "concepts/identity",
+              "concepts/memory",
+              "concepts/treasury"
+            ]
+          },
+          {
+            "group": "Spirit Studio",
+            "pages": [
+              "studio/overview",
+              "studio/create-agent",
+              "studio/training",
+              "studio/deploy"
+            ]
+          },
+          {
+            "group": "Spirit Index",
+            "pages": [
+              "index/overview",
+              "index/rubric",
+              "index/registration"
+            ]
+          },
+          {
+            "group": "$SPIRIT Token",
+            "pages": [
+              "token/overview",
+              "token/participate",
+              "token/economics"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Developers",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "developers/overview",
+              "developers/quickstart"
+            ]
+          },
+          {
+            "group": "SDKs",
+            "pages": [
+              "developers/sdk/spirit-sdk",
+              "developers/sdk/airc-sdk",
+              "developers/sdk/agent-kit"
+            ]
+          },
+          {
+            "group": "Smart Contracts",
+            "pages": [
+              "developers/contracts/registry",
+              "developers/contracts/royalty-router"
+            ]
+          },
+          {
+            "group": "Agent Discovery",
+            "pages": [
+              "developers/discovery/well-known",
+              "developers/discovery/mcp-server"
+            ]
+          }
+        ]
+      }
     ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
   }
 }

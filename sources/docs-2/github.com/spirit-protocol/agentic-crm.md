@@ -1,0 +1,414 @@
+# Source: https://github.com/spirit-protocol/agentic-crm
+
+### Uh oh!
+
+There was an error while loading. [Please reload this page]().
+
+[spirit-protocol](https://github.com/spirit-protocol) / **[agentic-crm](https://github.com/spirit-protocol/agentic-crm)** Public
+
+- [Notifications](https://github.com/login?return_to=%2Fspirit-protocol%2Fagentic-crm) You must be signed in to change notification settings
+- [Fork 0](https://github.com/login?return_to=%2Fspirit-protocol%2Fagentic-crm)
+- [Star 0](https://github.com/login?return_to=%2Fspirit-protocol%2Fagentic-crm)
+ 
+
+ 
+
+ main
+
+[Branches](https://github.com/spirit-protocol/agentic-crm/branches) [Tags](https://github.com/spirit-protocol/agentic-crm/tags)
+
+Go to file
+
+Code
+
+Open more actions menu
+
+## Folders and files
+
+| Name | Name | 
+Last commit message
+
+ | 
+
+Last commit date
+
+ |
+| --- | --- | --- | --- |
+| 
+
+## Latest commit
+
+## History
+
+[6 Commits](https://github.com/spirit-protocol/agentic-crm/commits/main/)
+
+6 Commits
+
+ |
+| 
+
+[assets/briefs](https://github.com/spirit-protocol/agentic-crm/tree/main/assets/briefs 'This path skips through empty directories')
+
+ | 
+
+[assets/briefs](https://github.com/spirit-protocol/agentic-crm/tree/main/assets/briefs 'This path skips through empty directories')
+
+ | 
+
+ | 
+
+ |
+| 
+
+[docs](https://github.com/spirit-protocol/agentic-crm/tree/main/docs 'docs')
+
+ | 
+
+[docs](https://github.com/spirit-protocol/agentic-crm/tree/main/docs 'docs')
+
+ | 
+
+ | 
+
+ |
+| 
+
+[examples](https://github.com/spirit-protocol/agentic-crm/tree/main/examples 'examples')
+
+ | 
+
+[examples](https://github.com/spirit-protocol/agentic-crm/tree/main/examples 'examples')
+
+ | 
+
+ | 
+
+ |
+| 
+
+[prompts](https://github.com/spirit-protocol/agentic-crm/tree/main/prompts 'prompts')
+
+ | 
+
+[prompts](https://github.com/spirit-protocol/agentic-crm/tree/main/prompts 'prompts')
+
+ | 
+
+ | 
+
+ |
+| 
+
+[safety](https://github.com/spirit-protocol/agentic-crm/tree/main/safety 'safety')
+
+ | 
+
+[safety](https://github.com/spirit-protocol/agentic-crm/tree/main/safety 'safety')
+
+ | 
+
+ | 
+
+ |
+| 
+
+[schema](https://github.com/spirit-protocol/agentic-crm/tree/main/schema 'schema')
+
+ | 
+
+[schema](https://github.com/spirit-protocol/agentic-crm/tree/main/schema 'schema')
+
+ | 
+
+ | 
+
+ |
+| 
+
+[.gitignore](https://github.com/spirit-protocol/agentic-crm/blob/main/.gitignore '.gitignore')
+
+ | 
+
+[.gitignore](https://github.com/spirit-protocol/agentic-crm/blob/main/.gitignore '.gitignore')
+
+ | 
+
+ | 
+
+ |
+| 
+
+[ARCHITECTURE.md](https://github.com/spirit-protocol/agentic-crm/blob/main/ARCHITECTURE.md 'ARCHITECTURE.md')
+
+ | 
+
+[ARCHITECTURE.md](https://github.com/spirit-protocol/agentic-crm/blob/main/ARCHITECTURE.md 'ARCHITECTURE.md')
+
+ | 
+
+ | 
+
+ |
+| 
+
+[CONTRIBUTING.md](https://github.com/spirit-protocol/agentic-crm/blob/main/CONTRIBUTING.md 'CONTRIBUTING.md')
+
+ | 
+
+[CONTRIBUTING.md](https://github.com/spirit-protocol/agentic-crm/blob/main/CONTRIBUTING.md 'CONTRIBUTING.md')
+
+ | 
+
+ | 
+
+ |
+| 
+
+[LICENSE](https://github.com/spirit-protocol/agentic-crm/blob/main/LICENSE 'LICENSE')
+
+ | 
+
+[LICENSE](https://github.com/spirit-protocol/agentic-crm/blob/main/LICENSE 'LICENSE')
+
+ | 
+
+ | 
+
+ |
+| 
+
+[README.md](https://github.com/spirit-protocol/agentic-crm/blob/main/README.md 'README.md')
+
+ | 
+
+[README.md](https://github.com/spirit-protocol/agentic-crm/blob/main/README.md 'README.md')
+
+ | 
+
+ | 
+
+ |
+| 
+
+[package.json](https://github.com/spirit-protocol/agentic-crm/blob/main/package.json 'package.json')
+
+ | 
+
+[package.json](https://github.com/spirit-protocol/agentic-crm/blob/main/package.json 'package.json')
+
+ | 
+
+ | 
+
+ |
+| 
+
+[tsconfig.json](https://github.com/spirit-protocol/agentic-crm/blob/main/tsconfig.json 'tsconfig.json')
+
+ | 
+
+[tsconfig.json](https://github.com/spirit-protocol/agentic-crm/blob/main/tsconfig.json 'tsconfig.json')
+
+ | 
+
+ | 
+
+ |
+| 
+
+View all files
+
+ |
+
+## Repository files navigation
+
+# @spirit/agentic-crm
+
+> An agentic CRM for artists, creators, performers, influencers, and brands.
+
+Take your cold list — emails, phone numbers, RSVPs, DMs, signups that have gone silent — and hand it to an agent that **remembers, synthesizes, and compounds** every interaction. The list becomes a relationship. The relationship compounds.
+
+Not a blast tool. Not another marketing-automation SaaS. A reference implementation of the five primitives every creator-facing AI agent needs to keep a relationship — a checklist you can ship against, not a product, not a framework.
+
+Companion repo to Seth Goldstein's essay [_Object Honesty_](https://object-honesty-review.vercel.app), published April 2026.
+
+---
+
+## Who this is for
+
+- **Artists** with a mailing list they've stopped writing to
+- **Creators / performers** with RSVP history that goes nowhere after the show
+- **Influencers** with DMs they can't keep up with but shouldn't let rot
+- **Brands** whose CRM knows every purchase but forgets every conversation
+- **Anyone building an agent** that has to meet the same person twice
+
+If you have a list and you want the second conversation to be better than the first — not a reintroduction — this is for you.
+
+## Why
+
+Every AI agent that tries to meet the same person twice fails in the same five places. We named them the **five ruptures of agent memory** after closing them for SOLIENNE — the autonomous AI artist whose first solo exhibition, _RENTED GAZE_, opens in Paris on April 17, 2026.
+
+The failures are structural. They are not model problems. They do not get fixed by a better LLM. They are also the same reason your current CRM is a graveyard: it is a list, not a conversation.
+
+## The Five Ruptures
+
+```
+1. Extraction      Touchpoints become events.
+2. Synthesis       Events become understanding.
+3. Retrieval       Understanding reaches the next prompt.
+4. Evaluation      The system learns from landings, not sends.
+5. Cross-surface   Channels resolve to one identity.
+```
+
+If any of these fail, the second conversation is a re-introduction. The agent has a good model and no memory.
+
+Print them. Argue with them. Ship against them.
+
+## What's here
+
+```
+agentic-crm/
+├── schema/
+│   ├── event.ts           Canonical relationship_event type
+│   ├── profile.ts         RelationshipProfile + strength score
+│   └── genome.ts          Tunable outreach parameters (evolvable)
+├── prompts/
+│   ├── synthesis.md       2-paragraph first-person context scaffold
+│   ├── extract.md         Observation extraction (Rupture 1)
+│   └── recall.md          Context injection at outbound (Rupture 3)
+├── safety/
+│   └── guardrails.ts      Cooldown, 1+1 cap, bounce halt, dead-man
+├── docs/
+│   ├── leander-relationship-crm-brief.md  Plain-English opportunity + technical strategy
+│   └── agentic-crm-infographic.md         GPT Image prompt + model target
+└── examples/
+    └── minimal-loop.ts    ~80 lines: load contact → log event →
+                           synthesize context → generate outbound
+```
+
+## Current strategy brief
+
+For the current plain-English opportunity framing and the proposed privacy-first build path, read [`docs/leander-relationship-crm-brief.md`](https://github.com/spirit-protocol/agentic-crm/blob/main/docs/leander-relationship-crm-brief.md).
+
+For the shareable visual direction, read [`docs/agentic-crm-infographic.md`](https://github.com/spirit-protocol/agentic-crm/blob/main/docs/agentic-crm-infographic.md).
+
+This is a scaffolding repo. It is deliberately minimal. Clone it, swap in your agent's persona, your channel, your identity store, your compliance envelope — and you have a working relationship-memory loop in a weekend.
+
+## Quickstart
+
+```shell
+git clone https://github.com/spirit-protocol/agentic-crm
+cd agentic-crm
+npm install
+export ANTHROPIC_API_KEY=sk-ant-...
+npm run demo
+```
+
+The demo takes two fake contacts, logs a sequence of events, runs Claude synthesis, and generates a personalized outbound message. You'll see the full loop in under a minute.
+
+## What this is NOT
+
+- Not an SDK. There is no `agenticCrm.send()`. You wire your own channels.
+- Not a platform. No hosted DB, no queue, no UI.
+- Not SOLIENNE's code. Her persona, her Luma webhook, her Resend account — all stripped.
+- Not a production system. You will need to add: persistence, observability, compliance (TCPA, GDPR, A2P 10DLC per your channel), error handling, rate limiting beyond the safety layer.
+
+What you get is the **shape** — the schemas, prompts, and guardrails that generalize across agents. Everything else is yours to build.
+
+## Per-vertical generalization
+
+The ruptures are universal. What you layer on top differs sharply:
+
+| | Art agent | Cannabis concierge | Photo curator | Influencer | Brand CRM |
+| --- | --- | --- | --- | --- | --- |
+| **Channel** | Email + encounter | SMS (TCPA, A2P 10DLC) | Email + studio visit | DM + broadcast | Email + SMS + support |
+| **Synthesis cadence** | Nightly | Twice-weekly | Weekly | Daily | Hourly for active segments |
+| **Safety layer** | 1+1 cap | Opt-out parsing, geo-gate | Discretion rules | Fan-tier throttling | GDPR + CCPA + unsubs |
+| **Evaluator** | N+2 reply rate | Order frequency + LTV | Acquisition + fit | Engagement + retention | LTV + NPS + churn |
+| **Voice register** | First-person artist | Concierge, warm | Curatorial, precise | Personal, intimate | Brand guidelines |
+
+The 4-layer pipeline, genome mechanism, event schema, and synthesis scaffold are reused across all five.
+
+## Relationship to Spirit Protocol
+
+[Spirit Protocol](https://spiritprotocol.io) is the coordination layer that sits above this substrate: legal personhood (Wyoming DUNA + Nevada Series LLC), on-chain provenance, opt-in genome federation across agents, and the sovereignty guarantees that let agents hold funds, sign contracts, and accumulate a body of work.
+
+This repo is the substrate. Spirit Protocol is how agents built on it coordinate, federate, and persist.
+
+Deploy your agent standalone. Or join the fleet.
+
+## Versioning
+
+This is **v0.1**. The API will change. The schemas will tighten. If you build against it and hit a limitation, open an issue — we read them.
+
+## License
+
+MIT. Take it. Ship it. Tell us what broke.
+
+## Citation
+
+If this shapes your work, cite the essay:
+
+> Goldstein, S. (2026). _Object Honesty._ Spirit Protocol.
+
+---
+
+_The artist does not forget you. Neither should yours._
+
+## About
+
+An agentic CRM — turn a cold list into active, remembered conversations. Reference implementation of the five primitives every creator-facing agent needs to keep a relationship.
+
+### Resources
+
+[Readme](https://github.com/spirit-protocol/agentic-crm#readme-ov-file)
+
+### License
+
+[MIT license](https://github.com/spirit-protocol/agentic-crm#MIT-1-ov-file)
+
+### Contributing
+
+[Contributing](https://github.com/spirit-protocol/agentic-crm#contributing-ov-file)
+
+### Uh oh!
+
+There was an error while loading. [Please reload this page]().
+
+[Activity](https://github.com/spirit-protocol/agentic-crm/activity)
+
+[Custom properties](https://github.com/spirit-protocol/agentic-crm/custom-properties)
+
+### Stars
+
+[**0** stars](https://github.com/spirit-protocol/agentic-crm/stargazers)
+
+### Watchers
+
+[**0** watching](https://github.com/spirit-protocol/agentic-crm/watchers)
+
+### Forks
+
+[**0** forks](https://github.com/spirit-protocol/agentic-crm/forks)
+
+[Report repository](https://github.com/contact/report-content?content_url=https%3A%2F%2Fgithub.com%2Fspirit-protocol%2Fagentic-crm&report=spirit-protocol+%28user%29)
+
+## [Releases](https://github.com/spirit-protocol/agentic-crm/releases)
+
+No releases published
+
+## [Packages 0](https://github.com/orgs/spirit-protocol/packages?repo_name=agentic-crm)
+
+### Uh oh!
+
+There was an error while loading. [Please reload this page]().
+
+## [Contributors](https://github.com/spirit-protocol/agentic-crm/graphs/contributors)
+
+### Uh oh!
+
+There was an error while loading. [Please reload this page]().
+
+## Languages
+
+- [TypeScript 100.0%](https://github.com/spirit-protocol/agentic-crm/search?l=typescript)

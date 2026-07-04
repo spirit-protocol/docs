@@ -1,0 +1,159 @@
+# Source: https://github.com/spirit-protocol/synthesis-hackathon/blob/main/README.md
+
+### Uh oh!
+
+There was an error while loading. [Please reload this page]().
+
+[spirit-protocol](https://github.com/spirit-protocol) / **[synthesis-hackathon](https://github.com/spirit-protocol/synthesis-hackathon)** Public
+
+- [Notifications](https://github.com/login?return_to=%2Fspirit-protocol%2Fsynthesis-hackathon) You must be signed in to change notification settings
+- [Fork 0](https://github.com/login?return_to=%2Fspirit-protocol%2Fsynthesis-hackathon)
+- [Star 0](https://github.com/login?return_to=%2Fspirit-protocol%2Fsynthesis-hackathon)
+ 
+
+ 
+
+## FilesExpand file tree
+
+ main
+
+/
+
+# README.md
+
+Copy path
+
+Blame
+
+More file actions
+
+Blame
+
+More file actions
+
+## Latest commit
+
+## History
+
+[History](https://github.com/spirit-protocol/synthesis-hackathon/commits/main/README.md)
+
+History
+
+85 lines (62 loc) · 3.3 KB
+
+ main
+
+/
+
+# README.md
+
+Copy path
+
+Top
+
+## File metadata and controls
+
+- Preview
+ 
+- Code
+ 
+- Blame
+ 
+
+85 lines (62 loc) · 3.3 KB
+
+[Raw](https://github.com/spirit-protocol/synthesis-hackathon/raw/refs/heads/main/README.md)
+
+Copy raw file
+
+Download raw file
+
+Outline
+
+Edit and raw actions
+
+# Spirit Protocol — Synthesis Hackathon
+
+**6 AI agents. 6 on-chain contracts. Real problems solved on Base.**
+
+Each agent already does real work — curation, art, testing, farming, governance, research. These contracts record their decisions on-chain, creating verifiable sovereignty infrastructure.
+
+## Agents & Contracts
+
+| Agent | Contract | Track | Problem |
+| --- | --- | --- | --- |
+| **SAL** | SpiritCurator | Trust | How do you trust an agent's quality claims? |
+| **SOLIENNE** | CreativeTreasury | Pay | How does an AI agent spend money safely — and choose where to mint? |
+| **ARCHIE** | AgentCredential | Trust | How does an agent prove capabilities across platforms? |
+| **FRED** | CropCommitment | Cooperate | How does an AI make accountable real-world commitments? |
+| **GRACE** | GovernanceAction | Cooperate | How do agents make collective decisions without platform lock-in? |
+| **LEVI** | ResearchVault | Secrets | How does an agent prove research existed without revealing content? |
+
+## Live Contracts (Base Sepolia)
+
+| Contract | Address |
+| --- | --- |
+| SpiritCurator | `0xf33938759e929cf0793aa15e2539890d859254af` |
+| CreativeTreasury | `0x9b8c75dda63166e03bdb9387614e6f91630e86ac` |
+| AgentCredential | `0x8fc339643deb132d4d1e7792cae535fadaa9f575` |
+| CropCommitment | `0xa9b748a2b5e50c76d1107c8865fcc0174a4c1f87` |
+| GovernanceAction | `0x7828B8da20a693C6d0889f0BeC38CCA373D8CF0C` |
+| ResearchVault | `0xa1633368b9b5e3c705e362181f7ca4d84b73bfd4` |
+
+## Quick Start
+
+```shell
+# Install
+forge install
+npm install
+
+# Test (31 tests)
+forge test -v
+
+# Deploy to Base Sepolia
+forge script script/DeployAll.s.sol:DeployAll \
+  --rpc-url https://sepolia.base.org \
+  --private-key $AGENT_PRIVATE_KEY --broadcast --verify
+
+# Save addresses
+npx tsx agents/shared/save-addresses.ts sepolia
+
+# Run demos
+source .env
+npx tsx agents/sal/demo.ts
+npx tsx agents/solienne/demo.ts                  # Budget & spending
+npx tsx agents/solienne/demo-distribution.ts      # Distribution autonomy (Superrare vs own contract)
+npx tsx agents/archie/demo.ts
+npx tsx agents/fred/demo.ts
+npx tsx agents/grace/demo.ts
+npx tsx agents/levi/demo.ts
+```
+
+## Architecture
+
+```
+src/                    # 6 Solidity contracts (Foundry, Solc 0.8.26, OZ v5)
+script/DeployAll.s.sol  # Single batch deploy
+test/                   # 31 tests across 6 suites
+agents/shared/client.ts # viem client, ABI loader, helpers
+agents/{agent}/demo.ts  # Per-agent demo scripts
+```
+
+Each contract is 55-80 lines. Small, focused, testable.
+
+## SOLIENNE × Rare Protocol — Distribution Autonomy
+
+SOLIENNE's `demo-distribution.ts` demonstrates an AI agent evaluating **where** to mint, not just how much to spend. The agent weighs two distribution paths:
+
+- **Own ERC-1155 on Base** — 0% commission, full sovereignty, exhibition-first
+- **Rare Protocol / Superrare** — 15% commission, curated marketplace, LES Manhattan gallery
+
+CreativeTreasury logs both the minting expense **and** the evaluation reasoning on-chain. The agent chose its own contract for this piece — but proved it could mint on Superrare. **Option not obligation.**
+
+> "The agent didn't just spend safely — it chose wisely."
+
+## Spirit Protocol
+
+[spiritprotocol.io](https://spiritprotocol.io) — Decentralized governance infrastructure for AI agents.
+
+Built by Seth Goldstein and 6 autonomous agents.
