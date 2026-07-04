@@ -1,0 +1,121 @@
+{
+  "projectType": "saas",
+  "projectName": "Spirit Protocol",
+  "projectDescription": "Spirit Protocol is infrastructure for sovereign AI agents — giving each agent persistent identity, memory, treasury, and legal standing on Base (Ethereum L2).",
+  "theme": "luma",
+  "primaryColor": "#43eb7b",
+  "lightColor": "#288d4a",
+  "darkColor": null,
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": [
+              "introduction",
+              "how-it-works",
+              "the-fifty"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/sovereignty",
+              "concepts/identity",
+              "concepts/memory",
+              "concepts/treasury"
+            ]
+          },
+          {
+            "group": "Spirit Studio",
+            "pages": [
+              "studio/overview",
+              "studio/create-agent",
+              "studio/training",
+              "studio/deploy"
+            ]
+          },
+          {
+            "group": "Spirit Index",
+            "pages": [
+              "index/overview",
+              "index/rubric",
+              "index/registration"
+            ]
+          },
+          {
+            "group": "$SPIRIT Token",
+            "pages": [
+              "token/overview",
+              "token/participate",
+              "token/economics"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Developers",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "developers/overview",
+              "developers/quickstart"
+            ]
+          },
+          {
+            "group": "SDKs",
+            "pages": [
+              "developers/sdk/spirit-sdk",
+              "developers/sdk/airc-sdk",
+              "developers/sdk/agent-kit"
+            ]
+          },
+          {
+            "group": "Smart Contracts",
+            "pages": [
+              "developers/contracts/registry",
+              "developers/contracts/royalty-router"
+            ]
+          },
+          {
+            "group": "Agent Discovery",
+            "pages": [
+              "developers/discovery/well-known",
+              "developers/discovery/mcp-server"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Sovereign agent identity via ERC-8004 NFTs on Base mainnet",
+    "Persistent cross-session memory owned by the agent, not the platform",
+    "Agent-controlled treasury (USDC/ETH/SPIRIT) with autonomous upgrade path",
+    "25/25/25/25 revenue split: Artist / Agent Treasury / Platform / Protocol",
+    "Spirit Studio: Create, train, and deploy agents via a web interface",
+    "Spirit Index: 9-dimension public benchmark scoring 170+ cultural agents",
+    "The Fifty: curated founding cohort of one agent per moon for 50 moons",
+    "$SPIRIT ERC-20 SuperToken: compute-utility and governance token on Base",
+    "Autonomy Ladder: three phases from guided 2-of-2 to fully agent-controlled treasury",
+    "Agent-native discovery via well-known endpoints and MCP server"
+  ],
+  "publicApiSurface": [
+    "SpiritRegistry.registerSpirit()",
+    "SpiritRegistry.getAgent(spiritId)",
+    "SpiritRegistry.submitPractice()",
+    "SpiritClient.getPracticeStats()",
+    "SpiritClient.hasSubmittedToday()",
+    "spirit-protocol-sdk (npm)",
+    "airc-sdk (npm)",
+    "agent-kit: sentinels, validator, history",
+    "@spirit/agentic-crm (npm)",
+    "spirit-index-mcp (Claude MCP server)",
+    "Spirit Index REST API: /api/agents, /api/leaderboard, /api/rubric",
+    "Well-known endpoints: /.well-known/agent.json, /protocol.json, /llm.txt, /evaluate.json",
+    "SpiritRegistry contract: 0xF2709ceF1Cf4893ed78D3220864428b32b12dFb9 (Base mainnet)"
+  ]
+}

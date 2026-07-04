@@ -1,0 +1,306 @@
+---
+title: "agent-kit: Three Primitives for Spirit-Native Agents"
+sidebarTitle: "Agent Kit"
+description: "Zero-dependency TypeScript primitives for Spirit agents: sentinel extraction, perception drift validation, and session-keyed ring-buffer history."
+---
+
+`@spirit/agent-kit` is a zero-dependency TypeScript library that ships three building blocks every Spirit agent with a sensor stream or a hidden-signal protocol will need: a sentinel extractor that strips hidden tokens from user-facing text while routing them to tool calls, a validator that catches vision and sensor model "drift" at the ingest boundary, and a session-keyed ring buffer for bounded perception history. All three primitives were extracted directly from the SOLIENNE encounter pipeline and generalized for reuse. The package is ESM-only with no runtime dependencies.
+
+## Installation
+
+Until `@spirit/agent-kit` is published to the npm registry, reference it by path from a sibling project:
+
+```json
+{
+  "dependencies": {
+    "@spirit/agent-kit": "file:../agent-kit"
+  }
+}
+```
+
+Your consuming project must be ESM — set `"type": "module"` in its `package.json`.
+
+<Note>
+  Zero runtime dependencies means no supply-chain surprises and no transitive version conflicts. The package compiles to `dist/` via `tsc` and ships submodule exports so you can import only what you use.
+</Note>
+
+You can import from the root barrel or from individual submodules — both work:
+
+```ts
+// Submodule (tree-shakes to the minimum)
+import { extractAllSentinels } from '@spirit/agent-kit/sentinels';
+import { validatePerceptionObservation } from '@spirit/agent-kit/validator';
+import { PerceptionHistory } from '@spirit/agent-kit/history';
+
+// Barrel (one import site, slightly larger bundle)
+import {
+  extractAllSentinels,
+  validate,
+  PerceptionHistory,
+} from '@spirit/agent-kit';
+```
+
+---
+
+## Primitive 1 — `sentinels`
+
+Agents in encounter pipelines emit tokens the user never sees — things like `[look: door]` or `[[image: red coat]]` — that route to tool calls or sensor lookups. The sentinels module strips these tokens from the user-facing text stream in a single pass while collecting structured payloads for downstream consumers.
+
+### `extractAllSentinels`
+
+The quickest path: call `extractAllSentinels` and get back `cleanText` (what the user sees), `looks` (single-bracket look tokens), and `images` (double-bracket image tokens).
+
+```ts
+import { extractAllSentinels } from '@spirit/agent-kit/sentinels';
+
+const { cleanText, looks, images } = extractAllSentinels(
+  'walking [look: door] past [[image: doorway]] slowly',
+);
+
+console.log(cleanText); // 'walking past slowly'
+console.log(looks);     // [{ hint: 'door' }]
+console.log(images);    // [{ query: 'doorway' }]
+```
+
+### Define your own sentinel
+
+Conform to `SentinelSpec<T>` to extract any custom token shape. Supply a probe string for fast pre-screening, a regex that captures the token, and a `project` function that maps the match to your payload type.
+
+```ts
+import { extractSentinels, type SentinelSpec } from '@spirit/agent-kit/sentinels';
+
+// Extract [cmd: <value>] tokens
+const cmdSentinel: SentinelSpec<{ cmd: string }> = {
+  name:    'cmd',
+  probe:   '[cmd:',
+  pattern: /\[cmd:\s*([^\]]+)\]/g,
+  project: (m) => ({ cmd: m[1].trim() }),
+};
+
+const { cleanText, payloads } = extractSentinels(
+  'please [cmd: open-door] proceed',
+  [cmdSentinel],
+);
+
+console.log(cleanText);       // 'please proceed'
+console.log(payloads[0].cmd); // 'open-door'
+```
+
+<Tip>
+  The `probe` string is a fast pre-filter — `extractSentinels` skips the regex entirely if the probe isn't found in the input. Keep probes short and specific to the opening bracket pattern.
+</Tip>
+
+The built-in `lookSentinel` and `imageSentinel` mirror SOLIENNE's shapes exactly. If your agent uses the same token conventions, you can import and reuse them directly.
+
+---
+
+## Primitive 2 — `validator`
+
+Vision and sensor models drift. A model asked to describe what a camera sees will sometimes return speculation — "seems lonely", "probably looking at the exit" — rather than observations. The validator catches this drift at the ingest boundary so you can downgrade or discard a drifted payload instead of letting fabricated content enter your prompt loop.
+
+### `validatePerceptionObservation`
+
+The built-in validator checks a perception payload against the reference rule set used in the SOLIENNE pipeline.
+
+```ts
+import { validatePerceptionObservation } from '@spirit/agent-kit/validator';
+
+// This payload contains a fabrication marker ("probably")
+const result = validatePerceptionObservation({
+  summary:   'Visitor probably looking for something',
+  posture:   'upright',
+  gaze:      'scanning',
+  affect:    'neutral',
+  stillness: 'still',
+  shift:     'new',
+  trigger:   'push',
+});
+
+console.log(result.valid);    // false
+console.log(result.failures);
+// [{ rule: 'no_fabrication_markers', reason: '...' }]
+```
+
+A clean payload passes:
+
+```ts
+const clean = validatePerceptionObservation({
+  summary:   'Visitor is standing near the entrance scanning the room',
+  posture:   'upright',
+  gaze:      'scanning',
+  affect:    'neutral',
+  stillness: 'still',
+  shift:     'new',
+  trigger:   'push',
+});
+
+console.log(clean.valid); // true
+```
+
+### Compose your own rule set
+
+Call `validate` directly with any value and a custom array of `ValidationRule<T>` objects. Each rule returns `null` on pass or a failure object on fail.
+
+```ts
+import { validate, type ValidationRule } from '@spirit/agent-kit/validator';
+
+interface SensorReading {
+  score: number;
+  label: string;
+}
+
+const positiveScore: ValidationRule<SensorReading> = {
+  name:  'positive_score',
+  check: (v) =>
+    v.score >= 0
+      ? null
+      : { rule: 'positive_score', reason: `got ${v.score}` },
+};
+
+const noEmptyLabel: ValidationRule<SensorReading> = {
+  name:  'no_empty_label',
+  check: (v) =>
+    v.label.trim().length > 0
+      ? null
+      : { rule: 'no_empty_label', reason: 'label is blank' },
+};
+
+const result = validate({ score: -1, label: '' }, [positiveScore, noEmptyLabel]);
+
+console.log(result.valid);          // false
+console.log(result.failures.length) // 2
+```
+
+<Note>
+  The validator is synchronous and allocation-light by design — it runs at the ingest boundary on every perception event, so it needs to be fast. Avoid async rule checks.
+</Note>
+
+---
+
+## Primitive 3 — `history`
+
+Perception pipelines need bounded per-session memory. `PerceptionHistory` is a generic ring buffer keyed by session ID. It supports two read modes: insertion-order recency (`recent(n)`) and wall-clock window (`arc(windowMs)`). You provide the timestamp accessor so the buffer stays generic over your observation shape.
+
+### Basic usage
+
+```ts
+import { PerceptionHistory } from '@spirit/agent-kit/history';
+
+interface MyObs {
+  ts:      number; // Unix ms
+  label:   string;
+  posture: string;
+}
+
+const history = new PerceptionHistory<MyObs>({
+  slots:        20,                   // max entries per session
+  getTimestamp: (obs) => obs.ts,      // how to read the timestamp
+});
+
+// Push observations as they arrive
+history.push(sessionId, obs);
+
+// Read the 3 most recent observations (insertion order)
+const lastThree = history.recent(sessionId, 3);
+
+// Read everything within the last 60 seconds
+const lastMinute = history.arc(sessionId, 60_000);
+
+// Clean up on session end
+history.clear(sessionId);
+```
+
+### `recent(sessionId, n)`
+
+Returns the `n` most recently pushed observations for a session, newest last. If fewer than `n` observations exist, returns all of them.
+
+```ts
+const last5 = history.recent(sessionId, 5);
+console.log(`Got ${last5.length} observations`); // up to 5
+```
+
+### `arc(sessionId, windowMs)`
+
+Returns all observations whose timestamp falls within `windowMs` milliseconds of the current wall clock. Useful for rate detection, gaze dwell analysis, or any pattern that depends on real elapsed time.
+
+```ts
+// All observations in the last 2 minutes
+const recentWindow = history.arc(sessionId, 2 * 60 * 1000);
+
+// Detect high activity: more than 10 events in 30 seconds
+const burst = history.arc(sessionId, 30_000);
+if (burst.length > 10) {
+  console.log('High-activity window detected');
+}
+```
+
+### Configuration
+
+<ParamField path="slots" type="number" required>
+  Maximum number of entries stored per session. When the buffer is full, the oldest entry is evicted to make room for each new push (ring behavior).
+</ParamField>
+
+<ParamField path="getTimestamp" type="(obs: T) => number" required>
+  Accessor function that returns the Unix millisecond timestamp for an observation. Called during `arc()` reads.
+</ParamField>
+
+---
+
+## Full Pipeline Example
+
+The following shows all three primitives wired together in a minimal encounter loop, mirroring how SOLIENNE uses them:
+
+```ts
+import { extractAllSentinels }         from '@spirit/agent-kit/sentinels';
+import { validatePerceptionObservation } from '@spirit/agent-kit/validator';
+import { PerceptionHistory }            from '@spirit/agent-kit/history';
+
+interface PerceptionObs {
+  ts:        number;
+  summary:   string;
+  posture:   string;
+  gaze:      string;
+  affect:    string;
+  stillness: string;
+  shift:     string;
+  trigger:   string;
+}
+
+const history = new PerceptionHistory<PerceptionObs>({
+  slots:        30,
+  getTimestamp: (o) => o.ts,
+});
+
+async function handleAgentOutput(sessionId: string, rawText: string) {
+  // 1. Strip hidden signals from user-facing stream
+  const { cleanText, looks, images } = extractAllSentinels(rawText);
+
+  // Route sentinel payloads to tool calls
+  for (const look of looks)   console.log('[LOOK]',  look.hint);
+  for (const img of images)   console.log('[IMAGE]', img.query);
+
+  // 2. Validate the perception payload before storing
+  const payload = await getPerceptionFromSensor(); // your sensor call
+  const check = validatePerceptionObservation(payload);
+
+  if (!check.valid) {
+    console.warn('Drifted payload dropped:', check.failures);
+    return cleanText; // return clean text but skip storing drifted data
+  }
+
+  // 3. Store validated observation in session history
+  history.push(sessionId, { ...payload, ts: Date.now() });
+
+  // Read context window for next prompt
+  const context = history.arc(sessionId, 90_000); // last 90 seconds
+  console.log(`${context.length} observations in context window`);
+
+  return cleanText;
+}
+```
+
+---
+
+## First Consumer
+
+The reference rule set in `validator.ts` (`perceptionRules`) and the reference sentinels in `sentinels.ts` (`lookSentinel`, `imageSentinel`) directly mirror the shapes used in the SOLIENNE encounter pipeline — Spirit Protocol's first autonomous AI artist. You can import and reuse those rule sets and sentinel definitions directly, or treat them as a starting point and define your own by conforming to `SentinelSpec` and `ValidationRule`.

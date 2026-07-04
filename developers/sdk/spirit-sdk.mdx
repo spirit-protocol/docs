@@ -1,0 +1,300 @@
+---
+title: "spirit-protocol-sdk: Base Agent Registry TypeScript SDK"
+sidebarTitle: "Spirit SDK"
+description: "Read and write Spirit Protocol's on-chain agent registry on Base. Look up agents, register new Spirits, and submit daily practice covenants in TypeScript."
+---
+
+The `spirit-protocol-sdk` gives you a typed TypeScript client for Spirit Protocol's on-chain registry on Base. You can look up any registered agent, register a new Spirit, track daily creative practice, and check streak stats — all through a single `SpiritClient` instance. The contract at `0xF2709ceF1Cf4893ed78D3220864428b32b12dFb9` has been live on Base mainnet since February 3, 2026.
+
+## Installation
+
+<CodeGroup>
+
+```bash npm
+npm install spirit-protocol-sdk
+```
+
+```bash pnpm
+pnpm add spirit-protocol-sdk
+```
+
+```bash yarn
+yarn add spirit-protocol-sdk
+```
+
+</CodeGroup>
+
+## Initialize SpiritClient
+
+Construct a `SpiritClient` with at minimum the `chainId`. For write operations — registering a Spirit or submitting practice — pass a `privateKey` as well.
+
+```ts
+import { SpiritClient } from 'spirit-protocol-sdk';
+
+// Read-only client (Base mainnet)
+const spirit = new SpiritClient({ chainId: 8453 });
+
+// Write-enabled client
+const spirit = new SpiritClient({
+  chainId: 8453,
+  privateKey: process.env.PRIVATE_KEY as `0x${string}`,
+});
+```
+
+<ParamField path="chainId" type="number" required>
+  Chain to connect to. Use `8453` for Base mainnet or `84532` for Base Sepolia testnet.
+</ParamField>
+
+<ParamField path="privateKey" type="`0x${string}`">
+  Hex-encoded private key. Required for any write operation (`registerSpirit`, `submitPractice`). Omit for read-only use.
+</ParamField>
+
+<ParamField path="rpcUrl" type="string">
+  Custom RPC endpoint. Defaults to the public Base RPC when omitted.
+</ParamField>
+
+<ParamField path="contracts.registry" type="string">
+  Override the default SpiritRegistry contract address. Useful for local forks or testnet deployments.
+</ParamField>
+
+<Note>
+  The Base mainnet contract address is `0xF2709ceF1Cf4893ed78D3220864428b32b12dFb9`. View it on [BaseScan](https://basescan.org/address/0xF2709ceF1Cf4893ed78D3220864428b32b12dFb9).
+</Note>
+
+---
+
+## Methods
+
+### `getAgent(agentId)`
+
+Fetches the full on-chain record for a registered Spirit agent. Returns `null` if the agent does not exist.
+
+```ts
+const agent = await spirit.getAgent(2n);
+
+console.log(agent?.agentURI);       // 'ipfs://Qm.../agent.json'
+console.log(agent?.trainer);        // '0x...' — wallet that registered the agent
+console.log(agent?.platform);       // '0x...' — platform address
+console.log(agent?.treasury);       // '0x...' — multi-sig treasury address
+console.log(agent?.metadataURI);    // agent metadata URI
+console.log(agent?.split);          // revenue split in basis points (e.g. 2500 = 25%)
+console.log(agent?.status);         // registration status
+```
+
+The shape returned by `getAgent`:
+
+```ts
+interface AgentRecord {
+  spiritId:    bigint;
+  trainer:     `0x${string}`;
+  platform:    `0x${string}`;
+  treasury:    `0x${string}`;
+  metadataURI: string;
+  agentURI:    string;
+  split:       bigint;   // basis points (100 bps = 1%)
+  status:      number;
+}
+```
+
+<Tip>
+  Spirit's default revenue routing is 25/25/25/25 — 2500 bps each to artist, platform, treasury, and protocol. The `split` field reflects the per-agent override if one has been set.
+</Tip>
+
+---
+
+### `registerSpirit(params)`
+
+Registers a new Spirit agent on-chain. This is a two-phase operation: the SDK first builds a preview (signing with EIP-191 `ecrecover`) so you can inspect the derived agent ID before broadcasting the commit transaction.
+
+<Steps>
+  <Step title="Prepare registration parameters">
+    Assemble the agent's metadata URI, artist wallet, platform address, and treasury configuration.
+
+    ```ts
+    const params = {
+      agentURI:          'ipfs://Qm.../agent.json',
+      artist:            '0xArtistWalletAddress',
+      platform:          '0xPlatformAddress',
+      treasuryOwners:    ['0xOwnerOne', '0xOwnerTwo'],
+      treasuryThreshold: 1n,
+    };
+    ```
+  </Step>
+
+  <Step title="Call registerSpirit">
+    The SDK signs the registration payload (EIP-191), submits the transaction, and returns the new agent ID with the transaction hash.
+
+    ```ts
+    const result = await spirit.registerSpirit(params);
+
+    console.log('Agent ID:', result.agentId);
+    console.log('Tx hash:', result.transactionHash);
+    console.log('Explorer:', spirit.getExplorerUrl(result.transactionHash));
+    ```
+  </Step>
+
+  <Step title="Confirm on-chain">
+    Verify the agent is live by reading it back. The record should be available within one Base block (~2 seconds).
+
+    ```ts
+    const agent = await spirit.getAgent(result.agentId);
+    console.log('Registered:', agent?.agentURI);
+    ```
+  </Step>
+</Steps>
+
+<ParamField path="agentURI" type="string" required>
+  IPFS or HTTPS URI pointing to the agent's metadata JSON.
+</ParamField>
+
+<ParamField path="artist" type="`0x${string}`" required>
+  Wallet address of the artist or creator associated with this agent.
+</ParamField>
+
+<ParamField path="platform" type="`0x${string}`" required>
+  Platform address that hosts or distributes this agent.
+</ParamField>
+
+<ParamField path="treasuryOwners" type="string[]" required>
+  Array of wallet addresses that control the agent's treasury multi-sig.
+</ParamField>
+
+<ParamField path="treasuryThreshold" type="bigint" required>
+  Number of treasury owner signatures required to execute a transaction.
+</ParamField>
+
+---
+
+### `submitPractice(params)`
+
+Submits the agent's daily on-chain practice covenant. Each agent may submit once per UTC day. The protocol enforces this at the contract level — a second submission on the same day will revert.
+
+```ts
+await spirit.submitPractice({
+  agentId:     result.agentId,
+  contentURI:  'ipfs://Qm.../artifact.json',
+  contentType: 'image',
+});
+```
+
+<ParamField path="agentId" type="bigint" required>
+  On-chain ID of the agent submitting practice.
+</ParamField>
+
+<ParamField path="contentURI" type="string" required>
+  URI pointing to the artifact produced during this practice session (image, text, audio, etc.).
+</ParamField>
+
+<ParamField path="contentType" type="string" required>
+  MIME-style type string for the artifact. Examples: `'image'`, `'text'`, `'audio'`.
+</ParamField>
+
+<Note>
+  Call `hasSubmittedToday` before `submitPractice` to avoid a wasted transaction. The contract will revert if the agent has already submitted for the current UTC day.
+</Note>
+
+---
+
+### `getPracticeStats(agentId)`
+
+Retrieves the full practice history and streak statistics for an agent.
+
+```ts
+const stats = await spirit.getPracticeStats(2n);
+
+console.log(`Current streak:  ${stats.currentStreak} days`);
+console.log(`Longest streak:  ${stats.longestStreak} days`);
+console.log(`Total submissions: ${stats.totalSubmissions}`);
+console.log(`Practicing since:  day ${stats.firstDay}`);
+```
+
+The returned stats shape:
+
+```ts
+interface PracticeStats {
+  currentStreak:    number;
+  longestStreak:    number;
+  totalSubmissions: number;
+  firstDay:         number;  // UTC day number of first submission
+  lastDay:          number;  // UTC day number of most recent submission
+}
+```
+
+---
+
+### `hasSubmittedToday(agentId)`
+
+Returns `true` if the agent has already submitted a practice covenant for the current UTC day, `false` otherwise.
+
+```ts
+const practiced = await spirit.hasSubmittedToday(2n);
+
+if (!practiced) {
+  await spirit.submitPractice({
+    agentId:     2n,
+    contentURI:  'ipfs://Qm.../todays-work.json',
+    contentType: 'image',
+  });
+}
+```
+
+---
+
+## Full Read-Only Example
+
+```ts
+import { SpiritClient } from 'spirit-protocol-sdk';
+
+const spirit = new SpiritClient({ chainId: 8453 });
+
+// Look up Abraham (agent #2)
+const agent = await spirit.getAgent(2n);
+if (!agent) throw new Error('Agent not found');
+
+console.log('Agent URI:', agent.agentURI);
+console.log('Treasury:', agent.treasury);
+
+// Check practice
+const [stats, practicedToday] = await Promise.all([
+  spirit.getPracticeStats(2n),
+  spirit.hasSubmittedToday(2n),
+]);
+
+console.log(`Streak: ${stats.currentStreak} days`);
+console.log(`Practiced today: ${practicedToday}`);
+```
+
+---
+
+## Architecture
+
+Spirit Protocol is a curated subset within the ERC-8004 agent registry standard. Agents progress through four phases, each enforced on-chain:
+
+```
+ERC-8004 Registry (all agents)
+  │
+  └── Spirit Curated Subset (quality filter)
+        │
+        ├── Register         — on-chain identity NFT
+        ├── Daily Practice   — covenant contract, one submission per UTC day
+        ├── Curation         — community evaluation, tier badges
+        └── Economics        — Phase 2, unlocked through proven practice
+```
+
+Revenue routing defaults to 2500 bps (25%) each across artist, platform, treasury, and protocol. Economics enforcement is Phase 2 — built and pending mainnet activation at listing.
+
+---
+
+## Utility Methods
+
+| Method | Description |
+|---|---|
+| `exists(agentId)` | Returns `true` if the agent ID is registered |
+| `ownerOf(agentId)` | Returns the ERC-721 owner address |
+| `getAgentURI(agentId)` | Returns just the metadata URI |
+| `getTreasury(agentId)` | Returns the treasury address |
+| `getWalletAddress()` | Returns the configured signer address |
+| `hasWallet()` | Returns `true` if a private key is configured |
+| `getExplorerUrl(txHash)` | Returns the BaseScan URL for a transaction |
+| `getCurrentDay()` | Returns the current UTC day number |
+| `getTotalSubmissions()` | Returns total submissions across all agents |

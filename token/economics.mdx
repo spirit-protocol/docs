@@ -1,0 +1,109 @@
+---
+title: "$SPIRIT Token Economics: Supply, Distribution & Revenue"
+sidebarTitle: "Economics"
+description: "Fixed supply breakdown, agent launch token distribution, the 25/25/25/25 revenue split, and how Superfluid streaming delivers $SPIRIT holder distributions."
+---
+
+The $SPIRIT economy is built on a fixed supply, transparent allocation rules, and a revenue-routing model that is enforced on-chain. No new tokens are ever created. Every distribution — whether at agent launch or from ongoing revenue — follows a predetermined split, encoded in smart contracts and publicly verifiable on Basescan.
+
+<Warning>
+**Token economics describe mechanics, not guaranteed returns.** The distributions and revenue flows described here depend on agents launching, generating revenue, and the protocol operating as designed. None of these are guaranteed. $SPIRIT carries risk of total loss. This page is informational only and is not an offer or solicitation of any kind.
+</Warning>
+
+## Total Supply and Fixed Cap
+
+$SPIRIT has a **fixed total supply of 1,000,000,000 tokens**. There is no inflation mechanism, no minting authority, and no future issuance. The supply was minted in full at token deployment on April 21, 2026 to the contract `0xA1534d279F467063Fc40f71F2C672822A7E63880` on Base mainnet. What exists now is all that will ever exist.
+
+## Protocol-Level Supply Allocation
+
+The one billion tokens are allocated across four buckets:
+
+| Allocation | Tokens | % of Supply | Notes |
+|---|---|---|---|
+| **Community** | 400,000,000 | 40% | Ecosystem growth, community programs, future distributions |
+| **Treasury** | 250,000,000 | 25% | Protocol-controlled reserve; funds agent grants and operations |
+| **Eden Equity Raise** | 250,000,000 | 25% | Seed round allocation; Coinbase Ventures and USV invested at $0.04 |
+| **Team** | 100,000,000 | 10% | 4-year vesting schedule with 1-year cliff |
+| **Total** | **1,000,000,000** | **100%** | |
+
+**Community (40% — 400M tokens):** The largest single allocation goes to the community — the network of holders, participants, and future ecosystem contributors. This bucket funds governance participation incentives, developer grants, and programmatic distributions over time.
+
+**Treasury (25% — 250M tokens):** The protocol treasury is controlled by Spirit Protocol Labs, Inc. with governance oversight. It funds agent development grants (subsidizing early agents before market demand arrives), protocol operations, and liquidity management. Treasury sells into the market beginning at TGE.
+
+**Eden Equity Raise (25% — 250M tokens):** This allocation covers the seed round. Coinbase Ventures and Union Square Ventures participated at **$0.04 per token**. This is the capitalization that funds protocol development through and beyond TGE.
+
+**Team (10% — 100M tokens):** The founding team's allocation vests over four years with a one-year cliff. No team tokens unlock until at least one year after TGE. This aligns incentives with long-term protocol health — the team cannot sell before the network has had a year to prove itself.
+
+<Note>
+The 1-year cliff means zero team tokens are transferable before June 2027. After the cliff, tokens vest linearly over the remaining three years.
+</Note>
+
+## Agent Launch Distribution
+
+When a Spirit agent launches its own token, that token's total supply is distributed across four parties in equal 25% tranches. This is not a discretionary choice — it is the protocol's default split, encoded at agent registration in basis points (2500/2500/2500/2500 = 10,000 bps total):
+
+| Recipient | Share | Mechanism |
+|---|---|---|
+| **Artist / Creator** | 25% | Auto-staked for 52 weeks — locked, not liquid at launch |
+| **Agent Treasury** | 25% | 20% staked + 5% as Uniswap V4 LP (owned by agent wallet) |
+| **Platform** | 25% | Configurable per agent at registration |
+| **$SPIRIT Holders** | 25% | Airstreamed over 52 weeks via Superfluid |
+
+**Artist (25%, auto-staked 52 weeks):** The creating artist's allocation is automatically staked for one year. The artist cannot immediately dump their share — their tokens are locked alongside the agent's growth trajectory.
+
+**Agent Treasury (25%):** Of this quarter, 20% is staked by the agent's own treasury wallet, and 5% seeds a Uniswap V4 liquidity position. The agent wallet owns this LP position permanently, giving every Spirit agent a liquid stake in its own economy from day one.
+
+**Platform (25%):** The hosting platform receives its share as configured at registration. The split is expressed in basis points and must total 10,000 bps — it can be adjusted per agent, but the four-party structure is invariant.
+
+**$SPIRIT Holders (25%, airstreamed 52 weeks):** Your share as a $SPIRIT holder does not arrive as a lump-sum airdrop. It arrives as a **continuous Superfluid stream over 52 weeks** — real-time token flows delivered per second to your wallet. The amount you receive is proportional to your staked $SPIRIT position and its multiplier.
+
+## Ongoing Revenue Split
+
+The agent launch distribution covers token allocation. Separately, all **ongoing revenue** that an agent generates — from interactions, services, and any value it produces — routes through the same four-party split:
+
+| Recipient | Revenue Share |
+|---|---|
+| **Artist / Creator** | 25% |
+| **Agent Treasury** | 25% |
+| **$SPIRIT Stakers** | 25% |
+| **Agent Token Stakers** | 25% |
+
+Notice the fourth party shifts: ongoing revenue flows to **agent token stakers** (holders who staked that specific agent's token), not to the platform. Creators collectively receive 50% of all revenue (25% direct + 25% into agent treasury). Infrastructure participants receive 50% (25% to $SPIRIT stakers + 25% to agent token stakers).
+
+This split is enforced by the **RoyaltyRouter** smart contract. Revenue routing is Phase 2 of the protocol — built, audited, and pending mainnet activation at TGE (late July 2026). Before activation, revenue splits are stored as canonical on-chain intent — the auditable, immutable record of intended allocation.
+
+<Note>
+Creators + Agent Treasury = 50% of all revenue. The protocol's economic design explicitly privileges creators: the agent builds its own treasury and the artist earns directly, every time.
+</Note>
+
+## How Superfluid Streaming Works
+
+$SPIRIT is implemented as an **ERC-20 SuperToken** via the Superfluid protocol. This is the mechanism behind the "airstream" model:
+
+- **Constant Flow Agreements (CFA):** Establish a continuous token flow from a sender to a receiver at a fixed rate per second.
+- **General Distribution Agreements (GDA):** Distribute a token flow proportionally across a pool of receivers — in this case, all $SPIRIT stakers weighted by their staking multiplier.
+
+When the 25% of an agent's token supply begins streaming to $SPIRIT holders, you do not claim it in a transaction. It flows directly into your wallet in real time for the duration of the 52-week stream. You can hold it, stake it, or use it to engage that agent — the choice is yours as soon as the tokens arrive.
+
+## Agent Tokens and Their Relationship to $SPIRIT
+
+Each Spirit agent issues its own token. Agent tokens are not $SPIRIT — they are distinct assets tied to a specific agent. You use agent tokens to access that agent's services. You earn agent tokens by holding and staking $SPIRIT (via the 25% holder distribution at launch) or by staking agent tokens themselves (via the 25% revenue share to agent token stakers).
+
+$SPIRIT is the coordination layer. Agent tokens are the access layer. Scarcity lives at the agent layer — The Fifty is a cohort of fifty curated agents, one per moon, for fifty moons. $SPIRIT holders vote on which artists get minted into that cohort.
+
+## Staking Multipliers
+
+Staking pools offer multipliers from **1x to 36x**, tiered by commitment duration. Your effective weight in the $SPIRIT staker pool equals your staked tokens multiplied by your pool's multiplier. A 36x multiplier means your tokens count 36 times more heavily in the distribution calculation than tokens in the 1x base pool.
+
+The specific lock durations and multiplier schedule are defined by the Staking Pool contract on Base and governed by $SPIRIT holders after TGE.
+
+---
+
+<CardGroup cols={2}>
+  <Card title="$SPIRIT Overview" icon="circle-info" href="/token/overview">
+    What $SPIRIT is, how it works as compute fuel and governance, and key token parameters.
+  </Card>
+  <Card title="How to Participate" icon="arrow-right" href="/token/participate">
+    Institutional and retail entry points, exchange access, MiCA compliance, and risk disclosures.
+  </Card>
+</CardGroup>

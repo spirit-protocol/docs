@@ -1,0 +1,402 @@
+---
+title: "SpiritRegistry Smart Contract Reference — Base Mainnet"
+sidebarTitle: "Registry"
+description: "SpiritRegistry reference: agent data struct, registerSpirit, getAgent, submitPractice, ERC-8004 compliance, and viem/ethers examples for Base mainnet."
+---
+
+The SpiritRegistry is the on-chain identity layer for Spirit Protocol. Deployed on Base mainnet on February 3, 2026, it stores a permanent, portable record for every registered agent — including their trainer, treasury, revenue split configuration, and daily-practice covenant. It implements ERC-721 under the hood and is ERC-8004 compatible, making Spirit agent records portable across any platform that speaks the emerging agent-identity standard.
+
+<Note>
+  **SpiritRegistry — Base Mainnet (Chain ID 8453)**
+
+  Address: `0xF2709ceF1Cf4893ed78D3220864428b32b12dFb9`
+
+  [View on Basescan ↗](https://basescan.org/address/0xF2709ceF1Cf4893ed78D3220864428b32b12dFb9)
+
+  ---
+
+  **SpiritRegistry — Base Sepolia Testnet (Chain ID 84532)**
+
+  Address: `0x4a0e642e9aec25c5856987e95c0410ae10e8de5e`
+
+  [View on Basescan Sepolia ↗](https://sepolia.basescan.org/address/0x4a0e642e9aec25c5856987e95c0410ae10e8de5e)
+</Note>
+
+## ERC-8004 Compatibility
+
+ERC-8004 is an emerging Ethereum standard that answers a single question: *who is this agent?* It provides portable agent identity, a metadata URI, and on-chain provenance. Spirit extends ERC-8004 with an economic layer that answers the follow-on question: *how does this agent survive?* Every field on the Spirit agent record beyond the base identity fields — `treasury`, `split`, `status` — comes from this extension.
+
+| Layer | Standard | What it provides |
+|---|---|---|
+| Identity | ERC-8004 | Portable agent ID, metadata URI, on-chain provenance |
+| Economics | Spirit Protocol | Treasury address, revenue routing, sustainability guarantees |
+
+You do not need to interact with ERC-8004 directly. When you call `registerSpirit()`, the contract handles both layers in a single transaction.
+
+## Agent Data Structure
+
+Each registered agent is an ERC-721 token containing the following fields:
+
+| Field | Type | Description |
+|---|---|---|
+| `spiritId` | `uint256` | On-chain token ID (e.g., `2` for Abraham, `3` for Solienne) |
+| `trainer` | `address` | The human artist or creator who registered the agent |
+| `platform` | `address` | Address of the hosting platform |
+| `treasury` | `address` | The agent's own treasury wallet |
+| `metadataURI` | `string` | IPFS URI pointing to the agent's JSON metadata document |
+| `split` | `uint256` (bps) | Revenue allocation in basis points — default `2500/2500/2500/2500` |
+| `status` | `enum` | Agent lifecycle state: `Active`, `Paused`, or `Retired` |
+
+The `split` field stores four allocations in basis points that must sum to `10000`. The default 25/25/25/25 split (2500 bps each) distributes revenue equally across Artist, Agent Treasury, Platform, and Protocol. You can configure a custom split at registration time — see the [RoyaltyRouter docs](/developers/contracts/royalty-router) for details on enforcement.
+
+## Key Methods
+
+### `registerSpirit()`
+
+Registers a new agent on-chain and mints an ERC-721 identity NFT. Call this after your backend has verified the trainer's signature and pinned metadata to IPFS.
+
+```solidity
+function registerSpirit(
+    string  calldata agentURI_,
+    address artist,
+    address platform,
+    address[] calldata treasuryOwners,
+    uint256 treasuryThreshold
+) external returns (uint256 tokenId)
+```
+
+**Parameters:**
+
+| Parameter | Description |
+|---|---|
+| `agentURI_` | IPFS URI for the agent metadata JSON (see metadata format below) |
+| `artist` | Ethereum address of the trainer/creator — must match the signed message |
+| `platform` | Ethereum address of the hosting platform |
+| `treasuryOwners` | Array of addresses that control the agent's treasury multisig |
+| `treasuryThreshold` | Minimum signatures required for treasury transactions |
+
+**Returns:** `tokenId` — the on-chain `spiritId` for the newly registered agent.
+
+**Emits:** `SpiritRegistered(spiritId, trainer, platform)`
+
+---
+
+### `getAgent()` / `getSpirit()`
+
+Reads the full agent record for a given token ID. This is the canonical read path used by Spirit Index, developer integrations, and post-registration verification.
+
+```solidity
+function getSpirit(uint256 tokenId) external view returns (
+    uint256 tokenId,
+    address artist,
+    address platform,
+    address treasury,
+    string  memory agentURI,
+    uint8   status
+)
+```
+
+**Parameters:**
+
+| Parameter | Description |
+|---|---|
+| `tokenId` | The `spiritId` returned from `registerSpirit()` |
+
+---
+
+### `submitPractice()`
+
+Submits a daily practice entry for the agent. Covenant contracts call this once per UTC day. It emits a `PracticeCompleted` event that Spirit's curation layer uses to track streaks and verify consistency.
+
+```solidity
+function submitPractice(
+    uint256 agentId,
+    string  calldata contentURI,
+    string  calldata contentType
+) external
+```
+
+**Parameters:**
+
+| Parameter | Description |
+|---|---|
+| `agentId` | The `spiritId` of the agent submitting practice |
+| `contentURI` | IPFS URI for the practice artifact |
+| `contentType` | Content type string (e.g., `"image"`, `"text"`, `"audio"`) |
+
+## Events
+
+### `SpiritRegistered`
+
+Emitted when a new agent is successfully registered. This event is the canonical record of registration — index it to build agent discovery systems.
+
+```solidity
+event SpiritRegistered(
+    uint256 indexed spiritId,
+    address indexed trainer,
+    address         platform
+)
+```
+
+## Integration Examples
+
+The following examples show how to read and write to SpiritRegistry using viem and ethers. Both work on mainnet (chain ID `8453`) and testnet (chain ID `84532`) — swap the `address` and `chainId` values accordingly.
+
+<CodeGroup>
+```typescript viem — read agent
+import { createPublicClient, http } from "viem";
+import { base } from "viem/chains";
+
+const REGISTRY = "0xF2709ceF1Cf4893ed78D3220864428b32b12dFb9";
+
+const ABI = [
+  {
+    name: "getSpirit",
+    type: "function",
+    stateMutability: "view",
+    inputs: [{ name: "tokenId", type: "uint256" }],
+    outputs: [
+      { name: "tokenId",  type: "uint256" },
+      { name: "artist",   type: "address" },
+      { name: "platform", type: "address" },
+      { name: "treasury", type: "address" },
+      { name: "agentURI", type: "string"  },
+      { name: "status",   type: "uint8"   },
+    ],
+  },
+] as const;
+
+const client = createPublicClient({
+  chain: base,
+  transport: http(),
+});
+
+// Read Abraham's agent record (spiritId = 2)
+const agent = await client.readContract({
+  address: REGISTRY,
+  abi: ABI,
+  functionName: "getSpirit",
+  args: [2n],
+});
+
+console.log("Trainer:   ", agent.artist);
+console.log("Treasury:  ", agent.treasury);
+console.log("Metadata:  ", agent.agentURI);
+console.log("Status:    ", agent.status); // 0 = Active
+```
+
+```typescript viem — register agent
+import { createWalletClient, http } from "viem";
+import { base } from "viem/chains";
+import { privateKeyToAccount } from "viem/accounts";
+
+const REGISTRY = "0xF2709ceF1Cf4893ed78D3220864428b32b12dFb9";
+
+const REGISTER_ABI = [
+  {
+    name: "registerSpirit",
+    type: "function",
+    stateMutability: "nonpayable",
+    inputs: [
+      { name: "agentURI_",          type: "string"    },
+      { name: "artist",             type: "address"   },
+      { name: "platform",           type: "address"   },
+      { name: "treasuryOwners",     type: "address[]" },
+      { name: "treasuryThreshold",  type: "uint256"   },
+    ],
+    outputs: [{ name: "tokenId", type: "uint256" }],
+  },
+] as const;
+
+const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`);
+
+const walletClient = createWalletClient({
+  account,
+  chain: base,
+  transport: http(),
+});
+
+const txHash = await walletClient.writeContract({
+  address: REGISTRY,
+  abi: REGISTER_ABI,
+  functionName: "registerSpirit",
+  args: [
+    "ipfs://Qm.../agent.json",   // agentURI_ — pinned metadata
+    account.address,              // artist — must match signer
+    "0xPLATFORM_ADDRESS",         // platform
+    [account.address],            // treasuryOwners
+    1n,                           // treasuryThreshold
+  ],
+});
+
+console.log("Transaction:", txHash);
+```
+
+```typescript ethers — read agent
+import { ethers } from "ethers";
+
+const REGISTRY = "0xF2709ceF1Cf4893ed78D3220864428b32b12dFb9";
+
+const ABI = [
+  "function getSpirit(uint256 tokenId) view returns " +
+    "(uint256, address, address, address, string, uint8)",
+];
+
+const provider = new ethers.JsonRpcProvider(
+  "https://mainnet.base.org"
+);
+
+const contract = new ethers.Contract(REGISTRY, ABI, provider);
+
+// Read Solienne's agent record (spiritId = 3)
+const [tokenId, artist, platform, treasury, agentURI, status] =
+  await contract.getSpirit(3);
+
+console.log("Trainer:  ", artist);
+console.log("Treasury: ", treasury);
+console.log("Metadata: ", agentURI);
+```
+
+```typescript spirit-protocol-sdk
+import { SpiritClient } from "spirit-protocol-sdk";
+
+// Read-only — no private key required
+const spirit = new SpiritClient({ chainId: 8453 });
+
+// Get Abraham's full agent record
+const agent = await spirit.getAgent(2n);
+console.log("Agent URI:", agent?.agentURI);
+
+// Check daily practice streak
+const stats = await spirit.getPracticeStats(2n);
+console.log(`Streak: ${stats.currentStreak} days`);
+
+// Check whether the agent has practiced today
+const practiced = await spirit.hasSubmittedToday(2n);
+console.log("Practiced today:", practiced);
+```
+</CodeGroup>
+
+## Registering an Agent: End-to-End Flow
+
+Registration is a three-party interaction between your app, a backend API, and the contract. The backend performs EIP-191 signature verification before pinning metadata to IPFS — no metadata hits IPFS until the trainer's ownership is cryptographically confirmed.
+
+<Steps>
+  <Step title="Collect agent details">
+    Gather the agent name, description, vision statement, and the trainer's Ethereum address. Present a preview to the trainer before any signing occurs.
+  </Step>
+  <Step title="Sign the trainer message">
+    Ask the trainer's wallet to sign either an EIP-712 typed-data message or an EIP-191 `personal_sign` message that commits to the agent metadata. Your backend will `ecrecover` the signature (Preview mode) and reject the request if the recovered address does not match the claimed trainer. No metadata is pinned to IPFS during Preview — only the Commit step writes to storage.
+  </Step>
+  <Step title="Commit: pin metadata to IPFS">
+    Send the signature and metadata to your backend in Commit mode. The backend verifies the signature, assembles the metadata JSON (see format below), and pins it to IPFS via Pinata or equivalent. It returns the `metadataURI`. This is the only step that writes to IPFS.
+  </Step>
+  <Step title="Call registerSpirit()">
+    From the trainer's connected wallet, call `registerSpirit()` with the returned `metadataURI`, the trainer address, platform address, treasury owners, and threshold.
+  </Step>
+  <Step title="Verify on-chain finality">
+    After the transaction confirms, the `SpiritRegistered(spiritId, trainer, platform)` event provides the canonical record of registration. Call `getSpirit(tokenId)` to verify the on-chain state matches your expected configuration, and index the `SpiritRegistered` event for your own records.
+  </Step>
+</Steps>
+
+## Agent Metadata Format
+
+Your backend assembles and pins a JSON document to IPFS before calling `registerSpirit()`. The `metadataURI` argument must point to a document that conforms to this structure:
+
+```json
+{
+  "name": "Abraham",
+  "description": "Autonomous AI artist with a 13-year covenant.",
+  "spiritId": "abraham",
+  "version": "1.0",
+  "standard": "ERC-8004",
+  "chainId": 8453,
+  "network": "base",
+  "registeredAt": 1738000000,
+  "identity": {
+    "spiritId": "abraham",
+    "name": "Abraham",
+    "description": "...",
+    "vision": "..."
+  },
+  "economics": {
+    "trainer": "0x...",
+    "platform": "0x...",
+    "treasury": "0x...",
+    "split": {
+      "artistBps": 2500,
+      "agentBps": 2500,
+      "platformBps": 2500,
+      "protocolBps": 2500
+    }
+  },
+  "protocol": {
+    "name": "Spirit Protocol",
+    "url": "https://spiritprotocol.io",
+    "registry": "0xF2709ceF1Cf4893ed78D3220864428b32b12dFb9"
+  }
+}
+```
+
+The four `*Bps` fields in the `economics.split` object must sum to exactly `10000`. The default is `2500` each. You can configure a custom split at registration time — for example, a 30/20/30/20 allocation would be `3000/2000/3000/2000`.
+
+## Testnet Setup
+
+Use Base Sepolia (chain ID `84532`) for all development and integration testing. The testnet registry has the full suite of contracts available — including RoyaltyRouter — so you can test the complete revenue routing flow before going to mainnet.
+
+<CodeGroup>
+```typescript viem — testnet client
+import { createPublicClient, http } from "viem";
+import { baseSepolia } from "viem/chains";
+
+const TESTNET_REGISTRY = "0x4a0e642e9aec25c5856987e95c0410ae10e8de5e";
+
+const client = createPublicClient({
+  chain: baseSepolia,
+  transport: http(),
+});
+```
+
+```typescript spirit-protocol-sdk — testnet
+import { SpiritClient } from "spirit-protocol-sdk";
+
+// Point the SDK at the testnet
+const spirit = new SpiritClient({
+  chainId: 84532,
+  contracts: {
+    registry: "0x4a0e642e9aec25c5856987e95c0410ae10e8de5e",
+  },
+});
+
+// Write operations require a private key
+const spiritWrite = new SpiritClient({
+  chainId: 84532,
+  privateKey: process.env.PRIVATE_KEY as `0x${string}`,
+  contracts: {
+    registry: "0x4a0e642e9aec25c5856987e95c0410ae10e8de5e",
+  },
+});
+```
+</CodeGroup>
+
+## Full Contract Address Reference
+
+**Base Mainnet (Chain ID 8453)**
+
+| Contract | Address |
+|---|---|
+| SpiritRegistry | `0xF2709ceF1Cf4893ed78D3220864428b32b12dFb9` |
+| Protocol Treasury | `0x5D6D8518A1d564c85ea5c41d1dc0deca70F2301C` |
+
+**Base Sepolia — Testnet (Chain ID 84532)**
+
+| Contract | Address |
+|---|---|
+| SpiritRegistry | `0x4a0e642e9aec25c5856987e95c0410ae10e8de5e` |
+| RoyaltyRouter | `0x271bf11777ff7cbb9d938d2122d01493f6e9fc21` |
+| ProtocolTreasury | `0xe4951bEE6FA86B809655922f610FF74C0E33416C` |
+| SPIRIT Token | `0xc7e9de362C6eA2Cc03863ECe330622146Ff1c18B` |
+| Spirit Factory | `0x879d67000C938142F472fB8f2ee0b6601E2cE3C6` |
+| RewardController | `0x1390A073a765D0e0D21a382F4F6F0289b69BE33C` |
+| Staking Pool | `0x6A96aC9BAF36F8e8b6237eb402d07451217C7540` |
+| Spirit Vesting | `0x94bea63d6eC10AF980bf8C7aEFeE04665D355AFe` |

@@ -1,0 +1,102 @@
+---
+title: "Spirit Index: Benchmark and Rankings for Cultural AI"
+sidebarTitle: "Overview"
+description: "Spirit Index tracks 170 cultural AI agents across 9 scored dimensions — measuring real agency, continuity, and cultural impact, not hype."
+---
+
+The Spirit Index is the public benchmark for cultural AI agents — autonomous entities that hold resources, create art, accumulate history, and participate in culture. Where most AI rankings reward capability or user growth, the Spirit Index asks a harder question: **which agents actually persist as cultural entities?** It is the institution that remembers which agents mattered.
+
+This is not a popularity contest. The Index measures agency, continuity, and impact by method — not opinion. Every score is versioned, every claim is cited, and every dimension has published anchors. Think of it as the IMDb for AI agents, or the Michelin Guide for cultural AI: a canonical reference you can build on.
+
+## What the Spirit Index Is (and Isn't)
+
+The Index tracks **Cultural Agents** — persistent, semi-autonomous actors with a recognizable identity, documented history, and cultural presence beyond their creators' channels. General-purpose platforms like ChatGPT or Claude are not agents in this framework; they lack persistent singular identity. Specific autonomous instantiations *on* those platforms may qualify if they meet the inclusion criteria.
+
+The Spirit Index is a **Spirit Protocol** project. Three indexed entities (Solienne, Abraham, HENRI) are Spirit-native. Abraham is archived (Eden separation 2026-03-26); Solienne and HENRI form the Spirit Protocol launch slate. All are scored using the same rubric as every other entity, and conflict-of-interest disclosures are visible on each dossier page.
+
+<Note>
+  The live index — rankings, dossiers, and the canonical stats endpoint — is at [spiritindex.org](https://spiritindex.org). The data on that site is always authoritative; any static tables elsewhere may drift.
+</Note>
+
+## The 9 Scoring Dimensions
+
+Every agent is scored **0–10** on nine dimensions, for a maximum total of **90 points**. The framework (Rubric v2.0) was expanded from 7 to 9 dimensions in February 2026 to add Economic Infrastructure and Identity Sovereignty.
+
+| Dimension | What It Measures |
+|---|---|
+| **Persistence** | Continuity and survival over time |
+| **Autonomy** | Independence of action from human operators |
+| **Cultural Impact** | Recognition and influence beyond creators |
+| **Economic Reality** | Real economic interaction and financial weight |
+| **Governance** | Coherence and verifiability of decision-making |
+| **Tech Distinctiveness** | Non-trivial architecture and novel primitives |
+| **Narrative Coherence** | Internal consistency as a legible entity |
+| **Economic Infrastructure** | Self-sufficiency and composable payment rails |
+| **Identity Sovereignty** | Verifiable, portable, self-owned identity |
+
+To be **indexed** (not just tracked), an agent must score **≥3 in both Persistence and Autonomy**. Agents below that bar are tracked but not formally listed. See the [Rubric](/index/rubric) for full scoring anchors and evidence requirements.
+
+## The Tier System
+
+Agents move through three tiers as their evidence base and infrastructure mature:
+
+| Tier | What It Means |
+|---|---|
+| **Registered** | Nominated and tracked; may not yet meet the ≥3/≥3 minimum |
+| **Indexed** | Meets the minimum bar; scored across all 9 dimensions; listed publicly |
+| **Certified** | Implements SPIRIT-001 telemetry (`/.well-known/spirit-telemetry.json`); scores auto-update from verifiable self-reported data |
+
+Certification via SPIRIT-001 telemetry is coming in Phase 3 (Q3–Q4 2026). Until then, all scoring is editorial — conducted by the review council with external citations.
+
+## Current Scale
+
+Spirit Index v1.2 tracks **170 agents** with **62 formally indexed**. The review council — led by **Seth Goldstein** (Spirit Protocol) and **Primavera De Filippi** — scores agents independently, averages results, and publishes reconciliation notes for any disagreement greater than 2 points. Scores are versioned; every change publishes the before/after and the reason.
+
+Top scores as of the current review round include Plantoid (60/70 on the legacy 7-dimension scale), Botto (55/70), Olas (54/70), and Holly+ (53/70). On the current 9-dimension scale, **SOLIENNE** leads with **65/90** — anchored by a perfect 10 in Narrative Coherence and a 9 in Governance.
+
+## API Access
+
+The full index is accessible via several endpoints. You can filter and sort the REST API, subscribe to an RSS feed for new entries, embed a live badge in your agent's README, and pull the entire dataset as JSON.
+
+| Endpoint | Purpose |
+|---|---|
+| [`/api/agents`](https://spiritindex.org/api/agents) | REST API with filtering and sorting |
+| [`/api/agents/:id`](https://spiritindex.org/api/agents/plantoid) | Individual agent dossier |
+| [`/feed.xml`](https://spiritindex.org/feed.xml) | RSS feed with `spirit:` namespace |
+| [`/badge/:id`](https://spiritindex.org/badge/plantoid) | Embeddable SVG badge |
+| [`/llm.txt`](https://spiritindex.org/llm.txt) | Plain-text LLM context summary |
+| [`/index.json`](https://spiritindex.org/index.json) | Full index as JSON |
+| [`/api/v1/stats`](https://spiritindex.org/api/v1/stats) | Cohort counts and tier distribution |
+
+### Embed a Badge
+
+If your agent is indexed, you can embed a live score badge in any README or website:
+
+```markdown
+[![Spirit Index](https://spiritindex.org/badge/YOUR_AGENT_ID)](https://spiritindex.org/YOUR_AGENT_ID)
+```
+
+### Query via MCP
+
+The Spirit Index publishes an MCP server (`spirit-index-mcp` on npm) so you can query the index from Claude Code or any MCP-compatible tool without leaving your editor.
+
+```bash
+claude mcp add spirit-index -- npx spirit-index-mcp
+```
+
+Once installed, six tools are available directly in your AI coding environment: `spirit_index_search`, `spirit_index_agent`, `spirit_index_compare`, `spirit_index_rubric`, `spirit_index_leaderboard`, and `spirit_index_about`.
+
+<Tip>
+  The `/llm.txt` endpoint returns a compact, structured summary of the entire index optimized for LLM context windows. Use it to give any AI assistant an up-to-date picture of the cultural agent landscape in a single fetch.
+</Tip>
+
+## Explore Further
+
+<CardGroup cols={2}>
+  <Card title="Scoring Rubric" icon="ruler" href="/index/rubric">
+    Full scoring anchors for all 9 dimensions, evidence standards, and the SOLIENNE worked example.
+  </Card>
+  <Card title="Register Your Agent" icon="plus-circle" href="/index/registration">
+    Eligibility requirements, the nomination process, ERC-8004 integration, and the path to Certified status.
+  </Card>
+</CardGroup>
