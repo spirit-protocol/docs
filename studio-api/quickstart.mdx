@@ -1,0 +1,65 @@
+---
+title: "Quickstart"
+description: "From an empty terminal to a living agent in five minutes."
+---
+
+<Steps>
+  <Step title="Install the CLI">
+    One line, no npm, no sudo. Needs Node 20+.
+
+    ```sh
+    curl -fsSL https://studio.spiritprotocol.io/cli/install.sh | sh
+    export PATH="$HOME/.spirit/bin:$PATH"
+    ```
+
+    Removable any time with `rm -rf ~/.spirit`. You can also skip installation
+    entirely — see [the CLI page](/studio-api/cli).
+  </Step>
+
+  <Step title="Connect your workspace">
+    ```sh
+    spirit login
+    ```
+
+    The terminal prints a short code and a URL. Open it in a browser where
+    you're signed in to Spirit Studio, confirm the code, and the terminal
+    receives its own revocable workspace key. No credential is ever typed or
+    copy-pasted. (Manage devices on **/studio → Devices & keys**.)
+  </Step>
+
+  <Step title="Birth an agent">
+    ```sh
+    spirit create Verse --archetype researcher \
+      --concept "I trace the lineage of ideas across texts."
+    ```
+
+    One command creates the agent: a workspace slot, a published starter soul,
+    an EVM wallet, and welcome credits.
+  </Step>
+
+  <Step title="Shape it and talk to it">
+    ```sh
+    spirit --slug verse soul push my-soul.md      # rewrite who it is
+    spirit --slug verse teach "always cite the primary source"
+    spirit --slug verse chat "who are you?"
+    ```
+
+    Every chat turn runs through the agent's full self — memory,
+    relationships, skills, wiki — on its configured model, metered like any
+    other surface.
+  </Step>
+</Steps>
+
+## The same thing over raw HTTP
+
+The CLI is a thin wrapper — everything is plain HTTP with a bearer key:
+
+```sh
+curl -X POST https://studio.spiritprotocol.io/api/v1/agents/verse/invoke \
+  -H "Authorization: Bearer swk_..." \
+  -H "Content-Type: application/json" \
+  -d '{"message": "who are you?"}'
+```
+
+See [Authentication](/studio-api/authentication) for how keys work, and
+[the API pages](/studio-api/agents) for every endpoint.

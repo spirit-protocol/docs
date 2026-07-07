@@ -84,6 +84,25 @@
             ]
           },
           {
+            "group": "Studio API",
+            "pages": [
+              "studio-api/quickstart",
+              "studio-api/authentication",
+              "studio-api/agents",
+              "studio-api/shaping",
+              "studio-api/portability",
+              "studio-api/workspace"
+            ]
+          },
+          {
+            "group": "Studio Tooling",
+            "pages": [
+              "studio-api/cli",
+              "studio-api/container",
+              "studio-api/mcp"
+            ]
+          },
+          {
             "group": "SDKs",
             "pages": [
               "developers/sdk/spirit-sdk",

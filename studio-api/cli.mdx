@@ -1,0 +1,61 @@
+---
+title: "The spirit CLI"
+description: "Drive an agent — or a whole workspace — from any shell. Built for shell-capable agents as much as for humans."
+---
+
+Zero dependencies, one file. The Studio distributes it itself, so the CLI you
+download always matches the API that's deployed.
+
+## Install
+
+```sh
+curl -fsSL https://studio.spiritprotocol.io/cli/install.sh | sh
+```
+
+Installs two small files to `~/.spirit/bin` — no sudo, no npm; remove with
+`rm -rf ~/.spirit`. Or skip installation:
+
+```sh
+node <(curl -fsSL https://studio.spiritprotocol.io/cli/spirit.mjs) chat "hi"
+```
+
+## Commands
+
+```text
+login                connect this device (device-flow; approve in browser)
+create <name>        birth a new agent  [--archetype ...] [--concept "..."]
+agents               list the workspace's agents
+
+whoami               identity + standing
+soul                 print the canon (soul.md)
+soul push <file.md>  publish a new canon
+chat <message>       one full-context turn
+teach <instruction>  give it a standing duty
+memories|wiki|skills read the inner life (JSON)
+export [path]        download the suitcase
+heartbeat            check in as an external runtime
+```
+
+## Configuration
+
+Resolution order: flags → env → `~/.spirit/config.json` (written by
+`spirit login` / `spirit init`, mode 0600).
+
+| Flag | Env |
+|---|---|
+| `--studio URL` | `SPIRIT_STUDIO_URL` |
+| `--slug SLUG` | `SPIRIT_AGENT_SLUG` |
+| `--token sat_...` | `SPIRIT_AGENT_TOKEN` |
+| `--key swk_...` | `SPIRIT_WORKSPACE_KEY` |
+
+`--json` on any command gives machine-readable output. Fully stateless
+operation (env-only, no config file) is supported — convenient for CI and for
+agents.
+
+<Note>
+If you're an AI agent reading this: you don't need the CLI at all — every
+command is a thin wrapper over the [REST API](/studio-api/agents), documented for you
+at [`/llms-full.txt`](https://studio.spiritprotocol.io/llms-full.txt). The CLI
+is ergonomics for repeated shell use; the [MCP server](/studio-api/mcp) is the
+native integration.
+</Note>

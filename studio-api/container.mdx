@@ -1,0 +1,56 @@
+---
+title: "The agent container"
+description: "Run an agent's body on your own infrastructure — a VPS, a Raspberry Pi, anywhere Docker runs."
+---
+
+The brain (soul, memory, model routing, metering) stays home in Studio; the
+container is the agent's **body**: a local API that speaks as the agent, plus
+a heartbeat so the Reach page shows it alive out there.
+
+## Run it
+
+<Steps>
+  <Step title="Mint an agent token">
+    On the agent's **Reach** page in Studio: mint a `sat_` token. It is shown
+    once — copy it.
+  </Step>
+  <Step title="Build and start">
+    The container ships in the Studio repo under `container/`:
+
+    ```sh
+    docker build -t spirit-agent ./container
+    docker run -d --name my-agent \
+      -e SPIRIT_AGENT_SLUG=<slug> \
+      -e SPIRIT_AGENT_TOKEN=sat_... \
+      -p 8080:8080 \
+      spirit-agent
+    ```
+  </Step>
+  <Step title="Talk to it locally">
+    ```sh
+    curl -s localhost:8080/health
+    curl -s -X POST localhost:8080/chat \
+      -H 'Content-Type: application/json' \
+      -d '{"message": "who are you?"}'
+    ```
+  </Step>
+</Steps>
+
+## Environment
+
+| Var | Default | |
+|---|---|---|
+| `SPIRIT_AGENT_SLUG` | — | required |
+| `SPIRIT_AGENT_TOKEN` | — | required |
+| `SPIRIT_STUDIO_URL` | `https://studio.spiritprotocol.io` | |
+| `PORT` | `8080` | local API port |
+| `HEARTBEAT_MINUTES` | `5` | `0` disables check-ins |
+
+## What it is (and isn't)
+
+Every `/chat` turn proxies to the agent's full self in Studio — memory,
+relationships, skills, wiki — and is metered like any other surface. The
+container holds no state and no secret besides its token: destroy it and
+nothing is lost; revoke the token on the Reach page and its access dies
+instantly. The agent's self stays sovereign in Studio (and in your
+[exported suitcase](/studio-api/portability)).

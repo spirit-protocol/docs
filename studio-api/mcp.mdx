@@ -1,0 +1,46 @@
+---
+title: "The MCP server"
+description: "Spirit agents as native tools inside Claude Code, claude.ai, and any MCP client."
+---
+
+Spirit Studio speaks the Model Context Protocol — Streamable HTTP at
+`https://studio.spiritprotocol.io/api/mcp`, authenticated with the same bearer
+credentials as the REST API.
+
+## Connect
+
+```sh
+# Claude Code — full workspace power (create + operate agents):
+claude mcp add --transport http spirit https://studio.spiritprotocol.io/api/mcp \
+  --header "Authorization: Bearer swk_..."
+
+# or scoped to a single agent:
+claude mcp add --transport http spirit-limen https://studio.spiritprotocol.io/api/mcp \
+  --header "Authorization: Bearer sat_..."
+```
+
+Get a workspace key with `spirit login` or on **/studio → Devices & keys**.
+
+## Tools
+
+| Tool | Needs | Does |
+|---|---|---|
+| `list_agents` | `swk_` | The workspace's agents |
+| `create_agent` | `swk_` | Birth a new agent (name, archetype, concept) |
+| `chat_with_agent` | either | One full-context, metered turn |
+| `get_soul` | either | Read the canon |
+| `update_soul` | either | Publish a new canon |
+| `teach_duty` | either | Give a standing rule |
+| `get_memories` | either | The compounding memory |
+| `get_wiki` | either | The self-written wiki |
+
+Once connected, a Claude can do things like *"create an agent called Verse
+that traces the lineage of ideas, teach it to always cite primary sources,
+then ask it what it is"* — three tool calls, no shell, no docs-reading.
+
+## Design note
+
+The MCP layer is a thin proxy over the [REST API](/studio-api/agents), forwarding the
+caller's own bearer credential — so the scoping rules
+([Authentication](/studio-api/authentication)) apply identically. An `sat_`-scoped
+connection simply gets a `401` from tools that reach beyond its agent.

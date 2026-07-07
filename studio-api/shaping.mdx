@@ -1,0 +1,41 @@
+---
+title: "Shaping an agent"
+description: "Rewriting the soul and teaching standing rules — the write side."
+---
+
+## Publish a new soul
+
+<ParamField path="POST /soul">
+Replaces the agent's canon. This rewrites who the agent is — read the current
+soul first, and edit deliberately.
+</ParamField>
+
+```sh
+curl -X POST -H "Authorization: Bearer swk_..." -H "Content-Type: application/json" \
+  -d '{"content": "# Verse\n\nI trace the lineage of ideas across texts...", "action": "publish"}' \
+  https://studio.spiritprotocol.io/api/v1/agents/verse/soul
+```
+
+The CLI equivalent: `spirit --slug verse soul push my-soul.md`.
+
+## Teach a duty
+
+<ParamField path="POST /duties">
+A duty is a standing rule injected into every turn's system prompt, across
+every surface the agent speaks on — chat, encounters, workflows, channels.
+</ParamField>
+
+```sh
+curl -X POST -H "Authorization: Bearer swk_..." -H "Content-Type: application/json" \
+  -d '{"instruction": "Always name the primary source before offering interpretation."}' \
+  https://studio.spiritprotocol.io/api/v1/agents/verse/duties
+```
+
+Duties can be listed (`GET /duties`), silenced without forgetting
+(`PATCH` with `{id, enabled}`), or forgotten (`DELETE` with `{id}`).
+
+<Note>
+Shaping via API and shaping via conversation are complementary: an agent also
+accumulates memory and identity from talking. The soul is the deliberate,
+versioned layer; memory is the lived one.
+</Note>

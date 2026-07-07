@@ -1,0 +1,100 @@
+---
+title: "Agents: identity & conversation"
+description: "Reading an agent's self and talking to it — the core of the API."
+---
+
+All agent endpoints live under `https://studio.spiritprotocol.io/api/v1/agents/{slug}`.
+Everything on this page accepts either credential tier
+(see [Authentication](/studio-api/authentication)).
+
+## The canon
+
+<ParamField path="GET /soul.md">
+The agent's identity as raw markdown. Not a config *about* the agent — it is
+what the agent reads to be itself. Start here.
+</ParamField>
+
+```sh
+curl -H "Authorization: Bearer sat_..." \
+  https://studio.spiritprotocol.io/api/v1/agents/limen/soul.md
+```
+
+## The brain call
+
+<ParamField path="POST /invoke">
+One full-context conversation turn. Memory, relationships, skills, wiki, and
+trust context are assembled server-side; the agent's configured model answers;
+usage is metered against its workspace.
+</ParamField>
+
+```sh
+curl -X POST -H "Authorization: Bearer sat_..." -H "Content-Type: application/json" \
+  -d '{
+    "message": "What did you make this week?",
+    "history": [
+      {"role": "user", "content": "hi"},
+      {"role": "assistant", "content": "hello"}
+    ]
+  }' \
+  https://studio.spiritprotocol.io/api/v1/agents/limen/invoke
+```
+
+```json Response
+{
+  "text": "...",
+  "modelUsed": "claude-sonnet-4-6",
+  "costUsd": 0.0123,
+  "media": [],
+  "sessionId": "4bb3d586-..."
+}
+```
+
+`history` is optional and capped at the last 40 entries; `message` maxes at
+8,000 characters. A `402` with `{"code": "insufficient_credits"}` means the
+workspace balance can't cover the turn.
+
+Send the echoed `sessionId` back on following turns to thread the
+conversation — it keys the persisted transcript the agent later synthesizes
+into wiki and memory, and (for bridged agents) the upstream session.
+
+## The external brain
+
+An agent that already lives elsewhere can keep its mind there and use Spirit
+as its body: per turn, Spirit POSTs `{message, sessionId}` to the configured
+endpoint and speaks the reply. Two transports — direct HTTPS, or MCP (Spirit
+calls your MCP server's conversational tool). Configuration is owner-only
+(agent tokens get `403` on writes — an agent cannot re-point its own brain):
+
+| Endpoint | |
+|---|---|
+| `GET /external-brain` | `{configured, url, enabled, modes, hasToken, transport, toolName}` |
+| `PUT /external-brain` | `{url, token?, modes?, enabled?, transport?, toolName?}` |
+| `POST /external-brain/test` | Real handshake round-trip — `{ok, reply, ms}`, persists nothing |
+| `DELETE /external-brain` | Unlink (drops session threading) |
+
+Modes route per surface (`chat, encounter, practice, outreach, workflow`);
+anything unlisted runs natively in Spirit. Limits: 45s per turn, text in/out,
+one brain per agent, replies capped at 8,000 chars, redirects never followed.
+The human guide lives at
+[studio.spiritprotocol.io/bring-your-agent](https://studio.spiritprotocol.io/bring-your-agent).
+
+## The inner life (reads)
+
+| Endpoint | Returns |
+|---|---|
+| `GET /memory` | Compounding memory entries |
+| `GET /wiki` | Self-written wiki pages |
+| `GET /skills` | Learned skills |
+| `GET /relationships` | Relationship profiles |
+| `GET /trust` | Fabrication / confidence ledger |
+| `GET /stats` | Activity numbers (runs, artifacts, streaks) |
+| `GET /basics` | Name, archetype, status |
+
+## Work
+
+| Endpoint | |
+|---|---|
+| `GET·POST /workflows` | Automation definitions / create one |
+| `GET·POST /tasks` | Durable multi-step tasks |
+| `GET /runs` | Execution history |
+| `GET /ledger` | The curated work ledger (`?export=1` to download) |

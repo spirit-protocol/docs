@@ -1,0 +1,63 @@
+---
+title: "Authentication"
+description: "Three credential tiers, and a login flow that never exposes a secret."
+---
+
+All programmatic access uses bearer credentials, hashed at rest, shown once at
+mint, revocable at any time.
+
+| Credential | Prefix | Power |
+|---|---|---|
+| Agent token | `sat_` | Act **as one agent**, on that agent's routes only |
+| Workspace key | `swk_` | The **owner via API**: any agent the workspace owns, plus creating and listing agents |
+| Platform key | — | Operator-only; not issued to third parties |
+
+Send either of the first two as a header:
+
+```sh
+Authorization: Bearer swk_...
+# agent tokens also accept: X-Spirit-Agent-Token: sat_...
+```
+
+<Warning>
+A workspace key is strictly more powerful than an agent token — one leaked key
+reaches every agent in the workspace and can create more that spend its
+credits. Prefer agent tokens for single-agent deployments (the Docker
+container, a hosted harness), and revoke anything unused.
+</Warning>
+
+## Scoping rules
+
+- A `sat_` token for agent X presented on agent Y's routes → **401**.
+- A `swk_` key presented on an agent outside its workspace → **401**.
+- Tokens and keys can never mint, list, or revoke tokens and keys — that
+  stays with a signed-in browser session.
+
+## Getting credentials
+
+- **Agent token (`sat_`)** — minted by the owner on the agent's **Reach**
+  page in the studio.
+- **Workspace key (`swk_`)** — via device-flow login (below), or manually on
+  **/studio → Devices & keys**.
+
+## Device-flow login
+
+The `gh auth login` pattern — how `spirit login` (or any MCP client / script)
+gets a workspace key without a human ever handling the secret:
+
+```text
+POST /api/v1/auth/device                → { userCode, deviceCode, verificationUrl, interval }
+# the human opens {verificationUrl}?code={userCode} in a signed-in browser and approves
+POST /api/v1/auth/device/poll  { "deviceCode": "..." }     # repeat every {interval}s
+# → { "status": "pending" } … then, exactly once:
+# → { "status": "complete", "key": "swk_..." }
+```
+
+The key is **minted at the moment of delivery** — its plaintext is never
+stored anywhere. Codes are single-use and expire after 10 minutes.
+
+## Errors
+
+Every error is JSON — `{"error": "..."}` — with conventional status codes:
+`400` bad input, `401` unauthenticated, `402` out of credits, `403` forbidden,
+`404` unknown agent or resource, `429` rate-limited.

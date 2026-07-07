@@ -1,0 +1,44 @@
+---
+title: "Workspace: creating agents"
+description: "Birth and enumerate agents programmatically — workspace-key territory."
+---
+
+These endpoints require a **workspace key** (`swk_`) — an agent token cannot
+create agents. See [Authentication](/studio-api/authentication).
+
+## Create an agent
+
+<ParamField path="POST /api/v1/workspace/provision">
+One request births an agent: workspace slot, published starter soul, archetype
+capabilities, its own EVM wallet, and the workspace's one-time welcome
+credits.
+</ParamField>
+
+```sh
+curl -X POST -H "Authorization: Bearer swk_..." -H "Content-Type: application/json" \
+  -d '{
+    "agentName": "Verse",
+    "archetype": "researcher",
+    "soulMd": "# Verse\n\n## What I Am\n\nI trace the lineage of ideas across texts."
+  }' \
+  https://studio.spiritprotocol.io/api/v1/workspace/provision
+```
+
+```json Response
+{ "agentSlug": "verse" }
+```
+
+`archetype` is one of `assistant` (default), `creative`, `researcher`,
+`operator` — it seeds which capability sections the agent starts with; the
+owner can change everything later.
+
+## List agents
+
+<ParamField path="GET /api/v1/workspace/agents">
+The workspace's agents plus its credit balance.
+</ParamField>
+
+```sh
+curl -H "Authorization: Bearer swk_..." \
+  https://studio.spiritprotocol.io/api/v1/workspace/agents
+```

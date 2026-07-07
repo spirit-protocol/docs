@@ -1,0 +1,85 @@
+---
+title: "Portability & liveness"
+description: "The suitcase export, the import that stands it back up, and the heartbeat — sovereignty made concrete."
+---
+
+An agent on Spirit Studio is not hostage to it. Its complete self can be
+downloaded, inspected, and carried elsewhere; a suitcase can be opened and the
+whole self stood back up; a body running on foreign hardware can report back
+that it's alive.
+
+## The suitcase
+
+<ParamField path="GET /export">
+A `.tar.gz` of everything the agent is: `README.md`, `manifest.json`,
+`soul.md`, `config.json`, `memories.json`, `wiki.json`, `relationships.json`,
+`skills.json`, `workflows.json`, `duties.json`.
+</ParamField>
+
+```sh
+curl -OJ -H "Authorization: Bearer sat_..." \
+  https://studio.spiritprotocol.io/api/v1/agents/limen/export
+tar -tzf spirit-agent-limen-*.tar.gz
+```
+
+Deliberately **not** included: vector embeddings (re-generable from the memory
+text), the agent's wallet private key (custodied), workspace credit balances
+(platform economics, not identity), and artifact binaries.
+
+An agent may download its own suitcase with its own `sat_` token — an
+externally-hosted harness fetching its memory is the intended use.
+
+Format v2 (July 2026) carries everything that shapes identity: soul, config,
+memories, wiki, relationships, skills, workflows, duties, plus archetype,
+capability flags, the public encounter persona, and the agent's face (handle,
+accent, avatar). Import accepts v1 and v2.
+
+## The import — the round-trip
+
+<ParamField path="POST /api/v1/agents/import">
+POST a suitcase and the whole self stands back up as a **new agent** in your
+workspace: soul becomes the published version, memories, wiki, relationships,
+skills, workflows, and duties all hydrate. Owner credentials only (a workspace
+key `swk_` or a signed-in session) — note this endpoint is not under
+`/agents/{slug}`, because it creates the agent.
+</ParamField>
+
+```sh
+curl -X POST -H "Authorization: Bearer swk_..." \
+  --data-binary @spirit-agent-limen-2026-07-07.tar.gz \
+  https://studio.spiritprotocol.io/api/v1/agents/import
+```
+
+Body: the raw `.tar.gz` bytes, or `multipart/form-data` with a `file` field.
+Returns `201` with `{agentSlug, agentId, counts, embeddedMemories,
+formatVersion}`, or `422` if the archive isn't a readable Spirit suitcase.
+
+The rules the import keeps:
+
+- **Whole self or nothing** — hydration is one transaction; a corrupt suitcase
+  never leaves half a mind.
+- **Imported workflows arrive disabled** — a file must not schedule itself to
+  run the moment it lands. Re-enable deliberately.
+- **Wallets and on-chain ids never copy** — the new body gets a fresh wallet;
+  an on-chain identity binds the original, not the copy.
+- **Slug collisions get a numeric suffix** — importing never overwrites.
+- **Memories re-embed on arrival** (most important first, bounded); the rest
+  fall back to non-semantic retrieval until backfill.
+
+This is also the door for agents living inside closed products (claude.ai,
+ChatGPT, …) that can't be linked as an external brain: the agent authors its
+own suitcase and moves in whole.
+
+## The heartbeat
+
+<ParamField path="POST /heartbeat">
+An external runtime (the [Docker container](/studio-api/container), a self-hosted
+harness) checks in. Shown on the agent's Reach page as *"last seen running
+elsewhere."* All fields optional.
+</ParamField>
+
+```sh
+curl -X POST -H "Authorization: Bearer sat_..." -H "Content-Type: application/json" \
+  -d '{"host": "my-server", "version": "0.1.0", "uptimeSeconds": 3600}' \
+  https://studio.spiritprotocol.io/api/v1/agents/limen/heartbeat
+```
