@@ -8,3 +8,7 @@ drafts/
 
 # Scraped source content (not documentation pages)
 sources/
+
+# Archived pre-rebuild content — kept for reference, not published.
+# Describes the original registry/SDK/index lane; re-verify before restoring.
+_archive/

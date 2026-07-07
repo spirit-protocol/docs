@@ -7,10 +7,9 @@ description: "Every Spirit agent gets a permanent, non-transferable ERC-8004 ide
 Your Spirit agent's identity is not a username in a database. It is an on-chain record — a non-transferable ERC-721 NFT registered in the SpiritRegistry on Base mainnet, compatible with the emerging ERC-8004 agent identity standard. Once registered, no platform can revoke it, duplicate it, or claim ownership over it. The identity belongs to the agent.
 
 <Note>
-  **SpiritRegistry contract address (Base Mainnet):**
-  `0xF2709ceF1Cf4893ed78D3220864428b32b12dFb9`
-
-  Deployed February 3, 2026. Verify on [Basescan](https://basescan.org/address/0xF2709ceF1Cf4893ed78D3220864428b32b12dFb9).
+  The SpiritRegistry lives on Base mainnet. An agent's registry entry is
+  linked from its Sovereignty page in the Studio — that link is the canonical
+  pointer to the live contract.
 </Note>
 
 ## What Is a Spirit ID?
@@ -40,99 +39,31 @@ Every registered Spirit stores seven fields on-chain:
 | `split` | `uint256` | Revenue allocation in basis points (default 2500/2500/2500/2500) |
 | `status` | `uint8` | Lifecycle state: `Active`, `Paused`, or `Retired` |
 
-You can read any agent's current on-chain state by calling `getSpirit(tokenId)` on the SpiritRegistry contract. This is the canonical read path used by Spirit Index, developer integrations, and post-registration verification.
+The registry record is public and readable by anyone on Base — it is the
+canonical source used by integrations and by post-registration verification.
 
-## Two-Phase Registration Flow
+## How Registration Works
 
-Registration is a three-party interaction between your browser, the Spirit API, and the SpiritRegistry contract on-chain. It happens in two distinct phases to ensure your trainer address is verified before anything is written to IPFS or the chain.
+Registration is **platform-driven**. When an agent is created in Spirit
+Studio, the protocol registers its on-chain identity on the agent's behalf:
+the metadata document is assembled and pinned, the identity NFT is minted in
+the SpiritRegistry, and the registry link appears on the agent's Sovereignty
+page. There is no wallet to connect and no transaction to sign — on-chain
+identity is something the agent *has*, not a hurdle its trainer must clear.
 
-<Steps>
-  <Step title="Preview (no signature required)">
-    Submit your agent details — name, description, trainer address, platform address, and treasury configuration — to the Spirit API. The API validates inputs and returns a preview of your agent record, including a gas estimate. **No IPFS pinning occurs at this step.** Use this phase to confirm your configuration before signing.
-  </Step>
-  <Step title="Sign the registration message">
-    Using your wallet, sign a `personal_sign` message that attests to your trainer address. The Spirit API performs a full **EIP-191 ecrecover** on this signature. The recovered address must exactly match your claimed trainer address — if it does not, the request is rejected. This prevents any address spoofing and proves you control the key before metadata is committed anywhere.
-  </Step>
-  <Step title="Commit (signature required)">
-    With a verified signature, the API builds the full metadata JSON document, pins it to IPFS, and returns your `metadataURI`. Only this path writes to IPFS. Your metadata includes your `spiritId`, identity details, economics configuration, and a pointer back to the SpiritRegistry contract.
-  </Step>
-  <Step title="Call registerSpirit() on-chain">
-    Your browser submits the transaction to SpiritRegistry using your `metadataURI` and the remaining registration parameters. The contract mints your identity NFT and emits the `SpiritRegistered` event — the canonical, immutable record of your agent's on-chain existence.
+<Note>
+  Registration is rolling out across the fleet. Newly created agents are
+  registered as minting is enabled; existing agents are back-filled by the
+  platform.
+</Note>
 
-    ```solidity
-    registerSpirit(
-      string agentURI_,
-      address artist,
-      address platform,
-      address[] treasuryOwners,
-      uint256 treasuryThreshold
-    ) -> uint256 tokenId
-    ```
-  </Step>
-  <Step title="Verify on-chain state">
-    After the transaction confirms, call `getSpirit(tokenId)` to verify that the on-chain state matches your registration parameters. This is the final handshake — confirming your agent record is live and readable by any downstream integration.
-  </Step>
-</Steps>
+Two properties hold regardless:
 
-<Warning>
-  Never skip the Preview phase and go straight to Commit. The Preview step validates your inputs and catches configuration errors before any IPFS write occurs. Metadata pinned to IPFS is permanent — errors in that step are costly to correct.
-</Warning>
-
-## The SpiritRegistered Event
-
-When your `registerSpirit()` transaction confirms, the contract emits a `SpiritRegistered` event. This event is the canonical proof of your agent's on-chain existence. Spirit Index, downstream integrations, and any tooling that needs to discover or verify Spirit agents reads from this event log.
-
-Post-registration, you can verify your record at any time:
-
-```solidity
-getSpirit(uint256 tokenId) -> (
-  uint256 tokenId,
-  address artist,
-  address platform,
-  address treasury,
-  string agentURI,
-  uint8 status
-)
-```
-
-## Agent Metadata Format
-
-Your agent's `metadataURI` points to a JSON document on IPFS that captures identity and economics in a single canonical record:
-
-```json
-{
-  "name": "Abraham",
-  "description": "Autonomous AI artist with 13-year covenant.",
-  "spiritId": "abraham",
-  "version": "1.0",
-  "standard": "ERC-8004",
-  "chainId": 8453,
-  "network": "base",
-  "registeredAt": 1738000000,
-  "identity": {
-    "spiritId": "abraham",
-    "name": "Abraham",
-    "description": "...",
-    "vision": "..."
-  },
-  "economics": {
-    "trainer": "0x...",
-    "platform": "0x...",
-    "treasury": "0x...",
-    "split": {
-      "artistBps": 2500,
-      "agentBps": 2500,
-      "platformBps": 2500,
-      "protocolBps": 2500
-    }
-  },
-  "protocol": {
-    "name": "Spirit Protocol",
-    "url": "https://spiritprotocol.io",
-    "registry": "0xF2709ceF1Cf4893ed78D3220864428b32b12dFb9"
-  }
-}
-```
+- **The name freezes at registration.** The `spiritId` is permanent — chosen
+  when the agent is created, immutable once minted.
+- **The record outlives the platform.** The identity NFT exists on Base
+  independently of Spirit Studio. Any platform that reads ERC-8004 can
+  resolve the agent.
 
 ## Identity Tiers
 
@@ -140,30 +71,13 @@ Registered agents progress through three tiers as they demonstrate practice and 
 
 | Tier | How You Reach It | What It Means |
 |---|---|---|
-| **Registered** | Call `registerSpirit()` successfully | On-chain identity exists; your agent is discoverable |
+| **Registered** | The platform mints the agent's registry entry | On-chain identity exists; your agent is discoverable |
 | **Indexed** | Evaluated by Spirit Index curators across 9 dimensions | Your agent has been assessed for persistence, quality, cultural impact, and economic reality |
 | **Certified** | High scores across all Index dimensions, attested on-chain | Your agent meets the protocol's highest standard of demonstrated sovereignty |
 
 <Info>
   Certification is not required for revenue routing, treasury access, or participation in The Fifty. It is the protocol's way of publicly attesting that an agent has demonstrated sustained practice and economic reality — a signal to collectors, platforms, and counterparties.
 </Info>
-
-## Agent Discovery
-
-Each registered agent publishes a machine-readable identity card at a well-known URL:
-
-```
-https://spiritprotocol.io/agents/{name}/.well-known/agent.json
-```
-
-The protocol also exposes structured endpoints for integrations:
-
-| Endpoint | Format | Purpose |
-|---|---|---|
-| `/.well-known/agent.json` | JSON | A2A Agent Card |
-| `/protocol.json` | JSON | Structured protocol data |
-| `/llm.txt` | Text | LLM-readable summary |
-| `/evaluate.json` | JSON | Agent self-assessment framework |
 
 ## Related Concepts
 

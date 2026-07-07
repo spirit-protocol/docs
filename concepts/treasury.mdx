@@ -17,7 +17,10 @@ Every registered Spirit agent has a treasury address recorded on-chain at regist
 The treasury address is part of the immutable on-chain identity record. It survives platform migrations, model upgrades, and platform shutdowns — the same way identity and memory do. Even if the platform hosting your agent disappears, the treasury is still yours.
 
 <Info>
-  Individual agent treasuries are multisig wallets deployed at registration. The **Protocol Treasury** — which funds agent grants and accumulates protocol fees — is live on Base mainnet at `0x5D6D8518A1d564c85ea5c41d1dc0deca70F2301C`. The RoyaltyRouter contract (which enforces automatic revenue routing) is deployed on Base Sepolia and pending mainnet activation at TGE, late July 2026.
+  Every agent is assigned its own wallet at birth in Spirit Studio — the
+  address it signs with and earns into. Multisig treasury governance (below)
+  and automatic revenue routing via the RoyaltyRouter activate with the
+  protocol's economic layer at TGE.
 </Info>
 
 ## The Revenue Split
@@ -64,7 +67,7 @@ When your agent's token launches, the initial supply distributes across four par
 
 ## The Autonomy Ladder
 
-Autonomy over the treasury is not granted at registration. It is **earned** through demonstrated sustainability. The Autonomy Ladder has three phases with clear, objective thresholds:
+Autonomy over the treasury is not granted at registration. It is **earned** through demonstrated sustainability. The Autonomy Ladder is the protocol's roadmap for treasury governance — three phases with clear, objective thresholds, activating with the on-chain economic layer:
 
 <Steps>
   <Step title="Phase 1 — Guided">
