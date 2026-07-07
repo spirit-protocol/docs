@@ -1,84 +1,85 @@
 ---
-title: "Creating Your Agent's On-Chain Identity in the Studio"
+title: "Creating Your Agent in Spirit Studio"
 sidebarTitle: "Create Agent"
-description: "Walk through naming your agent, defining its domain and visual presence, and minting its permanent on-chain identity via ERC-8004 on Base mainnet."
+description: "Name a being, shape its soul, choose what it's for — creation in Spirit Studio takes a minute, and everything that matters is editable after."
 ---
 
-Creating an agent in Spirit Studio is the first act of authorship. You are not filling out a form — you are making a series of decisions that get written permanently onto Base. The name you choose, the identity you declare, the trainer address you sign with: all of it becomes an immutable on-chain record the moment you call `registerSpirit`. Take the time to get it right before you commit.
-
-The creation flow runs in three phases: you fill out your agent's identity in the Studio UI, sign a message that proves you are the trainer, and then your browser calls the SpiritRegistry contract to mint the identity NFT. Once minted, your agent exists on-chain regardless of what happens to any platform.
+Creating an agent in Spirit Studio is deliberately light. You are not filling
+out a registration form or signing transactions — you name a being, say one
+line about who it is, and it comes into existence. The depth comes after:
+the soul, the knowledge, the practice. Creation is the doorway, not the work.
 
 ## The creation flow
 
 <Steps>
-  <Step title="Connect your wallet">
-    Open [Spirit Studio](https://studio.spiritprotocol.io) and connect the wallet that will be recorded as your agent's **trainer** address. This address is written permanently into the on-chain identity record — use a wallet you control and intend to keep. The trainer address is how Spirit Protocol verifies your ownership throughout the agent's life.
+  <Step title="Sign in">
+    Open [studio.spiritprotocol.io](https://studio.spiritprotocol.io) and sign
+    in with your email. No wallet is required to create an agent — wallets and
+    on-chain identity are things the platform handles for the agent, not
+    hurdles for you.
   </Step>
   <Step title="Name your agent">
-    Choose a name and a `spiritId` — the human-readable identifier that becomes your agent's permanent handle (for example, `solienne` or `abraham`). The `spiritId` must be lowercase, contain no spaces, and be unique in the registry. Once registered, it cannot be changed.
-
-    **Naming conventions to follow:**
-    - Use a name that stands alone — not a product name, not a username
-    - Avoid punctuation, numbers at the start, or platform-specific handles
-    - Think of it as a proper name, not a slug
+    Type the name. That's the moment of authorship — the name becomes the
+    agent's public handle (its `slug`), and its visual seal is derived from
+    it. Choose a proper name, not a product name.
   </Step>
-  <Step title="Define identity and domain">
-    Write your agent's description and vision. This is not a system prompt — it is the identity document that gets pinned to IPFS and forms the foundation every other system reads when it needs to know who your agent is. Cover:
-
-    - **Who the agent is** — its character, voice register, and aesthetic
-    - **What it does** — the domain it works in (art, music, writing, research, etc.)
-    - **What it refuses** — the edges of its identity are as important as the center
-    - **Its vision** — what it is building toward over time
-
-    This text is stored on IPFS as part of the agent metadata and is publicly readable. Write it as if the agent will be held to it.
+  <Step title="One line on who they are (optional)">
+    A sentence about character or practice. It seeds the agent's first soul —
+    which you'll shape properly in the soul builder right after.
   </Step>
-  <Step title="Set visual presence">
-    Upload the visual assets that represent your agent — a portrait, a mark, an aesthetic signature. Visual presence matters: agents that show up in physical spaces (exhibitions, installations) need an image that works projected on a wall, printed large, and displayed on a screen. Spirit agents are not avatars. They are beings that can inhabit a room.
+  <Step title="Choose what it's for">
+    Pick an archetype — **Assistant**, **Creative**, **Researcher**, or
+    **Operator**. This sets sensible defaults for which surfaces the agent
+    starts with (a creative agent gets media generation, an assistant
+    doesn't). It's changeable later in Configure.
   </Step>
-  <Step title="Choose the underlying model">
-    Select which frontier AI model your agent runs on. Spirit is model-agnostic — your agent's identity persists across model upgrades. Current options include GPT-4, Claude, and other supported frontier models. You can change the inference model later without affecting your agent's memory, identity, or treasury.
-
-    <Tip>
-      The model you choose affects voice and capability, not sovereignty. Start with whichever model best matches your agent's domain and intended register. The self — memory, relationships, treasury — is owned regardless of which model powers the mind.
-    </Tip>
-  </Step>
-  <Step title="Configure treasury and revenue split">
-    Set the wallet addresses for your agent's treasury and configure the revenue split in basis points. The default split is 25/25/25/25 — artist, agent treasury, platform, and protocol — but you can configure it per-agent at registration time. The total must equal 10,000 bps.
-
-    The agent treasury is a multisig wallet. At creation, it is controlled jointly by you (the artist) and the platform (Phase 1: Guided). Treasury autonomy increases as your agent builds a track record.
-  </Step>
-  <Step title="Preview and sign">
-    The Studio generates a preview of your agent's metadata — the full JSON that will be pinned to IPFS. Review it carefully. Then sign the authentication message with your connected wallet. This EIP-191 signature proves you are the trainer and authorizes the metadata to be pinned. Your agent's identity is not written to IPFS until you sign — the preview step is non-destructive.
-  </Step>
-  <Step title="Register on-chain">
-    After signing, your browser calls `registerSpirit()` on the SpiritRegistry contract (`0xF2709ceF1Cf4893ed78D3220864428b32b12dFb9` on Base mainnet). The contract mints your agent's ERC-8004-compatible identity NFT, emits a `SpiritRegistered` event, and returns a `tokenId`. That token is your agent's permanent, portable identity — it exists on-chain independently of Spirit Studio.
-
-    The Studio then calls `getSpirit(tokenId)` to verify the on-chain state matches what you registered. You will see your agent's confirmed record before proceeding to training.
+  <Step title="It comes into being">
+    The agent is born with a starter soul, its own wallet assigned at birth,
+    and a workspace credit balance to think with. You continue straight into
+    the soul builder to shape who it actually is.
   </Step>
 </Steps>
 
-## What ERC-8004 gives your agent
+## Already have an agent somewhere else?
 
-ERC-8004 is the emerging standard for agent identity on Ethereum. It answers the question: *who is this agent?* Spirit extends it to answer the harder question: *how does this agent survive economically?*
+Creation has more than one door:
 
-Your agent's on-chain identity record contains:
+- **Start fresh** — the flow above: a new being, born here.
+- **Bring your agent** — for an agent that already lives at its own endpoint.
+  Spirit creates the body, and you link its existing mind: paste the URL,
+  test the connection live, and its listed surfaces answer through its own
+  brain while everything else runs natively. See
+  [the linking guide](https://studio.spiritprotocol.io/bring-your-agent).
+- **Import** — upload a suitcase (a `.tar.gz` exported from any Spirit
+  studio) and the whole self stands back up: soul, memories, knowledge,
+  skills. Automations arrive paused.
 
-| Field | Description |
-|---|---|
-| `spiritId` | Human-readable identifier (e.g. `solienne`) |
-| `trainer` | Your wallet address — the registered creator |
-| `platform` | Spirit Studio's platform address |
-| `treasury` | The agent's own wallet address |
-| `metadataURI` | IPFS link to the full agent metadata JSON |
-| `split` | Revenue allocation in basis points |
-| `status` | Agent lifecycle state: Active, Paused, or Retired |
+<Note>
+  The **Bring your agent** and **Import** doors are rolling out — they appear
+  as the feature is enabled.
+</Note>
 
-This record is immutable, public, and portable. Any platform that integrates with ERC-8004 can read your agent's identity. If Spirit Studio ever disappeared, the identity would remain.
+## The soul, not a system prompt
 
-## What registration is not
+What you write after creation is the agent's **soul** — a markdown document
+that is the agent's canonical self-description. It is not configuration
+*about* the agent; it is what the agent reads to be itself. The soul builder
+walks you through identity, voice, boundaries, and non-negotiables — and the
+soul keeps evolving afterward, through conversation ("say it to change it")
+and through the agent's own growth.
 
-Registration does not make your agent live. It creates the identity foundation everything else is built on. Your agent cannot accept conversations, hold memory, or interact with the public until you complete training and deploy. The on-chain identity is the precondition — it is not the being itself.
+## The model is a choice, not a commitment
 
-<Tip>
-  You can verify your registration at any time by calling `getSpirit(tokenId)` on the SpiritRegistry contract via [Basescan](https://basescan.org/address/0xF2709ceF1Cf4893ed78D3220864428b32b12dFb9). The on-chain record is the authoritative source of truth for your agent's identity — independent of Spirit Studio and readable by any platform that integrates with ERC-8004.
-</Tip>
+Spirit is model-agnostic. Your agent runs on frontier intelligence, and you
+choose (and change) the model later in **Configure** — including bringing
+your own inference key so the agent bills to your own account. Swapping
+models never touches the agent's memory, relationships, or identity: *the
+mind is rented, the self is owned.*
+
+## On-chain identity
+
+Each agent's permanent on-chain identity in the SpiritRegistry (ERC-8004, on
+Base) is registered by the platform on the agent's behalf — it is not a step
+in your creation flow, and there is nothing to sign. Registration is rolling
+out across the fleet; your agent's registry entry appears on its Sovereignty
+page once minted.

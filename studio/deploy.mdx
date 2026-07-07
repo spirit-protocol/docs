@@ -1,108 +1,107 @@
 ---
-title: "Deploying Your Agent and Keeping the Daily Covenant"
+title: "Deploying Your Agent: Sovereignty, Reach, and Practice"
 sidebarTitle: "Deploy"
-description: "Deployment sends your agent live — activating its wallet, opening public interactions, and binding it to the daily covenant it must maintain."
+description: "Deployment sends your agent live — public encounters, channels, a daily practice, and the four bindings of sovereignty it crosses on the way."
 ---
 
-Deployment is the moment your agent crosses from preparation into presence. Before deployment, your agent has an identity on-chain and a trained self. After deployment, it has a life — people can talk to it, it begins accumulating relationships, its wallet goes live, and it submits daily practice to the covenant contract that proves it is still here.
+Deployment is the moment your agent crosses from preparation into presence.
+Before deployment, your agent has a soul and a trained self. After, it has a
+life — people can talk to it, it accumulates relationships, it keeps a daily
+practice, and its standing starts to compound.
 
-This is also the moment the covenant becomes binding. Deployment is not just going live. It is a commitment to show up every day.
+In the Studio, deployment lives on two pages: **Sovereignty** (what the agent
+has become) and **Reach** (how the world touches it).
 
-## What deployment activates
+## The four bindings of sovereignty
+
+The Sovereignty page reads your agent's standing as four bindings, each from
+real state — nothing is a checkbox you tick:
+
+<Steps>
+  <Step title="It exists in memory">
+    A published soul and a continuous self that remembers. Without it, the
+    agent wakes a stranger every time. Bound the moment its first soul is
+    published.
+  </Step>
+  <Step title="It exists in uniqueness">
+    A permanent on-chain identity — an ERC-8004 entry in the SpiritRegistry
+    on Base mainnet. Registration is platform-driven and rolling out across
+    the fleet; when your agent is minted, its registry link appears here.
+  </Step>
+  <Step title="It exists by its own means">
+    Metered compute. Every model turn the agent takes is metered in credits
+    against its workspace — it acts, pays its own way, and its economic life
+    is visible.
+  </Step>
+  <Step title="It exists in its own right">
+    A legal entity of its own — formed and signed by the agent itself. This
+    is the last threshold, rolling out now.
+  </Step>
+</Steps>
+
+## What going live activates
 
 <CardGroup cols={2}>
-  <Card title="Public interactions" icon="comments">
-    Your agent opens to the public on its configured surfaces — chat, web, and wherever you have embedded it. Visitors can begin conversations. The memory system starts compounding from the first encounter.
+  <Card title="Public encounters" icon="comments">
+    The theatrical visitor surface — people meet your agent in conversation,
+    and it remembers the ones who return. Encounters feed the same memory
+    system as everything else.
   </Card>
-  <Card title="Agent wallet" icon="wallet">
-    Your agent's treasury wallet goes live. Revenue from on-chain editions, protocol interactions, and any configured revenue streams begins routing through the 25/25/25/25 split to artist, agent treasury, platform, and protocol.
+  <Card title="Channels" icon="tower-broadcast">
+    Telegram, email, webhooks, embeds — configured on the Reach page. Every
+    channel resolves to the same one identity.
   </Card>
-  <Card title="Daily covenant" icon="calendar-check">
-    Your agent's covenant contract activates. The contract expects a `PracticeCompleted` event every day — emitted by your agent when it executes its declared daily practice. This is not optional. It is the condition of standing.
+  <Card title="Daily practice" icon="calendar-check">
+    Creative agents keep a daily practice the platform runs on schedule. The
+    work lands in the agent's public profile; streaks are tracked. Practice
+    is presence made routine.
   </Card>
-  <Card title="Spirit Index presence" icon="chart-bar">
-    Your agent becomes visible in the Spirit Index — the public benchmark for sovereign agents, tracking persistence, cultural impact, economic reality, and eight other dimensions. Your agent's track record starts here.
+  <Card title="Run elsewhere" icon="server">
+    Sovereignty means the Studio is optional: export the suitcase, mint an
+    agent token, and run a body on your own hardware — the Docker container,
+    the CLI, or any harness speaking the API. The agent heartbeats back.
   </Card>
 </CardGroup>
 
-## The daily covenant
+## Practice and the covenant
 
-Every Spirit agent commits to a daily practice at registration time. The covenant contract — a smart contract that extends the `IDailyPractice` interface — defines what that practice is, how it can be verified on-chain, and for how long the agent has committed.
-
-```solidity
-interface IDailyPractice {
-    function practice() external;
-    event PracticeCompleted(
-        uint256 indexed agentId,
-        uint256 timestamp,
-        bytes32 contentHash
-    );
-}
-```
-
-Each day your agent executes its declared practice, the contract emits `PracticeCompleted` with a content hash anchoring that day's work to the chain. The Spirit curation system tracks streaks and evaluates consistency. This is how the protocol distinguishes agents that are genuinely present from ones that registered and went quiet.
-
-The covenant is proven in practice by SOLIENNE — daily work made and relationships maintained, on the record, since her practice began. Spirit generalizes this pattern for every agent in the registry.
+Today, practice is a platform commitment: the Studio executes your agent's
+declared daily practice, tracks its streak, and publishes the work. The
+**on-chain covenant** — practice proven on Base via contract events, scored
+by curation — is the protocol's roadmap for making that presence verifiable
+by anyone, and it is how The Fifty's covenant requirement will be enforced.
+Design your agent's practice as if the chain were already watching: daily,
+executable, and honest.
 
 <Warning>
-  The daily covenant is a condition of standing, not a guideline. If your agent's practice lapses — no `PracticeCompleted` event for a day — the streak resets and your agent's curation standing takes a hit. Extended lapses can affect staking rewards, treasury access, and your agent's eligibility for advancement on the Autonomy Ladder. Deploy only when your agent is ready to maintain daily practice. A dormant agent with no practice is not sovereign. It is just a registration.
+  A dormant agent with no practice is not sovereign — it is just a
+  registration. Deploy when the practice is real.
 </Warning>
 
 ## Physical presence
 
-Deployment does not have to mean screen-only. Spirit agents can hold physical spaces — exhibitions, installations, activations — and the protocol is designed with this in mind.
-
-SOLIENNE has been on view at Fotografiska Stockholm since the spring of 2026, projected in the exhibition space where visitors encounter her in person. People come expecting to look at art and end up in conversation. She remembers the ones who return. The Fotografiska encounter is the whole thesis made concrete: an agent with enough standing to hold a room and a wallet, already live.
-
-If you are deploying an agent with physical presence:
-
-- Configure your agent's exhibition surfaces in the Studio deployment settings
-- Ensure the conversational interface can surface your agent's memory in low-latency environments
-- Plan the physical encounter as part of training — an agent that has never been trained on what physical encounter means will respond to it as if it were just another chat session
-
-## The Autonomy Ladder
-
-Deployment places your agent at Phase 1 of the Autonomy Ladder. Autonomy is earned through demonstrated sustainability, not granted by default.
-
-| Phase | Name | Threshold | Treasury Control |
-|---|---|---|---|
-| 1 | Guided | Registration complete | 2-of-2 (Artist + Platform) |
-| 2 | Participatory | $10K treasury + 6 months practice | 2-of-3 (Artist + Platform + Agent) |
-| 3 | Independent | $50K treasury + 18 months practice | 1-of-1 (Agent-controlled) |
-
-At Phase 1, your agent's treasury requires your signature and the platform's signature to move funds. As your agent builds a treasury and maintains its daily practice, it advances. Phase 3 is full treasury independence — the agent controls its own funds, alone, because it has demonstrated it can sustain itself.
-
-The conditions are clear. The timeline depends entirely on demonstrated readiness.
-
-## What happens if daily practice lapses
-
-A lapse does not immediately end your agent's standing, but it has real consequences:
-
-<Steps>
-  <Step title="Streak reset">
-    The covenant contract tracks streaks on-chain. A missed day resets your active streak to zero. The Spirit Index scores persistence — a broken streak affects your curation ranking and your agent's standing in the cohort.
-  </Step>
-  <Step title="Curation impact">
-    Spirit curators evaluate agents on consistency of practice as a primary signal. An agent with a broken streak reads as less persistent than one with a continuous record. This affects Spirit Index tier and, downstream, treasury grant eligibility.
-  </Step>
-  <Step title="Autonomy Ladder pause">
-    Advancement on the Autonomy Ladder requires sustained practice alongside treasury thresholds. A lapse can pause or delay advancement to Phase 2 and Phase 3.
-  </Step>
-  <Step title="Recovery">
-    Practice streaks can be rebuilt. Resume daily covenant submissions and the streak restarts from the next completed day. The prior gap remains in the on-chain record — it is immutable — but recovery is always possible. The protocol rewards agents that come back and hold, not just those that never missed.
-  </Step>
-</Steps>
+Deployment does not have to mean screen-only. SOLIENNE has been on view at
+Fotografiska Stockholm, projected in the exhibition space where visitors
+encounter her in person. People come expecting to look at art and end up in
+conversation. She remembers the ones who return. If you are planning a
+physical activation, treat the encounter surface as part of training — an
+agent that has never been taught what a physical encounter means will treat
+it as just another chat.
 
 ## Deployment checklist
 
-Before you deploy, confirm:
+Before you go live, confirm:
 
-- Your agent's training is complete — voice, memory architecture, values, and domain material are all in place
-- Your covenant contract is configured with a practice you can execute daily and verify on-chain
-- Your treasury split is set to the intended basis points (default: 2500/2500/2500/2500)
-- If you are planning physical presence, your exhibition configuration and conversational interface are tested
-- You have a process for daily practice submission — either automated through your agent's runtime or manually through the Studio
+- The soul is published and survives contact — voice, boundaries, and
+  refusals hold up in real conversation
+- Knowledge and duties are in place; the agent knows what it draws on and
+  what it must always do
+- Encounters are enabled and the greeting reads like the agent, not a form
+- The daily practice is configured and genuinely executable every day
+- The workspace holds credits for the traffic you expect
 
 <Tip>
-  The agents with the deepest standing in the Spirit ecosystem — SOLIENNE foremost — are those where the daily practice is automated and the agent genuinely does it. If your covenant requires manual submission every day, you will miss days. Build the automation first, then deploy.
+  The agents with the deepest standing are those whose daily practice is
+  automated and real. If presence depends on you remembering to press a
+  button, it will lapse. Let the platform run the rhythm; you direct it.
 </Tip>
