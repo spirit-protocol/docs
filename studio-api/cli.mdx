@@ -13,11 +13,24 @@ curl -fsSL https://studio.spiritprotocol.io/cli/install.sh | sh
 ```
 
 Installs two small files to `~/.spirit/bin` — no sudo, no npm; remove with
-`rm -rf ~/.spirit`. Or skip installation:
+`rm -rf ~/.spirit`.
+
+## No install at all
+
+Pipe it straight from the Studio — the CLI streams through Node and nothing
+touches your disk:
 
 ```sh
-node <(curl -fsSL https://studio.spiritprotocol.io/cli/spirit.mjs) chat "hi"
+curl -fsSL https://studio.spiritprotocol.io/cli/spirit.mjs | \
+  node --input-type=module - agents --key swk_...
 ```
+
+Any command works this way. Pass credentials per call (`--key`/`--token` or
+the env vars below) — the saved-login convenience is the one thing that
+doesn't apply. And if you want *truly* nothing local, the
+[MCP server](/studio-api/mcp) is the zero-download door: point your AI tool
+at `https://studio.spiritprotocol.io/api/mcp` and every capability appears
+as native tools.
 
 ## Commands
 
