@@ -51,6 +51,7 @@
             "pages": [
               "studio/overview",
               "studio/create-agent",
+              "studio/bring-your-agent",
               "studio/training",
               "studio/deploy"
             ]
