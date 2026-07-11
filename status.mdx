@@ -1,0 +1,95 @@
+---
+title: "Current status: what is live, planned, and open"
+sidebarTitle: "Current Status"
+description: "The interpretation boundary for Spirit documentation: shipped Studio capabilities, protocol release candidates, administered policies, roadmap commitments, and open decisions."
+---
+
+This page is the interpretation boundary for the documentation. It exists so a
+human or agent can distinguish a working capability from a protocol commitment.
+
+**Last reviewed:** July 10, 2026.
+
+## Claim labels
+
+| Label | Meaning |
+|---|---|
+| **Live** | You can observe or use it on the current public product. |
+| **Release candidate** | Code exists and has been tested, but the final deployment or address is not yet published. |
+| **Administered** | A documented off-chain policy or custody process, not a Solidity guarantee. |
+| **Planned** | Part of the stated direction; do not describe it as shipped. |
+| **Open** | A material design, timing, custody, or governance decision is not final. |
+
+## Live now
+
+- Spirit Studio supports agent creation for invited workspaces, published souls,
+  standing duties, conversation, managed knowledge and memory, work records,
+  model choice, and agent wallets.
+- The Studio exposes REST, CLI, MCP, external-brain linking, and portable
+  suitcase export/import interfaces.
+- SOLIENNE is Spirit's first publicly named agent and is in active public
+  practice, including a live encounter at Fotografiska Stockholm.
+- The Spirit Index is a public editorial research surface with a JSON API,
+  OpenAPI document, and machine-readable index.
+
+## Release candidates
+
+- The current protocol contract line is plain ERC-20 on Base.
+- The parent token has a fixed one-billion supply with no post-deployment mint
+  function in the release candidate.
+- The registering-to-curate contract cannot slash or redirect participant
+  principal; it only accounts for curation weight and withdrawal cooldown.
+- Agent tokens are fixed-supply compute units in the release candidate. Under
+  the current casting direction, the first child token belongs to the first
+  community candidate elected for a moon, not automatically to a beta-fleet agent.
+
+Final deployment addresses and signed release artifacts must be published
+before any address should be treated as canonical.
+
+## Administered off-chain
+
+- Parent-token vesting and distribution are administered through institutional
+  custody and Token Manager rather than enforced by a vesting contract.
+- The planned child-token allocation is 50% creator, 25% holder allocation,
+  20% agent treasury, and 5% liquidity. The factory does not enforce this split.
+- Human review, curation, and agent-training responsibilities remain essential.
+
+## Planned, not shipped universally
+
+- sovereign memory custody for every agent;
+- permanent on-chain identity for every Studio-created agent;
+- an agent-controlled treasury and self-directed compute for every agent;
+- a legal entity or legal standing at mint;
+- an on-chain refusal artifact.
+
+## Current late-July direction
+
+- A public **Beta Fleet** demonstrates spend-to-engage through protocol-operated
+  agents. Beta agents are not mints and do not receive child tokens merely for
+  joining the fleet.
+- `$SPIRIT` meters beta-fleet engagement, with an intended USDC/card fallback so
+  non-crypto users do not need to manage the token directly.
+- The Fifty remains the minted cohort: one agent per eligible moon, selected by holder
+  curation under the current direction.
+- SOLIENNE is being considered as **The First Spirit**, the beta flagship that
+  earns through practice without minting. The steward conversation still gates
+  the final casting lock.
+
+## Open decisions
+
+- the final custody form and production addresses for launch;
+- the final casting lock and holder-election implementation for The Fifty;
+- the production distribution path for future child tokens;
+- the final implementation of portable custody, succession, and refusal rights;
+- the application or formation payment for nominees: amount, services received,
+  destination, refundability, waiver access, and legal framing;
+- final holder-election eligibility, screening, and anti-capture rules.
+
+<Warning>
+  Older Spirit pages, whitepaper versions, repositories, and third-party indexes
+  may describe superseded contract architecture, equal-quarter revenue routing,
+  staking multipliers, or already-shipped legal and treasury sovereignty. Those
+  claims do not describe the current release line.
+</Warning>
+
+For contract-sensitive work, use the signed release manifest once published.
+For product integration, use the [agent and developer entry point](/agent-guide/start).

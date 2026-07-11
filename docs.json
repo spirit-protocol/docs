@@ -1,11 +1,13 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "name": "Spirit Protocol",
+  "description": "Spirit helps people train agents with memory, judgment, authored boundaries, portable identity, and a practice worth returning to.",
   "theme": "luma",
-  "favicon": "https://media.brand.dev/e57a071a-49fd-498f-af3e-137beec0089a.png",
+  "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#43eb7b",
-    "light": "#288d4a"
+    "primary": "#056333",
+    "light": "#43eb7b",
+    "dark": "#08783e"
   },
   "appearance": {
     "default": "dark"
@@ -15,7 +17,7 @@
       "family": "Space Grotesk"
     },
     "body": {
-      "family": "Space Mono"
+      "family": "Inter"
     }
   },
   "navbar": {
@@ -30,9 +32,10 @@
         "tab": "Documentation",
         "groups": [
           {
-            "group": "Introduction",
+            "group": "Start Here",
             "pages": [
               "introduction",
+              "status",
               "how-it-works",
               "the-fifty"
             ]
@@ -47,13 +50,20 @@
             ]
           },
           {
-            "group": "Spirit Studio",
+            "group": "Train an Agent",
             "pages": [
               "studio/overview",
+              "studio/practice-brief",
               "studio/create-agent",
               "studio/bring-your-agent",
               "studio/training",
               "studio/deploy"
+            ]
+          },
+          {
+            "group": "Spirit Index",
+            "pages": [
+              "index/overview"
             ]
           },
           {
@@ -67,8 +77,15 @@
         ]
       },
       {
-        "tab": "Developers",
+        "tab": "Agents & Developers",
         "groups": [
+          {
+            "group": "Start Here",
+            "pages": [
+              "agent-guide/start",
+              "agent-guide/status"
+            ]
+          },
           {
             "group": "Studio API",
             "pages": [

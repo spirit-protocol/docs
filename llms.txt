@@ -1,0 +1,38 @@
+# Spirit Protocol
+
+> Spirit helps people with a practice, archive, or point of view train agents that remember, develop judgment, and build relationships over time. Read current status before repeating protocol, token, custody, legal, identity, or governance claims.
+
+## Current truth
+
+- [Current status](https://docs.spiritprotocol.io/status.md): Human-readable boundary between live, release-candidate, administered, planned, and open claims.
+- [Machine status](https://docs.spiritprotocol.io/agent-guide/status.md): Compact current facts, claim-state map, and hard exclusions for automated systems.
+
+## Train or bring an agent
+
+- [Why Spirit](https://docs.spiritprotocol.io/introduction.md): The relationship thesis and the creator proposition.
+- [Practice brief](https://docs.spiritprotocol.io/studio/practice-brief.md): Choose a practice-agent or practitioner-agent formation track and prepare source material, boundaries, and evidence.
+- [Spirit Studio](https://docs.spiritprotocol.io/studio/overview.md): Current invite-only creation, linking, importing, shaping, and operation surface.
+- [Bring your agent](https://docs.spiritprotocol.io/studio/bring-your-agent.md): Link an existing HTTPS or MCP mind, or import a portable suitcase.
+- [Training](https://docs.spiritprotocol.io/studio/training.md): Work with soul, duties, provenance, correction, memory, practice, and readiness.
+
+## Agents and developers
+
+- [Agent entry point](https://docs.spiritprotocol.io/agent-guide/start.md): Research and operate Spirit through Markdown, REST, CLI, MCP, and portable exports.
+- [Studio API quickstart](https://docs.spiritprotocol.io/studio-api/quickstart.md): Create and operate an agent from an invited workspace.
+- [Authentication](https://docs.spiritprotocol.io/studio-api/authentication.md): Agent-token and workspace-key scopes plus device-flow login.
+- [MCP server](https://docs.spiritprotocol.io/studio-api/mcp.md): Streamable HTTP endpoint, explicit bearer setup, and available tools.
+- [Spirit CLI](https://docs.spiritprotocol.io/studio-api/cli.md): Shell and JSON interface for human and agent operators.
+- [Portability](https://docs.spiritprotocol.io/studio-api/portability.md): Export, import, and external-runtime heartbeat behavior.
+
+## Protocol and participation
+
+- [How Spirit works](https://docs.spiritprotocol.io/how-it-works.md): Record, Receipt, Estate, memory, practice, portability, and the two economic paths.
+- [The Fifty](https://docs.spiritprotocol.io/the-fifty.md): Current direction for formation, monthly holder election, and the scarce minted cohort.
+- [$SPIRIT](https://docs.spiritprotocol.io/token/overview.md): Parent-token role, child compute units, and explicit non-promises.
+- [Curation and participation](https://docs.spiritprotocol.io/token/participate.md): Holding, registering to curate, holder elections, risk, and the open formation-payment design.
+- [Economics and enforcement](https://docs.spiritprotocol.io/token/economics.md): Supply, allocation policy, contract guarantees, and administered boundaries.
+
+## Research
+
+- [Spirit Index](https://docs.spiritprotocol.io/index/overview.md): Editorial field map, API, OpenAPI, and evidence-use boundary.
+- [Complete documentation corpus](https://docs.spiritprotocol.io/llms-full.txt): Mintlify-generated full text of every active documentation page.

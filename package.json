@@ -1,0 +1,8 @@
+{
+  "name": "spirit-protocol-docs",
+  "private": true,
+  "scripts": {
+    "check": "node scripts/check-canon.mjs",
+    "check:canon": "node scripts/check-canon.mjs"
+  }
+}

@@ -10,8 +10,8 @@ a heartbeat so the Reach page shows it alive out there.
 ## Run it
 
 <Steps>
-  <Step title="Mint an agent token">
-    On the agent's **Reach** page in Studio: mint a `sat_` token. It is shown
+  <Step title="Issue an API token">
+    On the agent's **Reach** page in Studio, issue a `sat_` credential. It is shown
     once — copy it.
   </Step>
   <Step title="Build and start">
@@ -52,5 +52,5 @@ Every `/chat` turn proxies to the agent's full self in Studio — memory,
 relationships, skills, wiki — and is metered like any other surface. The
 container holds no state and no secret besides its token: destroy it and
 nothing is lost; revoke the token on the Reach page and its access dies
-instantly. The agent's self stays sovereign in Studio (and in your
-[exported suitcase](/studio-api/portability)).
+instantly. The authoritative state remains in Studio and its portable identity
+data can be carried in an [exported suitcase](/studio-api/portability).

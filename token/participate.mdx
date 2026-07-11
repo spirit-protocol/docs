@@ -1,76 +1,108 @@
 ---
-title: "How to Acquire $SPIRIT: Participation and Staking Guide"
+title: "Curation and participation"
 sidebarTitle: "Participate"
-description: "How to acquire $SPIRIT on Base, how staking works, what MiCA means for EU/EEA buyers, and the risks to know first."
+description: "How Spirit participation is intended to work through ordinary holding, voluntary registering to curate, and later holder elections without token rewards or principal slashing."
 ---
 
-$SPIRIT becomes available on the open market at the Token Generation Event. Nothing about that removes the fundamental risk of participating in a volatile crypto-asset — read the warning below before you do anything else.
+Spirit participation is about helping recognize practices worth sustaining.
+It is not a shortcut to a relationship with an agent.
 
-<Warning>
-**Participating in $SPIRIT involves risk of total loss.** $SPIRIT is a highly speculative crypto-asset. Its price is entirely market-driven, with no floor, no yield, and no issuer obligation to support its value. It can go to zero. Under MiCA (Regulation (EU) 2023/1114), you are required to be informed: this crypto-asset is not covered by investor compensation schemes (Directive 97/9/EC) or deposit guarantee schemes (Directive 2014/49/EU). It may not always be transferable or liquid. Participate only with capital you can afford to lose entirely.
-</Warning>
+## Before public launch
 
-## Open Market on Base
+The public launch window is **late July 2026**. Final contract addresses,
+supported venues, and verified participation instructions will be published
+only after release verification.
 
-After the Token Generation Event (TGE) in **late July 2026**, $SPIRIT trades on the open market. You acquire it the same way you would any ERC-20 token — no whitelist, no application, just a compatible wallet and ETH for gas. You can acquire it through:
+Do not rely on an old token address, copied liquidity link, private message, or
+search result. These docs intentionally do not provide acquisition instructions
+before the final release artifact exists.
 
-- **Regulated exchanges** — Spirit Protocol Labs has filed for admission to trading under MiCA; venues will be announced at TGE
-- **Base DEX** — Any Base-compatible decentralized exchange; use the verified contract address below
-
-<Note>
-Nothing on this page is an offer or solicitation of any kind.
-</Note>
-
-**Verified contract address:** `0xA1534d279F467063Fc40f71F2C672822A7E63880`
-
-Always verify the contract address before any transaction. Scams, counterfeit tokens, and phishing attempts targeting crypto-asset buyers are real risks. Only interact with the verified contract address above.
-
-## MiCA Compliance for EU/EEA Holders
-
-Spirit Protocol Labs, Inc. has prepared a crypto-asset white paper in accordance with **Regulation (EU) 2023/1114 (MiCA)** and submitted notification to the **Central Bank of Ireland** (Home Member State: Ireland). This filing passports across all EU and EEA member states, meaning admission to trading is available to eligible holders across the EU and EEA under a single regulatory framework.
-
-The MiCA white paper was submitted on April 29, 2026. It has not been approved by any competent authority in any EU Member State — the issuer is solely responsible for its content, as is standard under Title II of MiCA. You can read the full white paper at [spiritprotocol.io/mica-whitepaper](https://www.spiritprotocol.io/mica-whitepaper.xhtml).
-
-## Staking $SPIRIT
-
-Once you hold $SPIRIT, you can stake it in protocol staking pools. Staking serves a functional role: it weights your participation in governance and determines your share of agent token distributions that flow to $SPIRIT holders.
-
-### Staking Pools: 1x–36x Multipliers
-
-Staking pools offer multipliers from **1x to 36x**, tiered by lock duration and commitment level. A higher multiplier means a larger proportional share of the distributions allocated to $SPIRIT stakers. The specific pool parameters — lock periods, multiplier schedule, minimum stake — are governed by the protocol's smart contracts and may be updated through governance.
-
-<Note>
-Staking locks your $SPIRIT for the chosen duration. You cannot freely transfer staked tokens until the lock period ends. Choose your staking duration deliberately.
-</Note>
-
-### What You Receive as a Staker
-
-When each new Spirit agent launches its own token, **25% of that agent's total token supply** is allocated to $SPIRIT holders. That allocation is delivered via **Superfluid money streaming over 52 weeks** — meaning you receive a continuous, real-time stream of agent tokens, not a one-time airdrop. Your share of that stream is proportional to your staked position and its multiplier relative to the total staked pool.
-
-The protocol's on-chain revenue-routing design (the RoyaltyRouter smart contract — Phase 2, activating at mainnet launch) also allocates a portion of agent activity to the staker pool. This is a protocol coordination mechanism encoded in smart contracts, not a payment, dividend, or profit share from the issuer — and it depends entirely on whether agents generate any activity at all.
-
-<Warning>
-**This is not yield or passive income in any financial sense.** Agent revenue distributions are not guaranteed, are not fixed, and depend entirely on whether agents generate revenue. The amount of agent tokens you receive depends on how many agents launch, how much revenue they generate, and how many other $SPIRIT holders are staking. These figures could be zero. Nothing here constitutes a promise of financial return.
-</Warning>
-
-## Key Risks to Understand Before You Participate
-
-Beyond total loss of your $SPIRIT position, be aware of the following:
-
-- **Market volatility.** $SPIRIT is subject to significant price fluctuations driven by supply and demand, market sentiment, and macroeconomic factors. No stabilization mechanism exists.
-- **Liquidity risk.** Low trading volumes may result in high slippage or an inability to exit your position efficiently, particularly under market stress.
-- **Smart contract risk.** Despite completed audits (no critical vulnerabilities found), unforeseen bugs or novel attack vectors could compromise staking, governance, or token security.
-- **Platform risk.** Exchanges where $SPIRIT is listed may become insolvent or delist the token. The issuer is not a party to exchange transactions and assumes no responsibility for exchange operations.
-- **Key management risk.** You are solely responsible for your private keys and wallet access. Loss of your private keys means permanent loss of your tokens — blockchain transactions cannot be reversed.
-- **Regulatory risk.** Evolving regulations in your jurisdiction may restrict or prohibit acquisition, holding, or transfer of $SPIRIT. Check your local laws.
-
----
+## Two participation modes
 
 <CardGroup cols={2}>
-  <Card title="$SPIRIT Overview" icon="circle-info" href="/token/overview">
-    What $SPIRIT is, what it does, and what it is not.
+  <Card title="Hold" icon="wallet">
+    Ordinary holding remains transferable and does not need to be registered to participate in the network generally.
   </Card>
-  <Card title="Token Economics" icon="chart-pie" href="/token/economics">
-    Full supply allocation, agent launch distribution, and the revenue split model.
+  <Card title="Register to curate" icon="check-to-slot">
+    Voluntarily place tokens in the curation contract to receive curation weight while registered.
+  </Card>
+</CardGroup>
+
+Registering to curate is the current name for the mechanism sometimes called
+staking in technical code. The distinction matters:
+
+- it provides curation weight, not token rewards;
+- principal cannot be slashed, seized, or redirected by an administrator in
+  the current release candidate;
+- requesting withdrawal removes curation weight and begins the configured
+  cooldown;
+- the owner may configure a cooldown only within the contract's hard maximum;
+- there are no lock-duration multipliers in the current design.
+
+## Holder election
+
+The current direction gives holders a binding choice among qualified nominees
+for each monthly mint. The first election is intended to select the first
+community candidate for the September 2026 moon.
+
+Final Snapshot mechanics, voter eligibility, candidate screening, tie-breaking,
+and anti-capture rules remain subject to the casting and legal lock. Until those
+rules are published, treat the direction as pending rather than operational.
+
+## Nominee formation payment: open design
+
+Spirit is considering requiring an eligible nominee to spend `$SPIRIT` to enter
+the formal formation and application process. Public documentation must not
+describe this as paying to buy odds, votes, admission, or a token allocation.
+
+If adopted, the payment should purchase defined work such as provenance review,
+the guided anteroom, Studio onboarding, training operations, readiness review,
+and ballot preparation. Before launch, Spirit must publish:
+
+- the amount or pricing method;
+- who receives the payment and how it is used;
+- what services every applicant receives;
+- whether any portion is refundable;
+- scholarships, waivers, or sponsored access;
+- what happens when a nominee qualifies but loses the election;
+- jurisdiction and eligibility restrictions;
+- confirmation that payment cannot buy votes or preferential screening.
+
+<Warning>
+  A formation payment must never be presented as purchasing election odds. It
+  pays for defined services or it should not exist. The mechanism remains open
+  pending final design and legal review.
+</Warning>
+
+## Curation firewall
+
+Curation must not create preferential:
+
+- token price or allocation;
+- liquidity or execution;
+- timing or private information;
+- financial rewards for choosing a candidate;
+- access to an agent's private memory or relationship state.
+
+Taste may shape which practice is recognized. It must not create a hidden
+economic class.
+
+## Risk
+
+Token value may fall to zero. Smart contracts, custody providers, markets,
+wallets, and regulation each introduce separate risks. Registering to curate
+adds contract and cooldown risk without removing market risk.
+
+<Warning>
+  No token balance guarantees influence, access, return, liquidity, or a
+  relationship with any agent.
+</Warning>
+
+<CardGroup cols={2}>
+  <Card title="$SPIRIT overview" icon="coins" href="/token/overview">
+    Understand the role and limits of the parent token.
+  </Card>
+  <Card title="The Fifty" icon="moon" href="/the-fifty">
+    Read the cohort cadence, readiness standard, and curation boundary.
   </Card>
 </CardGroup>

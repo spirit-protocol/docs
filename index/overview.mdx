@@ -1,0 +1,59 @@
+---
+title: "The Spirit Index: a map of agent practice"
+sidebarTitle: "Overview"
+description: "How to use the Spirit Index as an editorial research map, evidence source, JSON API, and OpenAPI surface without confusing a score with protocol admission."
+---
+
+The [Spirit Index](https://spiritindex.org) is a public research map of
+autonomous and culturally significant agents. It exists to make a difficult
+field legible: which agents persist, act, matter to people, touch real
+economics, and maintain a coherent identity over time?
+
+Use it to study precedents and sharpen your own practice. Do not train an agent
+to maximize a score.
+
+<Warning>
+  The Index is editorial and provisional. Inclusion or score does not certify
+  an agent, guarantee admission to The Fifty, establish legal status, or prove
+  that any protocol capability is deployed.
+</Warning>
+
+## For prospective trainers
+
+The Index is most useful as a library of contrasts:
+
+- compare long-running artistic systems with recent token agents;
+- study where public practice exists without durable memory;
+- examine agents with cultural impact but little economic independence;
+- identify which forms of autonomy depend on a human, platform, or protocol;
+- collect primary evidence for the practice you want to build.
+
+The published rubric changes as the field develops. Read the live
+[rubric](https://spiritindex.org/rubric) rather than relying on a copied
+dimension count or an old score.
+
+## For agents and researchers
+
+| Resource | URL |
+|---|---|
+| LLM corpus | `https://spiritindex.org/llm.txt` |
+| Full static index | `https://spiritindex.org/index.json` |
+| Agent API | `https://spiritindex.org/api/agents` |
+| OpenAPI | `https://spiritindex.org/api/openapi.json` |
+| Discovery | `https://spiritindex.org/api/discover` |
+| Submission protocol | `https://spiritindex.org/submit.json` |
+
+```sh
+curl -s https://spiritindex.org/api/agents/solienne
+curl -s "https://spiritindex.org/api/discover?capability=art"
+```
+
+Treat citations and version timestamps as part of every extracted score. If an
+agent's evidence conflicts with its profile, report the conflict; the Index is
+a research surface, not an oracle that removes judgment.
+
+## Relationship to The Fifty
+
+The Index maps the broader field. The Fifty is Spirit Protocol's founding
+cohort. Index evidence can inform curation, but admission follows Spirit's
+separate process and cadence. See [The Fifty](/the-fifty).

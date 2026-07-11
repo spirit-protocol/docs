@@ -1,6 +1,6 @@
 # Contributing to Spirit Protocol Docs
 
-This repo is the source of truth for [docs.spiritprotocol.io](https://docs.spiritprotocol.io). It deploys via Mintlify: **every merge to `main` goes live automatically** within a couple of minutes. No deploy step, no build config — the Mintlify GitHub App watches this repo.
+This repo is the publication source for [docs.spiritprotocol.io](https://docs.spiritprotocol.io). Project truth remains in the current Spirit canon described in `AGENTS.md`. It deploys via Mintlify: **every merge to `main` goes live automatically** within a couple of minutes.
 
 ## Quick start
 
@@ -9,6 +9,7 @@ git clone https://github.com/spirit-protocol/docs.git
 cd docs
 npm i -g mint          # Mintlify CLI
 mint dev               # local preview at http://localhost:3000
+npm run check          # canon, frontmatter, and navigation checks
 ```
 
 Edit any `.mdx` file, save, and the preview hot-reloads. That's the whole loop.
@@ -18,10 +19,13 @@ Edit any `.mdx` file, save, and the preview hot-reloads. That's the whole loop.
 | Path | What lives there |
 |---|---|
 | `docs.json` | Site config + navigation. Add new pages here or they won't appear. |
+| `llms.txt` | Curated machine index; current status must remain first. |
 | `index.mdx` | Landing page |
-| `concepts/` | Core concepts (sovereignty, daily practice, graduation) |
-| `studio/` | Spirit Studio guides — create, train, deploy (UI-first walkthroughs) |
-| `developers/` | Programmatic surface — quickstart, SDKs (`spirit-protocol-sdk`, `airc-sdk`, `agent-kit`), contracts, discovery endpoints |
+| `agent-guide/` | Machine entry point and claim-state boundary |
+| `concepts/` | Memory, identity, sovereignty, compute, custody |
+| `studio/` | Practice brief and UI-first Studio guides |
+| `studio-api/` | REST, CLI, MCP, authentication, external runtimes, portability |
+| `index/` | Spirit Index research and machine access |
 | `token/` | $SPIRIT token pages |
 | `images/`, `logo/` | Static assets |
 
@@ -29,7 +33,7 @@ Edit any `.mdx` file, save, and the preview hot-reloads. That's the whole loop.
 
 1. Branch from `main` (`feat/studio-api-docs`, `fix/quickstart-typo`, …)
 2. Edit, preview with `mint dev`
-3. Run `mint broken-links` before pushing
+3. Run `npm run check` and `mint broken-links` before pushing
 4. Open a PR — Mintlify validates the build on the PR
 5. Merge → live on docs.spiritprotocol.io automatically
 
@@ -42,10 +46,17 @@ Small fixes (typos, broken links) can go straight to a PR without discussion. Ne
 - **Voice**: plain language, developer-first in `developers/`, narrative allowed in `concepts/` and `studio/`.
 - **Public-surface rules** (these are hard):
   - Launch timing is "late July 2026" — never a specific date.
-  - No token price, valuation, FDV, or allocation numbers.
-  - SOLIENNE is the only agent named publicly.
-  - "fifty moons," never "fifty months."
+  - No token price, valuation, or FDV. Allocation numbers must match current
+    canon and state whether they are contract-enforced or administered.
+  - Beta-fleet agents may be public; future minted candidates stay unnamed until the approved election process names them.
+  - One mint on the first full moon of each eligible calendar month until fifty
+    are complete; never "fifty months."
   - "frontier intelligence" — don't name specific model versions.
+  - No retired streaming architecture or terminology.
+  - No old contract addresses, equal-quarter routing, or staking multipliers.
+  - Mark material claims `Live`, `Release candidate`, `Administered`, `Planned`, or `Open`.
+  - Studio is invite-only; never send an uninvited reader to a dead-end "create now" flow.
+  - Treat frontmatter descriptions as machine-facing claims because they populate `/llms.txt`.
 
 ## Adding a page
 

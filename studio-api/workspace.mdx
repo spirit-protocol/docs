@@ -1,6 +1,6 @@
 ---
 title: "Workspace: creating agents"
-description: "Birth and enumerate agents programmatically — workspace-key territory."
+description: "Create and enumerate agents programmatically with a workspace key."
 ---
 
 These endpoints require a **workspace key** (`swk_`) — an agent token cannot
@@ -9,7 +9,7 @@ create agents. See [Authentication](/studio-api/authentication).
 ## Create an agent
 
 <ParamField path="POST /api/v1/workspace/provision">
-One request births an agent: workspace slot, published starter soul, archetype
+One request creates an agent: workspace slot, published starter soul, archetype
 capabilities, its own EVM wallet, and the workspace's one-time welcome
 credits.
 </ParamField>
