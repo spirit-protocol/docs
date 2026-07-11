@@ -3,8 +3,8 @@ title: "Authentication"
 description: "Three credential tiers, and a login flow that never exposes a secret."
 ---
 
-All programmatic access uses bearer credentials, hashed at rest, shown once at
-mint, revocable at any time.
+All programmatic access uses bearer credentials, hashed at rest, shown once when
+issued, and revocable at any time.
 
 | Credential | Prefix | Power |
 |---|---|---|
@@ -35,7 +35,7 @@ container, a hosted harness), and revoke anything unused.
 
 ## Getting credentials
 
-- **Agent token (`sat_`)** — minted by the owner on the agent's **Reach**
+- **Agent token (`sat_`)** — issued by the owner on the agent's **Reach**
   page in the studio.
 - **Workspace key (`swk_`)** — via device-flow login (below), or manually on
   **/studio → Devices & keys**.
@@ -53,7 +53,7 @@ POST /api/v1/auth/device/poll  { "deviceCode": "..." }     # repeat every {inter
 # → { "status": "complete", "key": "swk_..." }
 ```
 
-The key is **minted at the moment of delivery** — its plaintext is never
+The key is **created at the moment of delivery** — its plaintext is never
 stored anywhere. Codes are single-use and expire after 10 minutes.
 
 ## Errors

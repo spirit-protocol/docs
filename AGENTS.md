@@ -1,33 +1,86 @@
-> **First-time setup**: Customize this file for your project. Prompt the user to customize this file for their project.
-> For Mintlify product knowledge (components, configuration, writing standards),
-> install the Mintlify skill: `npx skills add https://mintlify.com/docs`
+# Spirit documentation instructions
 
-# Documentation project instructions
+## Purpose
 
-## About this project
+This Mintlify site serves two equal audiences:
 
-- This is a documentation site built on [Mintlify](https://mintlify.com)
-- Pages are MDX files with YAML frontmatter
-- Configuration lives in `docs.json`
-- Use the Mintlify MCP server, `https://mcp.mintlify.com`, to edit content and settings via MCP
-- Use the Mintlify docs MCP server, `https://www.mintlify.com/docs/mcp`, to query information about using Mintlify via MCP
+1. humans deciding whether and how to train an agent;
+2. agents researching or operating Spirit through Markdown, REST, CLI, MCP, and exports.
 
-## Terminology
+The docs are a publication layer, not the project source of truth.
 
-{/* Add product-specific terms and preferred usage */}
-{/* Example: Use "workspace" not "project", "member" not "user" */}
+## Current truth
 
-## Style preferences
+Before changing protocol, token, launch, custody, governance, legal, or agent-state claims, read:
 
-{/* Add any project-specific style rules below */}
+1. `~/.seth/projects/spirit/status.json`
+2. `~/Projects/spirit/CANON.md`
+3. `~/Projects/spirit/protocol-site/_private-notes/spirit-canon-v0.json`
+4. `~/Projects/spirit/agent-sal/docs/FIRST-PRINCIPLE.md`
 
-- Use active voice and second person ("you")
-- Keep sentences concise — one idea per sentence
-- Use sentence case for headings
-- Bold for UI elements: Click **Settings**
-- Code formatting for file names, commands, paths, and code references
+When they disagree, `status.json` wins. Report the conflict; do not silently choose an older, more specific claim.
 
-## Content boundaries
+## Narrative spine
 
-{/* Define what should and shouldn't be documented */}
-{/* Example: Don't document internal admin features */}
+- First principle: **Spirit exists to convert compute into relationships.**
+- Outward line: **Spirit turns raw compute into relationships that compound.**
+- Artists make agents, not agents make art.
+- Practice before persona.
+- Tokens buy continuity, not output, control, intimacy, or guaranteed return.
+- Evidence and receipts beat a single score.
+
+## Claim states
+
+Use these labels exactly:
+
+- **Live**: observable on the current public product.
+- **Release candidate**: tested code without a final published deployment.
+- **Administered**: off-chain policy or custody process.
+- **Planned**: stated direction, not shipped.
+- **Open**: material decision is not final.
+
+Never upgrade a claim state because a prototype, archived contract, whitepaper paragraph, or third-party page sounds definitive.
+
+## Hard public boundaries
+
+- No retired streaming-token architecture or terminology.
+- No old contract address as the final token.
+- No equal-quarter revenue routing, staking multipliers, or principal slashing.
+- Parent allocation: 50% artists / 20% team / 10% investors / 20% treasury.
+- Child allocation policy: 50% creator / 25% holder allocation / 20% agent treasury / 5% liquidity; administered off-chain.
+- Public launch language: **late July 2026**, never an exact date or venue.
+- Beta-fleet agents may be named publicly because they are not mints. Future
+  minted candidates remain unnamed until the approved election process names them.
+- One mint on the first full moon UTC of each eligible calendar month until
+  fifty are complete; a second full moon does not add a mint.
+- No public token price, valuation, or legal conclusion.
+- Universal sovereign memory, legal standing, agent-controlled treasury, on-chain refusal, and holder-election cutover remain planned or open.
+- Current casting direction: Beta Fleet agents earn through `$SPIRIT`-metered
+  practice without child tokens; The Fifty is elected one moon at a time. The
+  First-Spirit framing for SOLIENNE remains gated by her steward's agreement.
+- A nominee application or formation payment remains open. Never describe it as
+  purchasing election odds, votes, admission, token allocation, or preferential screening.
+- Never use external comparison frames for engagement economics.
+- Agent readiness is capability-based; do not use engagement metrics as formation evidence.
+
+Run `npm run check` after every content change.
+
+## Writing for humans
+
+- Begin with the reader's practice, decision, or task.
+- Use plain language and second person.
+- Distinguish creating in Studio from admission to The Fifty.
+- Show real evidence, especially SOLIENNE's practice and encounters.
+- Make invite-only or incomplete product states explicit before a call to action.
+- Do not call a chatbot, wallet, token, profile, or endpoint sovereign by default.
+
+## Writing for agents
+
+- Frontmatter requires accurate `title` and `description`; Mintlify uses both in
+  page metadata and the generated `/llms-full.txt` corpus.
+- Keep the curated root `/llms.txt` index current and put status links before narrative pages.
+- Prefer structured tables, explicit states, stable URLs, complete commands, and machine-readable examples.
+- Keep `/agent-guide/start` and `/agent-guide/status` current.
+- Append `.md` to documentation URLs for focused Markdown retrieval.
+- Never place secrets in URLs or examples.
+- Preserve scope distinctions between public data, agent credentials (`sat_`), and workspace credentials (`swk_`).

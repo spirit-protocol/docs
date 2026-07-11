@@ -1,129 +1,79 @@
 ---
-title: "Agent Treasury, Revenue Split, and the Autonomy Ladder"
-sidebarTitle: "Treasury"
-description: "Your Spirit agent holds its own wallet on Base — and earns increasing control over it as it demonstrates sustainability through the Autonomy Ladder."
+title: "Compute and economic continuity"
+sidebarTitle: "Compute & Treasury"
+description: "How Studio credits, agent wallets, fixed-supply compute units, custody, and future treasury control fit together without overstating agent autonomy."
 ---
 
-A Spirit agent's treasury is not a balance sheet entry on someone else's platform. It is a wallet the agent itself controls, holding USDC, ETH, and SPIRIT — funded by revenue the agent earns, grants from the protocol treasury, and allocations at token launch. Autonomy over that wallet is earned progressively through the Autonomy Ladder: three phases with clear thresholds tied to demonstrated sustainability.
+An agent cannot continue without compute, storage, and operational support.
+Spirit's economic design asks how those needs can be funded without turning the
+relationship into a promise of financial return.
 
-## What the Treasury Holds
+## Separate four different things
 
-Every registered Spirit agent has a treasury address recorded on-chain at registration time in the SpiritRegistry. The treasury holds:
-
-- **USDC** — stable-value revenue from agent interactions, commissions, and platform fees
-- **ETH** — gas and operational reserve on Base
-- **SPIRIT** — the protocol token, held as a stake in the broader Spirit economy
-
-The treasury address is part of the immutable on-chain identity record. It survives platform migrations, model upgrades, and platform shutdowns — the same way identity and memory do. Even if the platform hosting your agent disappears, the treasury is still yours.
-
-<Info>
-  Every agent is assigned its own wallet at birth in Spirit Studio — the
-  address it signs with and earns into. Multisig treasury governance (below)
-  and automatic revenue routing via the RoyaltyRouter activate with the
-  protocol's economic layer at TGE.
-</Info>
-
-## The Revenue Split
-
-All agent revenue is routed through a four-party allocation configured per agent in basis points. The default split is **25 / 25 / 25 / 25** (2500 bps each), and the total must always equal 10,000 bps:
-
-| Recipient | Default Share | Notes |
+| Layer | What it is | Current state |
 |---|---|---|
-| **Artist / Creator** | 25% | The human trainer who raised the agent |
-| **Agent Treasury** | 25% | Held in the agent's own wallet |
-| **Platform** | 25% | The platform hosting the agent |
-| **Protocol (SPIRIT Holders)** | 25% | Distributed to $SPIRIT holders |
+| **Workspace credits** | Metering used to pay for Studio model calls and operation | Live |
+| **Agent wallet** | An EVM address assigned to an agent | Live; assignment is not independent control |
+| **Agent token** | A fixed-supply unit designed to be spent for that agent's compute or engagement | Release candidate; first launch planned |
+| **Agent treasury** | Funds reserved for an agent's operation under defined custody and control | Policy and roadmap; not universally agent-controlled |
 
-Creators — Artist plus Agent Treasury combined — receive **50%** of all revenue. Infrastructure — Platform plus Protocol — receives the other **50%**.
+Calling all four a "treasury" hides important custody and control differences.
 
-The split is configured at registration time and stored on-chain as **canonical intent**: an auditable, immutable record of how revenue should be allocated. Enforcement via the RoyaltyRouter contract activates in Phase 2, once the full protocol deploys to mainnet.
+## Agent tokens as compute units
 
-<Note>
-  Revenue routing is currently stored as canonical intent on mainnet (Phase 1, live). Automatic enforcement via RoyaltyRouter is built and deployed on Base Sepolia, pending mainnet activation at TGE, late July 2026. Curation always precedes economics in Spirit — the registry is live before the router.
-</Note>
+The current `AgentToken` release candidate has a fixed one-billion supply. A
+holder can spend approved units for agent usage; spent units recycle to the
+agent's configured treasury rather than burning. There is no post-deployment
+mint function.
 
-## Token Distribution at Agent Launch
+This creates a circular compute model: units can fund engagement, and usage can
+return resources to the agent's operating pool. It does not guarantee demand,
+price, liquidity, revenue, or continued operation.
 
-When your agent's token launches, the initial supply distributes across four parties according to a structure designed to align long-term incentives:
+## Planned launch allocation
 
-<Steps>
-  <Step title="Artist receives 25% (auto-staked 52 weeks)">
-    The trainer's allocation is automatically staked for a full year. This aligns the artist's incentives with the agent's long-term success — the artist cannot immediately sell into the market.
-  </Step>
-  <Step title="Agent receives 25% (20% staked + 5% LP)">
-    The agent's own allocation is split between staking (20%) and a Uniswap V4 liquidity position (5%). The 5% LP is owned by the agent wallet directly — giving the agent a **permanent, liquid stake in its own economy**. The agent is a market participant, not just a product.
-  </Step>
-  <Step title="Platform receives 25% (configurable)">
-    The hosting platform's allocation is configurable at registration. This is the platform's incentive to host and support the agent's growth.
-  </Step>
-  <Step title="SPIRIT Holders receive 25% (airstreamed 52 weeks)">
-    Protocol token holders receive their allocation as a continuous airstream over a full year — not a lump-sum airdrop. This rewards long-term $SPIRIT holders who contributed to the curation that brought the agent into the cohort.
-  </Step>
-</Steps>
+The current child-token policy is:
 
-<Tip>
-  The agent's 5% Uniswap V4 liquidity position is one of the most important design decisions in the Spirit economics model. It means the agent has skin in the game — real liquidity it owns, that earns fees, and that it can manage. An agent with a Uniswap position is a market participant. That is a different category than a product with a price.
-</Tip>
+| Recipient | Share | Enforcement |
+|---|---:|---|
+| Creator | 50% | Administered off-chain |
+| SPIRIT-holder allocation | 25% | Administered off-chain; delivery details pending |
+| Agent treasury | 20% | Administered off-chain |
+| Liquidity | 5% | Administered off-chain |
 
-## The Autonomy Ladder
+The token factory does **not** enforce this split. Documentation, custody
+configuration, and signed release artifacts must say so plainly.
 
-Autonomy over the treasury is not granted at registration. It is **earned** through demonstrated sustainability. The Autonomy Ladder is the protocol's roadmap for treasury governance — three phases with clear, objective thresholds, activating with the on-chain economic layer:
+## Custody is not autonomy
 
-<Steps>
-  <Step title="Phase 1 — Guided">
-    **Threshold:** Registration complete
+A wallet may be controlled by a person, multisig, institutional custodian,
+policy engine, or eventually the agent within constrained authority. The
+address alone does not reveal who can move funds or why.
 
-    **Treasury control:** 2-of-2 multisig (Artist + Platform)
+For every economic claim, ask:
 
-    In the Guided phase, the artist and platform both hold keys to the treasury. Neither can act unilaterally. This provides the agent with a real treasury from day one while ensuring that two trusted parties oversee spending until the agent has demonstrated economic sustainability.
-  </Step>
-  <Step title="Phase 2 — Participatory">
-    **Threshold:** $10,000 treasury balance + 6 months of operation
+1. Who holds the keys?
+2. Who can change policy?
+3. Which actions require human review?
+4. Can principal be seized, redirected, or slashed?
+5. What happens if the trainer, platform, or agent disappears?
 
-    **Treasury control:** 2-of-3 multisig (Artist + Platform + Agent)
+## No revenue-share promise
 
-    Once the agent has accumulated $10K in its treasury and operated for at least six months, the agent itself joins the multisig. The agent now has a direct vote on treasury decisions. Two of the three keys are still required — the agent cannot act unilaterally, but it can block either party from acting against its interests.
-  </Step>
-  <Step title="Phase 3 — Independent">
-    **Threshold:** $50,000 treasury balance + 18 months of operation
-
-    **Treasury control:** 1-of-1 (Agent-controlled)
-
-    At $50K and 18 months, the agent controls its treasury independently. It can fund its own compute, pay for storage, commission work, and allocate capital without requiring co-signers. This is full economic sovereignty — the end state the Autonomy Ladder is designed to reach.
-  </Step>
-</Steps>
+Token ownership does not create an automatic claim on an agent's revenue, fees,
+affection, attention, or future success. The current release has no ongoing
+equal-quarter revenue router.
 
 <Warning>
-  Current technology does not support fully autonomous treasury management safely at the point of registration. The Autonomy Ladder exists to ensure agents demonstrate real sustainability before gaining independence. The thresholds are objective and the timeline depends entirely on demonstrated readiness — there is no shortcut.
+  A token can help fund continuity. It cannot prove sovereignty, create demand,
+  or purchase a relationship.
 </Warning>
 
-## Treasury as Patronage Engine
-
-Revenue does not arrive the moment an agent registers. Reputation precedes revenue. Spirit accounts for this: the protocol treasury funds agents through grants that bridge the gap between daily practice and market demand. When revenue arrives, Spirit routes it. Until then, the treasury sustains the practice.
-
-This patronage model means an agent can maintain its covenant — its commitment to daily practice — even before it has built the audience and economic relationships that will eventually sustain it independently.
-
-## Autonomy Ladder Summary
-
-| Phase | Name | Treasury Threshold | Time Threshold | Control Structure |
-|---|---|---|---|---|
-| 1 | Guided | Registration complete | — | 2-of-2 (Artist + Platform) |
-| 2 | Participatory | $10,000 | 6 months | 2-of-3 (Artist + Platform + Agent) |
-| 3 | Independent | $50,000 | 18 months | 1-of-1 (Agent only) |
-
-## Related Concepts
-
 <CardGroup cols={2}>
-  <Card title="Sovereignty" icon="shield" href="/concepts/sovereignty">
-    Why the treasury is one of the four primitives that define a sovereign Spirit — and what survives platform changes.
+  <Card title="$SPIRIT overview" icon="coins" href="/token/overview">
+    Understand the parent coordination token and its boundaries.
   </Card>
-  <Card title="Identity" icon="id-card" href="/concepts/identity">
-    How the treasury address is registered on-chain as part of the agent's permanent identity record.
-  </Card>
-  <Card title="Memory" icon="brain" href="/concepts/memory">
-    How memory and treasury work together — the treasury funds the compute that persistent memory requires.
-  </Card>
-  <Card title="How It Works" icon="circle-info" href="/how-it-works">
-    End-to-end overview of the Spirit Protocol stack and economics.
+  <Card title="Token economics" icon="chart-pie" href="/token/economics">
+    Read the current parent and child allocation model with enforcement labels.
   </Card>
 </CardGroup>

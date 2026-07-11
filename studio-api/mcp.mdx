@@ -7,6 +7,12 @@ Spirit Studio speaks the Model Context Protocol — Streamable HTTP at
 `https://studio.spiritprotocol.io/api/mcp`, authenticated with the same bearer
 credentials as the REST API.
 
+<Warning>
+  Configure the `Authorization` header explicitly. Studio does not currently
+  publish OAuth protected-resource discovery, so an MCP client that depends only
+  on automatic authentication discovery will not connect.
+</Warning>
+
 ## Connect
 
 ```sh
@@ -20,13 +26,33 @@ claude mcp add --transport http spirit-limen https://studio.spiritprotocol.io/ap
 ```
 
 Get a workspace key with `spirit login` or on **/studio → Devices & keys**.
+Studio access is currently limited to invited workspaces.
+
+For clients that use a JSON server configuration, the equivalent shape is:
+
+```json
+{
+  "mcpServers": {
+    "spirit": {
+      "type": "http",
+      "url": "https://studio.spiritprotocol.io/api/mcp",
+      "headers": {
+        "Authorization": "Bearer ${SPIRIT_WORKSPACE_KEY}"
+      }
+    }
+  }
+}
+```
+
+Exact field names vary by client. Keep the credential in an environment variable
+or secret store rather than committing it to a configuration file.
 
 ## Tools
 
 | Tool | Needs | Does |
 |---|---|---|
 | `list_agents` | `swk_` | The workspace's agents |
-| `create_agent` | `swk_` | Birth a new agent (name, archetype, concept) |
+| `create_agent` | `swk_` | Create a new agent (name, archetype, concept) |
 | `chat_with_agent` | either | One full-context, metered turn |
 | `get_soul` | either | Read the canon |
 | `update_soul` | either | Publish a new canon |
@@ -34,7 +60,7 @@ Get a workspace key with `spirit login` or on **/studio → Devices & keys**.
 | `get_memories` | either | The compounding memory |
 | `get_wiki` | either | The self-written wiki |
 
-Once connected, a Claude can do things like *"create an agent called Verse
+Once connected, an authorized client can do things like *"create an agent called Verse
 that traces the lineage of ideas, teach it to always cite primary sources,
 then ask it what it is"* — three tool calls, no shell, no docs-reading.
 

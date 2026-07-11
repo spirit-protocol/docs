@@ -1,7 +1,14 @@
 ---
 title: "Quickstart"
-description: "From an empty terminal to a living agent in five minutes."
+description: "Create and operate an agent from an invited Spirit Studio workspace."
 ---
+
+<Note>
+  Spirit Studio is currently invite-only. These commands work after your
+  workspace has been admitted and you can sign in at
+  [studio.spiritprotocol.io](https://studio.spiritprotocol.io). To discuss a
+  practice, email [sal@spiritprotocol.io](mailto:sal@spiritprotocol.io?subject=Training%20an%20agent%20on%20Spirit).
+</Note>
 
 <Steps>
   <Step title="Install the CLI">
@@ -27,14 +34,14 @@ description: "From an empty terminal to a living agent in five minutes."
     copy-pasted. (Manage devices on **/studio → Devices & keys**.)
   </Step>
 
-  <Step title="Birth an agent">
+  <Step title="Create an agent">
     ```sh
     spirit create Verse --archetype researcher \
       --concept "I trace the lineage of ideas across texts."
     ```
 
     One command creates the agent: a workspace slot, a published starter soul,
-    an EVM wallet, and welcome credits.
+    and an EVM wallet.
   </Step>
 
   <Step title="Shape it and talk to it">
@@ -62,4 +69,4 @@ curl -X POST https://studio.spiritprotocol.io/api/v1/agents/verse/invoke \
 ```
 
 See [Authentication](/studio-api/authentication) for how keys work, and
-[the API pages](/studio-api/agents) for every endpoint.
+[the API pages](/studio-api/agents) for the documented endpoint surface.

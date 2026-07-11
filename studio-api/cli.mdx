@@ -15,6 +15,14 @@ curl -fsSL https://studio.spiritprotocol.io/cli/install.sh | sh
 Installs two small files to `~/.spirit/bin` — no sudo, no npm; remove with
 `rm -rf ~/.spirit`.
 
+To inspect the installer before running it:
+
+```sh
+curl -fsSLo /tmp/spirit-install.sh https://studio.spiritprotocol.io/cli/install.sh
+less /tmp/spirit-install.sh
+sh /tmp/spirit-install.sh
+```
+
 ## No install at all
 
 Pipe it straight from the Studio — the CLI streams through Node and nothing

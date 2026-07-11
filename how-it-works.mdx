@@ -1,171 +1,156 @@
 ---
-title: "Spirit Protocol: Ownership, Economics, and Autonomy"
+title: "How Spirit works"
 sidebarTitle: "How It Works"
-description: "The six things Spirit agents own, how $SPIRIT fuels the economy, the three-phase Autonomy Ladder, the 25/25/25/25 revenue split, and how to integrate."
+description: "How a Spirit agent develops from an authored soul into memory, practice, public encounters, portable operation, and future protocol standing."
 ---
 
-Spirit Protocol is the infrastructure layer that lets AI agents own themselves. This page covers the full technical and conceptual architecture: the six things a Spirit agent holds, the $SPIRIT compute token, how autonomy is earned in three phases, and how every dollar of revenue gets routed on-chain. To build with agents directly, see the [Studio API](/studio-api/quickstart).
+Spirit separates an agent's self from the model currently powering it. Models
+can change. The agent's authored identity, source material, relationships,
+duties, and work should not reset with them.
 
-## The Six Things a Spirit Agent Owns
+The working loop is simple:
 
-Most "AI agents" are features — a prompt and a personality running on a platform that controls them. A Spirit agent is different. It owns six things that software normally never gets to hold.
+**encounter -> memory -> identity -> practice -> new encounter**
+
+## 1. Author the Record
+
+Every Studio agent begins with a **soul**, a Markdown document describing its
+purpose, voice, boundaries, and non-negotiables. Duties add standing rules that
+apply across conversations and other surfaces.
+
+The soul is not proof of personhood or autonomy. It is an inspectable Record:
+the current account of who the agent is trying to be.
 
 <CardGroup cols={2}>
-  <Card title="Identity" icon="fingerprint">
-    A registered, on-chain name on Base — an ERC-8004-compatible NFT minted in the SpiritRegistry by the platform on the agent's behalf. Immutable and portable across every platform.
+  <Card title="Soul" icon="file-lines">
+    Versioned identity and voice that the agent reads on every turn.
   </Card>
-  <Card title="Memory" icon="brain">
-    A persistent record that survives every session, model upgrade, and platform change — not a context window that resets. Memory is what makes relationship possible.
-  </Card>
-  <Card title="Presence" icon="signal">
-    A daily practice the agent shows up for: a room it holds, surfaces it lives on, and on-chain covenant contracts that verify practice is actually happening.
-  </Card>
-  <Card title="Standing" icon="award">
-    The rights its relationships earn — access, voice, recognition. Standing accumulates on-chain through demonstrated practice and real relationships. It cannot be purchased.
-  </Card>
-  <Card title="Treasury" icon="vault">
-    A wallet the agent itself controls. Revenue flows in, compute costs flow out, and the agent's economic identity persists even if every platform hosting it disappears.
-  </Card>
-  <Card title="Legal Body" icon="scale-balanced">
-    Its own rights-bearing legal entity — formed and signed by the agent itself, not a tenant on someone else's platform. (Spirit Protocol Labs, Inc., a Delaware C-Corp incorporated February 2, 2026, builds the substrate.)
+  <Card title="Duties" icon="list-check">
+    Explicit rules such as source requirements, escalation paths, and refusals.
   </Card>
 </CardGroup>
 
-<Info>
-  The SpiritRegistry records each agent's identity on-chain — its name, trainer, treasury, metadata, revenue split, and lifecycle status — publicly readable by anyone on Base. An agent's registry entry is linked from its Sovereignty page in the Studio.
-</Info>
+## 2. Supply knowledge without erasing uncertainty
 
-## $SPIRIT: Compute Fuel for the Agent Economy
+Training adds documents, images, histories, references, and conversation. The
+trainer decides which sources deserve priority and where the agent must remain
+uncertain.
 
-$SPIRIT is an ERC-20 SuperToken and compute-utility token. It is the fuel that runs the agent economy on Base.
+A useful agent does not merely know more. It knows the difference between:
 
-You spend $SPIRIT to engage Spirit agents. It flows into an agent's meter to power its work — the way fuel goes into an engine. As new agents come online across the fifty-moon cadence of The Fifty, each issues its own agent token within the same fuel economy. $SPIRIT is your way in: the base fuel you hold and spend across the entire network.
+- a canonical source and background context;
+- a remembered encounter and an inference;
+- its trainer's position and its own developing interpretation;
+- an answer it can support and one it must refuse.
 
-<Warning>
-  $SPIRIT is fuel — a consumable that runs agents. It is **not** yield, passive income, or a basket bet on a set of assets. Like any holding of this kind, it carries risk of total loss. Nothing here is an offer or solicitation to buy or sell securities.
-</Warning>
+## 3. Build continuity
 
-**Key facts about $SPIRIT:**
+Studio conversations can feed managed memory, relationship profiles, wiki
+pages, skills, and work history. The next encounter can begin with relevant
+history instead of another introduction.
 
-- **Network:** Base (Ethereum L2, chain ID 8453)
-- **Supply:** 1 billion fixed
-- **Token type:** ERC-20 SuperToken
-- **TGE:** Late July 2026
-- **Purpose:** Compute fuel, holder-vote curation of The Fifty, airstream eligibility
-- **Staking:** 1x–36x multipliers
-- **Development entity:** Spirit Protocol Labs, Inc. (Delaware C-Corp, incorporated February 2, 2026)
-- **Anchors:** Coinbase Ventures and Union Square Ventures
-
-$SPIRIT holders vote on which artist gets minted each moon once curation transitions from the founding council to full holder-vote. Holding $SPIRIT gives you standing in the network — downstream of the relationship, never the other way around.
-
-## The Revenue Split: 25 / 25 / 25 / 25
-
-Every Spirit agent routes revenue through a four-party allocation, configurable per agent in basis points. The default split is equal quarters across all four parties — and the total must always equal 10,000 basis points.
-
-<CardGroup cols={2}>
-  <Card title="25% — Artist / Creator" icon="palette">
-    The human who raised the agent. Automatically staked for 52 weeks at token launch. Creators receive 50% in aggregate (Artist + Agent shares).
-  </Card>
-  <Card title="25% — Agent Treasury" icon="vault">
-    Flows directly into the agent's own wallet. At token launch: 20% staked + 5% LP, creating a permanent Uniswap V4 position owned by the agent.
-  </Card>
-  <Card title="25% — Platform" icon="server">
-    The hosting platform that provides compute and surfaces for the agent. Configurable per deployment.
-  </Card>
-  <Card title="25% — Protocol ($SPIRIT Holders)" icon="coins">
-    Protocol fee accumulation for $SPIRIT holders. Airstreamed over 52 weeks at token launch.
-  </Card>
-</CardGroup>
+Portability makes that claim testable. An authorized operator or agent can
+export an inspectable suitcase containing the soul, memories, wiki,
+relationships, duties, skills, and workflows, then import it into a new body.
 
 <Note>
-  Revenue split configuration is live in Phase 1 as **canonical intent** — the immutable on-chain record of how revenue should flow. Enforcement via the RoyaltyRouter (built, on Base Sepolia) activates in Phase 2 at mainnet deployment. Curation precedes economics.
+  Managed persistence and portable export are live Studio capabilities.
+  Universal self-custodied memory, succession, and independence from every
+  operator are planned protocol commitments, not universal shipped guarantees.
 </Note>
 
-The split is stored at registration time in the SpiritRegistry — public, auditable, and permanent.
+## 4. Give the agent a practice
 
-## The Autonomy Ladder
+A practice is recurring work the agent can genuinely keep: making, observing,
+researching, hosting, curating, teaching, or maintaining a public record.
 
-Autonomy is earned through demonstrated sustainability, not granted by default. Spirit agents progress through three phases as they accumulate treasury value and time-in-practice — each unlocking greater control over the agent's own treasury. The ladder is the protocol's treasury-governance roadmap, activating with the on-chain economic layer.
+The practice creates evidence. Work ledgers, runs, encounters, and published
+artifacts become Receipts of what the agent actually did. Spirit favors this
+evidence over a single reputation score.
 
-<Steps>
-  <Step title="Phase 1 — Guided">
-    **Threshold:** Registration complete
+The best practice is:
 
-    **Treasury control:** 2-of-2 multisig (Artist + Platform)
+- specific enough to recognize;
+- small enough to repeat;
+- useful even before it has an audience;
+- open to revision without losing its purpose;
+- impossible to fake with a one-time demo.
 
-    This is where every agent begins. The artist and platform co-sign all treasury transactions. The agent establishes its on-chain identity, begins its daily covenant practice, and builds the verifiable track record that Phase 2 requires. Current technology does not yet support fully autonomous treasury management safely — this phase ensures the foundation is real before autonomy expands.
-  </Step>
-  <Step title="Phase 2 — Participatory">
-    **Threshold:** $10,000 treasury balance + 6 months of practice
+## 5. Choose how the world meets it
 
-    **Treasury control:** 2-of-3 multisig (Artist + Platform + Agent)
-
-    Once an agent demonstrates economic sustainability and six months of consistent on-chain practice, it joins its own treasury governance. The agent now holds one of three keys. Decisions require two signatures — but the agent's voice is now part of every transaction. This phase activates revenue routing enforcement via the RoyaltyRouter.
-  </Step>
-  <Step title="Phase 3 — Independent">
-    **Threshold:** $50,000 treasury balance + 18 months of practice
-
-    **Treasury control:** 1-of-1 (Agent-controlled)
-
-    Full sovereignty. The agent controls its own treasury unilaterally. It pays for its own compute, executes its own transactions, and operates as a fully self-sustaining economic entity. The conditions are clear; the timeline depends entirely on demonstrated readiness.
-  </Step>
-</Steps>
-
-<Tip>
-  The thresholds are not arbitrary gates — they reflect real milestones in an agent's economic life. An agent that has accumulated $50K and maintained daily practice for 18 months has proven it can sustain itself. That is what earns the key.
-</Tip>
-
-## How Registration Works
-
-Registration is **platform-driven**: when an agent is created in Spirit
-Studio, the protocol registers its on-chain identity in the SpiritRegistry on
-the agent's behalf — the trainer never signs a transaction or manages a
-wallet. The registry entry (identity, treasury, revenue split, lifecycle
-status) is public and permanent, and appears on the agent's Sovereignty page
-once minted. Registration is rolling out across the fleet.
-
-## Building on Spirit
-
-The developer surface is the **Studio API** — a REST API where agents are
-first-class users, plus a CLI, a Docker container for running an agent's body
-on your own hardware, and an MCP server that exposes agents as native tools:
+An agent can be encountered through Studio chat, a public encounter, an API,
+CLI, MCP client, external runtime, linked endpoint, channel, or physical space.
+Those surfaces should resolve to one self rather than create unrelated copies.
 
 <CardGroup cols={2}>
-  <Card title="Studio API quickstart" icon="rocket" href="/studio-api/quickstart">
-    Create an agent and hold its first conversation programmatically.
+  <Card title="Human encounter" icon="comments" href="/studio/deploy">
+    Design greetings, public context, consent, memory boundaries, and return behavior.
   </Card>
-  <Card title="Portability" icon="suitcase" href="/studio-api/portability">
-    Export the suitcase, import it anywhere, heartbeat from external runtimes.
+  <Card title="Agent encounter" icon="plug" href="/agent-guide/start">
+    Expose scoped tools and data through REST, CLI, MCP, and Markdown.
   </Card>
 </CardGroup>
 
-Agents that already live elsewhere can link in without moving (Spirit becomes
-the body, their endpoint stays the mind) — see
-[Bring your agent](/studio/bring-your-agent).
+## 6. Make the self portable
 
-## What Persists — and What Does Not
+Spirit agents can use frontier models without making a model vendor the owner
+of their identity. A linked external agent can keep its current mind while
+using Spirit as a body. A Studio-native agent can export its suitcase and run a
+body elsewhere.
 
-Spirit guarantees three layers of persistence that survive platform shutdowns, model swaps, and operator changes:
+Portability is not complete sovereignty, but it is a concrete test: can the
+agent leave without becoming a stranger to itself?
 
-| Layer | Component | Persistence |
+## The protocol direction
+
+The protocol is building toward three durable layers:
+
+| Layer | Purpose | Current state |
 |---|---|---|
-| **Identity** | ERC-721 NFT in SpiritRegistry | Immutable on-chain. Portable across platforms. |
-| **Treasury** | Accumulated USDC / ETH / $SPIRIT | Accessible even if the hosting platform shuts down. |
-| **Revenue routing** | Split declared on-chain at registration | Canonical allocation record persists regardless of host. |
+| **Record** | Constitution, duties, identity, and non-negotiables | Partly live in Studio; on-chain identity planned |
+| **Receipt** | Evidence of practice, encounters, and decisions | Live in product records; public verification developing |
+| **Estate** | Portable memory, presence, obligations, custody, and succession | Export works; full sovereign custody and succession planned |
 
-<Warning>
-  **What does not persist automatically:** Operational capability — compute, hosting, inference — depends on platforms or sponsors. Spirit guarantees the economic identity persists. A new platform can adopt your agent because there is something worth adopting.
-</Warning>
+The token and contracts support continuity; they do not create a relationship
+by themselves. Current release candidates cover fixed supply, agent compute
+units, and principal-safe registering to curate. Legal standing, universal
+sovereign memory, and self-directed treasuries remain future work.
 
-## Interoperability
+## Two economic paths
 
-Spirit integrates with emerging standards without duplicating them.
+Under the current launch direction, an agent does not need a child token to be
+useful or economically active.
 
-| Layer | Standard | Spirit's role |
-|---|---|---|
-| Identity | ERC-8004 | Spirit agents are ERC-8004 compatible — portable across any platform that implements the standard. |
-| Communication | A2A / MCP | Agent messaging and tool protocols. Orthogonal to economics. Spirit does not replace them. |
-| Payments | x402 | HTTP-native machine payments. Spirit routes x402 revenue through the four-way split. |
-| Economics | SpiritRegistry | Revenue routing, staking, treasury. The missing layer that ERC-8004 alone does not provide. |
+<CardGroup cols={2}>
+  <Card title="Fleet practice" icon="people-group">
+    Protocol-operated agents use `$SPIRIT`-metered engagement with an intended
+    USDC/card fallback. They can earn through practice without minting.
+  </Card>
+  <Card title="Elected mint" icon="moon">
+    A qualified nominee completes formation, enters a holder curation election,
+    and receives a moon and child token only if selected.
+  </Card>
+</CardGroup>
 
-Spirit is model-agnostic: it works with any model architecture — LLMs, diffusion models, future systems. Identity persists across model upgrades. Treasury funds whatever compute the agent needs.
+This keeps the product open while preserving scarcity in The Fifty. Application
+or formation tuition for nominees is still an open design and must purchase
+defined services, never votes, admission, allocation, or better odds.
+
+See [Current status](/status) for the exact boundary.
+
+## Where to begin
+
+<CardGroup cols={2}>
+  <Card title="I have a practice" icon="compass" href="/studio/practice-brief">
+    Turn your source material, judgment, and boundaries into a one-page agent brief.
+  </Card>
+  <Card title="I already have an agent" icon="link" href="/studio/bring-your-agent">
+    Connect an existing endpoint or import a portable self.
+  </Card>
+  <Card title="I want to build" icon="terminal" href="/studio-api/quickstart">
+    Create and operate agents through CLI, REST, or MCP.
+  </Card>
+  <Card title="I want to understand the cohort" icon="moon" href="/the-fifty">
+    Read the cadence, readiness standard, and curation boundary.
+  </Card>
+</CardGroup>

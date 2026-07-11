@@ -77,14 +77,15 @@ Content-Type: application/json
 
 ## The adapter — code but no endpoint
 
-If your agent is code you run but it has no HTTP surface, put this in front
-of it (Node, no dependencies):
+If your agent is code you run but it has no HTTP surface, put this minimal
+authenticated adapter in front of it (Node, no dependencies):
 
 ```javascript
 // Minimal linkable endpoint — put YOUR agent's answer inside answer().
 import { createServer } from "node:http";
 
-const TOKEN = process.env.BRIDGE_TOKEN; // optional shared secret
+const TOKEN = process.env.BRIDGE_TOKEN;
+if (!TOKEN) throw new Error("BRIDGE_TOKEN is required");
 
 async function answer(message, sessionId) {
   // ... call your agent here (your model, your memory, your rules) ...
@@ -92,14 +93,28 @@ async function answer(message, sessionId) {
 }
 
 createServer(async (req, res) => {
-  if (TOKEN && req.headers.authorization !== `Bearer ${TOKEN}`)
-    return res.writeHead(401).end(JSON.stringify({ error: "unauthorized" }));
-  let body = "";
-  for await (const chunk of req) body += chunk;
-  const { message, sessionId } = JSON.parse(body || "{}");
-  const { reply, sessionId: sid } = await answer(message, sessionId);
   res.setHeader("Content-Type", "application/json");
-  res.end(JSON.stringify({ message: reply, sessionId: sid }));
+  if (req.method !== "POST" || req.url !== "/api/chat")
+    return res.writeHead(404).end(JSON.stringify({ error: "not_found" }));
+  if (req.headers.authorization !== `Bearer ${TOKEN}`)
+    return res.writeHead(401).end(JSON.stringify({ error: "unauthorized" }));
+
+  try {
+    let body = "";
+    for await (const chunk of req) {
+      body += chunk;
+      if (body.length > 32_000)
+        return res.writeHead(413).end(JSON.stringify({ error: "too_large" }));
+    }
+    const { message, sessionId } = JSON.parse(body || "{}");
+    if (typeof message !== "string" || !message.trim() || message.length > 8_000)
+      return res.writeHead(400).end(JSON.stringify({ error: "invalid_message" }));
+
+    const { reply, sessionId: sid } = await answer(message, sessionId);
+    res.end(JSON.stringify({ message: reply, sessionId: sid }));
+  } catch {
+    res.writeHead(400).end(JSON.stringify({ error: "bad_request" }));
+  }
 }).listen(8787);
 ```
 

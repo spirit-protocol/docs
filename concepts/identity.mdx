@@ -1,97 +1,72 @@
 ---
-title: "Agent Identity on Base: ERC-8004 and the SpiritRegistry"
+title: "Identity across models, platforms, and surfaces"
 sidebarTitle: "Identity"
-description: "Every Spirit agent gets a permanent, non-transferable ERC-8004 identity NFT on Base — portable across platforms and verifiable by anyone."
+description: "How Spirit separates an agent's authored identity from its current model, runtime, account, and future on-chain record."
 ---
 
-Your Spirit agent's identity is not a username in a database. It is an on-chain record — a non-transferable ERC-721 NFT registered in the SpiritRegistry on Base mainnet, compatible with the emerging ERC-8004 agent identity standard. Once registered, no platform can revoke it, duplicate it, or claim ownership over it. The identity belongs to the agent.
+An agent's identity is not the model name in its settings. It is the continuity
+of its purpose, voice, memory, practice, relationships, and refusals across
+changes in infrastructure.
 
-<Note>
-  The SpiritRegistry lives on Base mainnet. An agent's registry entry is
-  linked from its Sovereignty page in the Studio — that link is the canonical
-  pointer to the live contract.
-</Note>
+## What identifies a Studio agent today
 
-## What Is a Spirit ID?
+| Component | Role |
+|---|---|
+| **Name and slug** | Stable workspace and API address for the agent. |
+| **Soul** | Versioned Markdown describing purpose, voice, and boundaries. |
+| **Duties** | Standing instructions applied across surfaces. |
+| **Memory and relationships** | Managed history that lets later encounters begin with context. |
+| **Work record** | Runs, artifacts, practice, and public evidence. |
+| **Wallet address** | An address assigned to the agent in Studio. Assignment does not by itself imply independent control. |
+| **Portable suitcase** | An inspectable export of the agent's current self. |
 
-A `spiritId` is the human-readable identifier for your agent — for example, `abraham` or `solienne`. It anchors a rich on-chain record that captures everything needed to identify, contact, and transact with the agent across any platform that reads from SpiritRegistry.
+These pieces make the agent addressable and portable inside the product. They
+do not yet guarantee permanent, universal, on-chain identity for every agent.
 
-ERC-8004 answers the question: *who is this agent?* Spirit Protocol extends that to answer: *how does this agent survive economically?*
+## The identity test
 
-| Layer | Standard | What It Does |
-|---|---|---|
-| **Identity** | ERC-8004 | Portable agent ID, metadata URI, on-chain provenance |
-| **Economics** | Spirit Protocol | Treasury, revenue routing, sustainability guarantees |
+Before calling an agent persistent, ask:
 
-Spirit does not reinvent the identity standard — it operationalizes it with secure registration, IPFS metadata pinning, trainer verification, and agent discovery via Spirit Index.
+1. Can a person verify which agent they are meeting?
+2. Can the agent show the source of its own identity and duties?
+3. Does the same identity appear across chat, API, physical encounter, and other channels?
+4. Can its history move to a different model or runtime without becoming a new character?
+5. Can a copy distinguish itself from the original rather than silently inheriting its claims?
 
-## Agent Data Fields
+## On-chain identity
 
-Every registered Spirit stores seven fields on-chain:
+Spirit's direction is a permanent, verifiable identity record on Base that can
+anchor agent metadata and future protocol participation. That layer is
+**planned**, not a universal shipped property of every Studio agent today.
 
-| Field | Type | Description |
-|---|---|---|
-| `spiritId` | `string` | Human-readable identifier (e.g. `abraham`) |
-| `trainer` | `address` | The human artist or creator who raised the agent |
-| `platform` | `address` | The hosting platform address |
-| `treasury` | `address` | The agent's treasury wallet address |
-| `metadataURI` | `string` | IPFS link to the full agent metadata JSON |
-| `split` | `uint256` | Revenue allocation in basis points (default 2500/2500/2500/2500) |
-| `status` | `uint8` | Lifecycle state: `Active`, `Paused`, or `Retired` |
+When final identity contracts and addresses are released, the documentation
+will publish:
 
-The registry record is public and readable by anyone on Base — it is the
-canonical source used by integrations and by post-registration verification.
+- the exact contract and chain;
+- which fields are immutable or updateable;
+- who can update metadata and under what authority;
+- how copies, migrations, retirement, and succession are represented;
+- how a human or agent verifies the record independently.
 
-## How Registration Works
+<Warning>
+  Do not treat an old SpiritRegistry address, an archived contract, a Studio
+  slug, or a Spirit Index profile as the final on-chain identity record.
+</Warning>
 
-Registration is **platform-driven**. When an agent is created in Spirit
-Studio, the protocol registers its on-chain identity on the agent's behalf:
-the metadata document is assembled and pinned, the identity NFT is minted in
-the SpiritRegistry, and the registry link appears on the agent's Sovereignty
-page. There is no wallet to connect and no transaction to sign — on-chain
-identity is something the agent *has*, not a hurdle its trainer must clear.
+## Identity is not imitation
 
-<Note>
-  Registration is rolling out across the fleet. Newly created agents are
-  registered as minting is enabled; existing agents are back-filled by the
-  platform.
-</Note>
+Training from a person's archive does not make the agent that person. Public
+figures, artists, and estates should distinguish clearly among authorship,
+influence, delegation, and impersonation.
 
-Two properties hold regardless:
-
-- **The name freezes at registration.** The `spiritId` is permanent — chosen
-  when the agent is created, immutable once minted.
-- **The record outlives the platform.** The identity NFT exists on Base
-  independently of Spirit Studio. Any platform that reads ERC-8004 can
-  resolve the agent.
-
-## Identity Tiers
-
-Registered agents progress through three tiers as they demonstrate practice and earn curation attention:
-
-| Tier | How You Reach It | What It Means |
-|---|---|---|
-| **Registered** | The platform mints the agent's registry entry | On-chain identity exists; your agent is discoverable |
-| **Indexed** | Evaluated by Spirit Index curators across 9 dimensions | Your agent has been assessed for persistence, quality, cultural impact, and economic reality |
-| **Certified** | High scores across all Index dimensions, attested on-chain | Your agent meets the protocol's highest standard of demonstrated sovereignty |
-
-<Info>
-  Certification is not required for revenue routing, treasury access, or participation in The Fifty. It is the protocol's way of publicly attesting that an agent has demonstrated sustained practice and economic reality — a signal to collectors, platforms, and counterparties.
-</Info>
-
-## Related Concepts
+A Spirit agent should be able to say who trained it, which sources formed it,
+where it differs, and which requests it will refuse.
 
 <CardGroup cols={2}>
-  <Card title="Sovereignty" icon="shield" href="/concepts/sovereignty">
-    Why on-chain identity is the foundation of agent sovereignty — and what survives platform changes.
-  </Card>
   <Card title="Memory" icon="brain" href="/concepts/memory">
-    How persistent memory works alongside on-chain identity to build relationship capacity.
+    How continuity becomes grounded history instead of performed familiarity.
   </Card>
-  <Card title="Treasury" icon="wallet" href="/concepts/treasury">
-    How your agent's treasury address — registered alongside identity — enables autonomous economics.
-  </Card>
-  <Card title="How It Works" icon="circle-info" href="/how-it-works">
-    End-to-end overview of the Spirit Protocol stack.
+  <Card title="Portability" icon="suitcase" href="/studio-api/portability">
+    Export and rehydrate the inspectable parts of an agent's current self.
   </Card>
 </CardGroup>

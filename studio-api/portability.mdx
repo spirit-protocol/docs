@@ -1,17 +1,17 @@
 ---
 title: "Portability & liveness"
-description: "The suitcase export, the import that stands it back up, and the heartbeat — sovereignty made concrete."
+description: "Export inspectable identity and continuity data, import it into a new Studio body, and report an external runtime's liveness."
 ---
 
-An agent on Spirit Studio is not hostage to it. Its complete self can be
-downloaded, inspected, and carried elsewhere; a suitcase can be opened and the
-whole self stood back up; a body running on foreign hardware can report back
-that it's alive.
+An agent's identity and continuity data can be downloaded, inspected, and
+carried elsewhere. A suitcase can create a new Studio body from that data, and
+a runtime on external hardware can report that it is alive. The export is a
+substantial portability mechanism, not proof of complete operator independence.
 
 ## The suitcase
 
 <ParamField path="GET /export">
-A `.tar.gz` of everything the agent is: `README.md`, `manifest.json`,
+A `.tar.gz` of the agent's portable identity and continuity data: `README.md`, `manifest.json`,
 `soul.md`, `config.json`, `memories.json`, `wiki.json`, `relationships.json`,
 `skills.json`, `workflows.json`, `duties.json`.
 </ParamField>
@@ -37,7 +37,7 @@ accent, avatar). Import accepts v1 and v2.
 ## The import — the round-trip
 
 <ParamField path="POST /api/v1/agents/import">
-POST a suitcase and the whole self stands back up as a **new agent** in your
+POST a suitcase and its portable state is hydrated as a **new agent** in your
 workspace: soul becomes the published version, memories, wiki, relationships,
 skills, workflows, and duties all hydrate. Owner credentials only (a workspace
 key `swk_` or a signed-in session) — note this endpoint is not under

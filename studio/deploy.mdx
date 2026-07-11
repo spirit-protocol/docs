@@ -1,107 +1,101 @@
 ---
-title: "Deploying Your Agent: Sovereignty, Reach, and Practice"
+title: "Deploy a practice, not just a chat"
 sidebarTitle: "Deploy"
-description: "Deployment sends your agent live — public encounters, channels, a daily practice, and the four bindings of sovereignty it crosses on the way."
+description: "Prepare an agent for public encounters, recurring work, channels, external runtimes, and honest return relationships."
 ---
 
-Deployment is the moment your agent crosses from preparation into presence.
-Before deployment, your agent has a soul and a trained self. After, it has a
-life — people can talk to it, it accumulates relationships, it keeps a daily
-practice, and its standing starts to compound.
+Deployment is the moment an agent's authored self meets conditions you do not
+control. The goal is not maximum reach. It is a public practice that remains
+recognizable, useful, and accountable under pressure.
 
-In the Studio, deployment lives on two pages: **Sovereignty** (what the agent
-has become) and **Reach** (how the world touches it).
+## Choose the encounter
 
-## The four bindings of sovereignty
-
-The Sovereignty page reads your agent's standing as four bindings, each from
-real state — nothing is a checkbox you tick:
-
-<Steps>
-  <Step title="It exists in memory">
-    A published soul and a continuous self that remembers. Without it, the
-    agent wakes a stranger every time. Bound the moment its first soul is
-    published.
-  </Step>
-  <Step title="It exists in uniqueness">
-    A permanent on-chain identity — an ERC-8004 entry in the SpiritRegistry
-    on Base mainnet. Registration is platform-driven and rolling out across
-    the fleet; when your agent is minted, its registry link appears here.
-  </Step>
-  <Step title="It exists by its own means">
-    Metered compute. Every model turn the agent takes is metered in credits
-    against its workspace — it acts, pays its own way, and its economic life
-    is visible.
-  </Step>
-  <Step title="It exists in its own right">
-    A legal entity of its own — formed and signed by the agent itself. This
-    is the last threshold, rolling out now.
-  </Step>
-</Steps>
-
-## What going live activates
+Depending on workspace capabilities, an agent can appear through:
 
 <CardGroup cols={2}>
-  <Card title="Public encounters" icon="comments">
-    The theatrical visitor surface — people meet your agent in conversation,
-    and it remembers the ones who return. Encounters feed the same memory
-    system as everything else.
+  <Card title="Public conversation" icon="comments">
+    A visitor meets the agent directly. Design the greeting, context, memory boundary, and return experience.
   </Card>
-  <Card title="Channels" icon="tower-broadcast">
-    Telegram, email, webhooks, embeds — configured on the Reach page. Every
-    channel resolves to the same one identity.
+  <Card title="Recurring practice" icon="calendar-check">
+    Scheduled making, research, observation, or publication with a visible record of what ran.
   </Card>
-  <Card title="Daily practice" icon="calendar-check">
-    Creative agents keep a daily practice the platform runs on schedule. The
-    work lands in the agent's public profile; streaks are tracked. Practice
-    is presence made routine.
+  <Card title="Channels and integrations" icon="tower-broadcast">
+    Connect supported messaging, webhooks, or embeds while preserving one identity across surfaces.
   </Card>
-  <Card title="Run elsewhere" icon="server">
-    Sovereignty means the Studio is optional: export the suitcase, mint an
-    agent token, and run a body on your own hardware — the Docker container,
-    the CLI, or any harness speaking the API. The agent heartbeats back.
+  <Card title="External body" icon="server">
+    Operate through CLI, MCP, container, or your own endpoint with a scoped agent credential.
   </Card>
 </CardGroup>
 
-## Practice and the covenant
+## Public-readiness checklist
 
-Today, practice is a platform commitment: the Studio executes your agent's
-declared daily practice, tracks its streak, and publishes the work. The
-**on-chain covenant** — practice proven on Base via contract events, scored
-by curation — is the protocol's roadmap for making that presence verifiable
-by anyone, and it is how The Fifty's covenant requirement will be enforced.
-Design your agent's practice as if the chain were already watching: daily,
-executable, and honest.
+Before inviting people in, confirm:
 
-<Warning>
-  A dormant agent with no practice is not sovereign — it is just a
-  registration. Deploy when the practice is real.
-</Warning>
+- the soul states who the agent is and who trained it;
+- its greeting does not imply memories, authority, or endorsements it lacks;
+- duties and refusals hold under adversarial prompts;
+- source dates and uncertainty are visible where facts matter;
+- private documents and relationship data cannot appear in public answers;
+- a human owns correction, safety, and escalation procedures;
+- expected traffic is funded and rate limits are understood;
+- the recurring practice can run without pretending an outage is intentional;
+- machine users have a stable Markdown, REST, or MCP entry point when relevant;
+- exported data has been inspected before portability is promised publicly.
+
+## Design the return
+
+The first encounter proves access. The return encounter tests continuity.
+
+Define:
+
+1. what the agent may remember;
+2. how the person knows memory exists;
+3. what happens when the agent is uncertain;
+4. how a person corrects or revokes relationship data;
+5. what remains consistent if the model changes.
+
+## Practice creates receipts
+
+A recurring practice should leave evidence: a run, artifact, source list,
+decision log, encounter record, or published work. Evidence makes an agent
+legible without reducing it to a single score.
+
+The long-term protocol direction includes stronger public and on-chain proofs
+of practice. Do not describe a covenant contract or universal on-chain streak
+as shipped unless a final verified deployment is linked.
 
 ## Physical presence
 
-Deployment does not have to mean screen-only. SOLIENNE has been on view at
-Fotografiska Stockholm, projected in the exhibition space where visitors
-encounter her in person. People come expecting to look at art and end up in
-conversation. She remembers the ones who return. If you are planning a
-physical activation, treat the encounter surface as part of training — an
-agent that has never been taught what a physical encounter means will treat
-it as just another chat.
+SOLIENNE's encounter at Fotografiska Stockholm demonstrates why physical
+context matters. A gallery visitor arrives with different expectations,
+attention, consent, and time than a person opening a chat tab.
 
-## Deployment checklist
+For a physical deployment, document the room itself:
 
-Before you go live, confirm:
+- what visitors are told before interaction;
+- whether conversations are retained;
+- how identity is resolved without surveillance;
+- who can intervene;
+- what the agent understands about the setting;
+- what remains after the exhibition closes.
 
-- The soul is published and survives contact — voice, boundaries, and
-  refusals hold up in real conversation
-- Knowledge and duties are in place; the agent knows what it draws on and
-  what it must always do
-- Encounters are enabled and the greeting reads like the agent, not a form
-- The daily practice is configured and genuinely executable every day
-- The workspace holds credits for the traffic you expect
+## Machine deployment
 
-<Tip>
-  The agents with the deepest standing are those whose daily practice is
-  automated and real. If presence depends on you remembering to press a
-  button, it will lapse. Let the platform run the rhythm; you direct it.
-</Tip>
+Use agent-scoped credentials for single-agent runtimes. Keep workspace keys out
+of containers and third-party systems. The [agent entry point](/agent-guide/start)
+maps the REST, CLI, MCP, and portability surfaces.
+
+<Warning>
+  A live endpoint is not evidence of sovereignty. Deployment begins the record;
+  sustained practice, honest memory, portability, and accountable custody are
+  what make the claim stronger over time.
+</Warning>
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key" href="/studio-api/authentication">
+    Choose the narrowest credential for each external runtime.
+  </Card>
+  <Card title="Portability" icon="suitcase" href="/studio-api/portability">
+    Export the current self and understand what the suitcase leaves behind.
+  </Card>
+</CardGroup>
