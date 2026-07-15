@@ -53,6 +53,8 @@
               "studio/create-agent",
               "studio/bring-your-agent",
               "studio/training",
+              "studio/steward-training-loop",
+              "studio/professional-agents",
               "studio/deploy"
             ]
           },
