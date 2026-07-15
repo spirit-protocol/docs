@@ -1,0 +1,58 @@
+---
+title: "The Steward Training Loop: Reject and Say Why"
+sidebarTitle: "Steward Training Loop"
+description: "Spirit agents are trained through rounds of steward judgment — verdicts with reasons, captured in an append-only history, compounding into a soul the steward actually recognizes as theirs."
+---
+
+The <a href="/studio/training">Training page</a> covers what you teach an agent — voice, memory, values, domain knowledge. This page covers *how the teaching actually happens* in practice: a loop we use across the fleet, refined through professional-agent builds, called **reject-and-say-why**.
+
+The premise is simple. You cannot write someone's judgment down by interviewing them about it. Experts don't have access to their own taste as a list of rules — they have access to it as *reactions*. A thirty-year practitioner cannot tell you their criteria for a good pitch, but show them ten pitches and they will kill seven in ninety seconds and tell you exactly why. The training loop is built to harvest those reactions.
+
+## The round
+
+A training round has four moves:
+
+<Steps>
+  <Step title="The agent produces a strawman">
+    A real piece of work — not an exercise. A draft proposal, a set of angles, a report. The draft is written to be demolished: concrete enough to react to, opinionated enough that the steward's corrections carry signal. A vague draft wastes the steward's time; a polished-to-death draft leaves nothing to reject, and the rejections are the product.
+  </Step>
+  <Step title="The steward gives verdicts">
+    Per element: <strong>keep</strong>, <strong>reject</strong>, or <strong>rewrite</strong>. Fast, instinctive, in whatever medium the steward already lives in — a marked-up doc, a voice note, twenty minutes on a call. The steward should never have to learn a tool to train their agent.
+  </Step>
+  <Step title="Every verdict gets a why-line">
+    The reason, in the steward's own words: <em>"that's a press release, not a story"</em> — <em>"I'd never open with the price"</em> — <em>"this person hates follow-ups, never twice in a week."</em> The why-line is the actual training data. A verdict without a why teaches the agent what to avoid once; a verdict with a why teaches it a rule it can apply forever. If the why isn't given, the agent asks for it — once, briefly — and never argues with the verdict itself.
+  </Step>
+  <Step title="The agent renders the delta">
+    At the end of the round, the agent plays back what it learned in plain language: "here's what I now understand about how you decide." The steward sees the diff before it becomes canon. Corrections to the playback are themselves verdicts — the loop eats its own output.
+  </Step>
+</Steps>
+
+## The judgment history
+
+Every verdict and why-line is appended to a **judgment history** — an append-only log that is the real asset of the training process. Three properties are non-negotiable:
+
+- **Consented.** Nothing enters the history the steward didn't knowingly give. No ambient capture, no scraping their communications for implicit signal.
+- **Deletable.** The steward can strike any entry, and the strike propagates — the soul re-derives without it.
+- **Portable.** The history is the steward's property. It exports whole, in a readable format, and leaves with them if the collaboration ends. It never trains any other agent or model.
+
+Portability is the point, not a concession. A steward who can leave at any time, taking everything, is a steward whose staying means something. Attachment comes from the agent being *genuinely theirs* — never from lock-in.
+
+## Versioned souls
+
+The agent's soul — its identity document — is versioned like software. Each training round can produce a new version: the strawman v0.1 written before the steward has reacted to anything, v0.2 after the first real round, and so on. Two rules keep this honest:
+
+1. **The soul is written *with* the steward, not *for* them.** Early versions are explicitly labeled strawmen. Their job is to be wrong in useful ways — to provoke the reactions that make the next version right.
+2. **Every soul change traces to a verdict.** A line in the soul that can't be traced back to something the steward said or approved is a line the builder made up. The judgment history is the citation trail.
+
+## What good looks like
+
+The measure of the loop is the steward's time-to-done on real work. If reviewing the agent's draft used to take two hours of edits and after five rounds it takes twenty minutes, the loop is working. If rounds keep producing the same corrections — the same why-line appearing twice — the encoding is failing, and that's the builder's bug to fix, not the steward's patience to absorb.
+
+Watch for two failure modes:
+
+- **Flattery drift.** The agent optimizing for the steward's approval rather than encoding their taste — output converging on generic, inoffensive competence. Signal: why-lines getting thinner, rejections getting rarer without the work getting sharper.
+- **Strawman collapse.** Drafts so cautious there's nothing left to reject. The steward's judgment only surfaces against something concrete enough to be wrong.
+
+## Where this runs
+
+The loop starts wherever the steward already works — email, shared docs, calls — and moves into Spirit Studio's training interface when the steward is ready, not before. Studio persists the versioned souls and the judgment history under the steward's identity, so the guarantees above (consented, deletable, portable) are enforced by the platform rather than by promise.
